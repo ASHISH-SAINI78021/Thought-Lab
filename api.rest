@@ -1,0 +1,36 @@
+POST http://localhost:5500/api/send-otp HTTP/1.1
+Content-Type: application/json
+
+{
+    "name" : "Ashish Saini" ,
+    "rollNumber" : "12213075" ,
+    "year" : 3 ,
+    "branch" : "Information Technology" ,
+    "programme" : "BTech" ,
+    "email" : "12213075@nitkkr.ac.in" ,
+    "phone" : "9416540289" ,
+    "faceId" : "jdfidjfiejfijifjefijffsdjfei" ,
+    "avatar" : "iefiejfiejfijeoifioejiceieciec" ,
+    "phone" : "+919416540289"
+}
+
+
+###
+POST http://localhost:5500/api/verify-otp HTTP/1.1
+Content-Type: application/json
+
+{
+    "phone" : "+919416540289" ,
+    "otp" : 6069 ,
+    "hash" : "b209b66ac2617b9e357fa721b67bbf37c0156a35f35d202d506e2042aebbc78c.1737255874072"
+}
+
+
+### Increment year
+PUT http://localhost:5500/api/increment-year HTTP/1.1
+Content-Type: application/json
+
+{
+    "rollNumber" : "12213075"
+}
+
