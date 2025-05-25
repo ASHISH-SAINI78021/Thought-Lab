@@ -1,0 +1,160 @@
+/* .container {
+    max-width: 850px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .content {
+    color: #333;
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+  
+  .content h1,
+  .content h2,
+  .content h3 {
+    margin-top: 1.8rem;
+    color: #0d1321;
+  }
+  
+  .content h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+  }
+  
+  .content h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+  
+  .content h3 {
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+  
+  .content ul {
+    margin-left: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .content li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .tags {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+    color: #555;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .footer {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+  
+  .likeBtn,
+  .dislikeBtn,
+  .commentBtn {
+    background-color: #f2f2f2;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #444;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .likeBtn:hover {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+  
+  .dislikeBtn:hover {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+  
+  .commentBtn:hover {
+    background-color: #e0f2fe;
+    color: #0369a1;
+  } */
+
+
+
+  .container {
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    font-family: "Inter", sans-serif;
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+  
+  .tags {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .footer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .likeBtn,
+  .dislikeBtn,
+  .commentBtn {
+    background-color: #f1f1f1;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .likeBtn:hover {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+  
+  .dislikeBtn:hover {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+  
+  .commentBtn:hover {
+    background-color: #e0e7ff;
+    color: #3730a3;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #999;
+  }
+  
+  

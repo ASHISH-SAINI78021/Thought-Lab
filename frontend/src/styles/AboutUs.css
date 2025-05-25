@@ -1,0 +1,11 @@
+.AboutUs {
+    padding: 24px;
+    height: 300px;
+    width: 400px;
+    background-color: black;
+    border-radius: 22px;
+    color: white;
+    transform: rotate3d(0,1,0,60deg);
+    color: white;
+  transform: perspective(1500px) rotateY(35deg);
+}

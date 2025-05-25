@@ -1,0 +1,94 @@
+.wrapper {
+    max-width: 850px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 20px;
+    font-family: "Segoe UI", sans-serif;
+  }
+
+  .contain {
+    min-height: 100vh;
+    overflow-y: scroll;
+  }
+
+
+  .span {
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+  }
+  
+  .input {
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  .thumbnailPreview img {
+    width: 200px;
+    height: auto;
+    border-radius: 12px;
+    margin-top: 10px;
+    object-fit: cover;
+    border: 2px solid #ccc;
+  }
+  
+  .label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2d2d2d;
+  }
+  
+  .editor {
+    border-radius: 12px;
+  }
+  
+  .ql-toolbar {
+    border-radius: 12px 12px 0 0;
+    background-color: #f9f9f9;
+  }
+  
+  .ql-container {
+    min-height: 300px;
+    border-radius: 0 0 12px 12px;
+    background-color: #fff;
+  }
+  
+  .btnGroup {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  
+  .btn,
+  .previewBtn {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  
+  
+  
+  .preview {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background: #fafafa;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .ql-editor img {
+    max-width: 200px; /* or whatever size fits your design */
+    height: 50px;
+    display: block;
+    margin: 10px auto; /* Optional: center the image */
+  }
+  
+  

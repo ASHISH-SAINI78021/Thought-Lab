@@ -1,0 +1,37 @@
+.blogList {
+    max-width: 900px;
+    margin: auto;
+    padding: 2rem;
+  }
+  
+  .blogCard {
+    display: flex;
+    gap: 1rem;
+    background: #f9f9f9;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    cursor : pointer;
+  }
+  
+  .thumbnail {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .details h3 {
+    margin: 0;
+  }
+  
+  .tags {
+    font-size: 0.85rem;
+    color: #555;
+  }
+
+  .h1 {
+    font-size : 2rem;
+    font-weight: bold;
+  }
+  

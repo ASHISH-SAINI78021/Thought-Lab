@@ -1,0 +1,33 @@
+.a{
+    font-weight: 100;
+    color: grey;
+    font-size: 1rem;
+}
+.ribbon {
+    display: flex;
+    justify-content: space-between;
+}
+.discription {
+    font-weight: 100;
+    color: grey;
+    font-size: 0.7rem;
+}
+.container {
+    background-color: white;
+    width: 15rem;
+    height: 8rem;
+    padding: 1rem;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-radius: 0.2rem;
+}
+.container2 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.blue {
+    color: rgb(21, 118, 255);
+}
