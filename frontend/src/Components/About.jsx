@@ -83,14 +83,14 @@ const About = () => {
     return (
         <div className="aboutUs flex justify-center items-ce top-0 pt-[25vh] mt-[3px] pb-[30vh] h-[105vh]">
             <div className="px-[15rem]">
-                <p className="aboutUsWelcome font-sans text-secondary">Welcome to Deep Breathes</p>
+                <p className="aboutUsWelcome font-sans text-secondary">Welcome to Thought Lab</p>
                 <div className="content w-fit justify-between flex mt-[8px]">
                     <h1 className="aboutUsHeading font-display font-semibold text-[4rem] leading-[1] flex-shrink-0 w-[25rem]">
                         Who We Are?
                     </h1>
                     <div className="font-sans pl-[40px] text-justify w-[47vw]">
                         <p className="aboutUsContent">
-                            Deep Breathes is a supportive platform for students and young
+                            Thought Lab is a supportive platform for students and young
                             adults, making mental wellness approachable and actionable.
                             "We’re committed to creating a safe space where everyone feels
                             heard, supported, and empowered to prioritize their mental

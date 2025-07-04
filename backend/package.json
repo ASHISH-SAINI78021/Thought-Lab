@@ -10,10 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "canvas": "^3.0.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
+    "exceljs": "^4.4.0",
     "express": "^4.21.2",
     "face-api.js": "^0.22.2",
     "fs": "^0.0.1-security",
@@ -21,6 +23,7 @@
     "mongodb": "^6.12.0",
     "mongoose": "^8.9.4",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^7.0.3",
     "socket.io": "^4.8.1",
     "twilio": "^5.4.1"
   }

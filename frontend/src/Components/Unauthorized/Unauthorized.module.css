@@ -1,0 +1,61 @@
+.container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .card {
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .status {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #f44336;
+  }
+  
+  .message {
+    font-size: 1.8rem;
+    color: #333;
+    margin: 20px 0 10px;
+  }
+  
+  .description {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  .homeButton {
+    display: inline-block;
+    padding: 12px 28px;
+    background-color: #1976d2;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+  
+  .homeButton:hover {
+    background-color: #1258a5;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

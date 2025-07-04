@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
 // Socket.IO setup
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", // 👈 Update this if your frontend runs on a different port
+    origin: "http://localhost:3000", 
     credentials: true
   }
 });

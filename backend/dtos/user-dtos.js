@@ -1,21 +1,23 @@
 class UserDto {
     id;
-    phone;
-    activated;
-    createdAt;
     name;
-    avatar;
+    profilePicture;
     year;
     rollNumber;
     branch;
+    role;
+    email;
 
-    constructor(user){
+    constructor(user, token){
         this.id = user._id;
-        this.phone = user.phone;
-        this.activated = user.activated;
-        this.createdAt = user.createdAt;
         this.name = user.name;
-        this.avatar = user.avatar;
+        this.profilePicture = user.profilePicture;
+        this.year = user.year;
+        this.rollNumber = user.rollNumber;
+        this.branch = user.branch;
+        this.role = user.role;
+        this.token = token;
+        this.email = user.email;
     }
 }
 

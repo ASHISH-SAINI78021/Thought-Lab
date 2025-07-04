@@ -14,6 +14,11 @@ class UserService {
         
         return user;
     }
+    async allUsers(){
+        const users = await UserModel.find();
+        
+        return users;
+    }
 }
 
 

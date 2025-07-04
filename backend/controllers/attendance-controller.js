@@ -3,6 +3,7 @@ const canvas = require("canvas");
 const { createCanvas, loadImage } = require("canvas");
 const { Canvas, Image, ImageData } = canvas;
 faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
+const ExcelJS = require("exceljs");
 
 const userService = require("../services/user-service.js");
 const User = require("../Models/user-model.js");
@@ -29,11 +30,11 @@ class Attendance {
 
             let user = await userService.findUser({ rollNumber });
 
-            if (user) {
-                console.log("User already exists");
+            if (!user) {
+                console.log("User not exist");
                 return res.status(400).json({
                     success: false,
-                    message: "User is already registered",
+                    message: "User is not registered",
                 });
             }
 
@@ -58,16 +59,15 @@ class Attendance {
 
             const faceDescriptor = Array.from(detection.descriptor);
 
-            user = await User.create({
-                name : "Ashish Saini",
-                rollNumber : "12213075",
-                year : 3,
-                branch : "Information Technology",
-                programme : "BTech",
-                email : "ashu78021@gmail.com",
-                phone : "9896022762",
-                faceId: [faceDescriptor], // Store face descriptor
-            });
+            user = await User.findOneAndUpdate(
+                { rollNumber: rollNumber }, // filter
+                {
+                  $set: {
+                    faceId: [faceDescriptor]
+                  }
+                },
+                { new: true } // return the updated document
+              );
 
             console.log("Student registered successfully");
             return res.status(201).json({
@@ -113,13 +113,17 @@ class Attendance {
                 .withFaceLandmarks()
                 .withFaceDescriptor();
             console.log("Step 7: Face Detection Results", detections);
+
     
             if (!detections) {
                 console.log("Step 8: No face detected");
                 return res.status(400).json({ success: false, message: "No face detected" });
             }
+
+            console.log(rollNumber)
     
             const user = await userService.findUser({ rollNumber });
+            console.log(user);
             if (!user || !user.faceId) {
                 console.log("Step 9: User not found or no face data stored");
                 return res.status(400).json({ success: false, message: "User not found or no registered face" });
@@ -164,12 +168,34 @@ class Attendance {
                     message: "Face not recognized",
                 });
             }
-    
-            console.log("Login Successful");
-            return res.status(200).json({
-                success: true,
-                message: "Login successful",
-            });
+
+            if (bestMatch._distance <= 0.3){
+                console.log("Attendance Mark Successfully");
+
+                const now = new Date();
+                const date = now.toISOString().split("T")[0];
+                const time = now.toTimeString().split(" ")[0];
+
+                user.attendance.push({
+                    date : date,
+                    time : time,
+                    status : "Present"
+                });
+
+                await user.save();
+
+                return res.status(200).json({
+                    success: true,
+                    message: "Login successful",
+                });
+            }
+            else {
+                console.log("Face not matched");
+                return res.status(200).json({
+                    success: false,
+                    message: "Login Failed",
+                });
+            }
     
         } catch (error) {
             console.error(error);
@@ -179,7 +205,65 @@ class Attendance {
             });
         }
     }
-    
+
+    async downloadAttendance(req, res) {
+        try {
+          console.log("Step 1: Fetching users...");
+          const users = await userService.allUsers();
+      
+          const workbook = new ExcelJS.Workbook();
+          const sheet = workbook.addWorksheet("Attendance");
+      
+          // Add columns
+          sheet.columns = [
+            { header: "Name", key: "name", width: 25 },
+            { header: "Roll Number", key: "rollNumber", width: 20 },
+            { header: "Date", key: "date", width: 15 },
+            { header: "Time", key: "time", width: 15 },
+            { header: "Status", key: "status", width: 15 },
+          ];
+      
+          // Add data
+          users.forEach((user) => {
+            (user.attendance || []).forEach((att) => {
+              sheet.addRow({
+                name: user.name,
+                rollNumber: user.rollNumber,
+                date: att.date,
+                time: att.time,
+                status: att.status,
+              });
+            });
+          });
+      
+          // Style header row
+          sheet.getRow(1).font = { bold: true };
+      
+          // Set response headers
+          res.setHeader(
+            "Content-Type",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          );
+          res.setHeader(
+            "Content-Disposition",
+            "attachment; filename=attendance.xlsx"
+          );
+      
+          console.log("Step 2: Writing Excel file to response...");
+          await workbook.xlsx.write(res);
+          
+          console.log("Step 3: Ending response");
+          res.end();
+        } catch (error) {
+          console.error("Excel generation failed:", error);
+          return res.status(500).json({
+            success: false,
+            message: "Failed to generate attendance sheet",
+            error: error.message
+          });
+        }
+      }
+
 }
 
 module.exports = new Attendance();

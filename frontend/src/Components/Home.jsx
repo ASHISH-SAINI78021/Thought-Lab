@@ -34,18 +34,18 @@ const Home = () => {
                 className={`text-justify font-sans text-[1rem] p-[10px]  rise-up-delayed`}
               >
                 Your safe space for mental wellness, growth, and balance. At
-                Deep Breathes, we’re here to support you through life’s
+                Thought Lab, we’re here to support you through life’s
                 challenges and celebrate your victories.
               </p>
               <div className="flex space-x-3 pt-11 items-center">
                 <Link
-                  to="/"
+                  to="/blogs"
                   className={`${buttonStyle} text-white bg-secondary hover:text-black hover:bg-primary`}
                 >
                   Explore
                 </Link>
                 <Link
-                  to="/"
+                  to="/register"
                   className={`${buttonStyle} border-[1px] text-black hover:bg-primary hover:border-primary`}
                 >
                   Join Our Community

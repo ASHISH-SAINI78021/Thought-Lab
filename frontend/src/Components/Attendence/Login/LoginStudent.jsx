@@ -1,128 +1,221 @@
-import React, { useEffect, useState , useRef } from 'react'
-import {Link , useNavigate} from 'react-router-dom';
-import { useAuth } from '../../../Context/auth';
-import {toast} from "react-hot-toast";
-import {url} from "../../../../url.js";
+import React, { useEffect, useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../Context/auth";
+import { toast } from "react-hot-toast";
+import { url } from "../../../url";
+import styles from "./LoginStudent.module.css";
+import { FiArrowRight, FiSkipForward } from "react-icons/fi";
 
-const RegisterStudent = () => {
-    const [stream , setStream] = useState(null);
-    const [auth , setAuth] = useAuth();
-    const videoRef = useRef(null);
-    const canvasRef = useRef(null);
-    const [capturedImage , setCapturedImage] = useState(null);
-    const [change , setChange] = useState(5);
-    const navigate = useNavigate();
+const LoginStudent = () => {
+  const [stream, setStream] = useState(null);
+  const [auth, setAuth] = useAuth();
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [capturedImage, setCapturedImage] = useState(null);
+  const [countdown, setCountdown] = useState(5);
+  const [step, setStep] = useState(1);
+  const [rollNumber, setRollNumber] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const navigate = useNavigate();
 
-    useEffect(()=> {
-      const initWebcam = async()=> {
-        try {
-          const s = await navigator.mediaDevices.getUserMedia({video : true , audio : false});
-          videoRef.current.srcObject = s;
-          
-          setStream(s);
-        } catch (error) {
-          console.error("Error accessing webcam: " , error);
-        }
-      };
-
-      initWebcam();
-
-      return ()=> {
-        // clean up function
-        if (stream){
-          stream.getTracks().forEach((track)=> track.stop());
-        }
-      }
-    } , []);
-
-    const captureImage = ()=> {
-      const context = canvasRef.current.getContext('2d'); // Initialising 2d rendering context to draw images , shapes and other objects
-      context.drawImage(videoRef.current , 0 , 0 , canvasRef.current.width , canvasRef.current.height);
-
-      // Explaination of arguments
-      // VideoRef.current -> provide reference of the element to be drawn
-
-      // (0 , 0) -> where the top left corner of the image should be placed
-
-      // (canvasRef.current.width  , canvas.current.height) -> size of the image
-
-      const imageData = canvasRef.current.toDataURL('image/png');
-      setCapturedImage(imageData);
-    }
-
-
-    useEffect(()=> {
-      const id = setInterval(()=> {
-        setChange((prev)=> {
-          if (prev == 1){
-            clearInterval(id);
-            captureImage();
-            return 0;
-          }
-
-          return prev - 1;
+  useEffect(() => {
+    const initWebcam = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: 1280, height: 720 },
+          audio: false,
         });
-      } , 1000);
-
-      // clean up code
-      return ()=> {
-        clearInterval(id);
+        videoRef.current.srcObject = stream;
+        setStream(stream);
+      } catch (error) {
+        console.error("Camera access error:", error);
+        toast.error("Camera access required for facial login");
       }
-    } , []);
+    };
 
+    initWebcam();
 
-    const handleSubmit = async(event)=> {
-        event.preventDefault();
-        try {
-          const formData = new FormData(); // it is used to send multipart/form data
-          // formData.append('rollNumber' , auth?.rollNumber);
-          formData.append('rollNumber' , '12213075');
-          if (capturedImage) {
-            // Convert base64 image to Blob
-            const blob = await fetch(capturedImage).then((res) => res.blob());
-            formData.append('image', blob, 'captured.png');
-          }
-          
+    return () => {
+      stream?.getTracks().forEach(track => track.stop());
+    };
+  }, []);
 
-          let response = await fetch(`${url}/api/attendance-login` , {
-            method : "POST" ,
-            body : formData
-          });
+  useEffect(() => {
+    if (step !== 1) return;
 
-          if (response.ok){
-            response = await response.json();
-            if (response.success){
-              setAuth({...auth , token : response.token});
-              toast.success("successfully marked attendance");
-            } else {
-              toast.error("Try again");
-            }
-          }
-        } catch (error) {
-            console.log(error);
-            toast.error("error" , error);
+    const timer = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          captureImage();
+          return 0;
         }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [step]);
+
+  const captureImage = () => {
+    const canvas = canvasRef.current;
+    const video = videoRef.current;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    setCapturedImage(canvas.toDataURL("image/jpeg", 0.9));
+    setStep(2);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!rollNumber.trim()) {
+      toast.error("Roll number required");
+      return;
     }
-    
-    return (
-      <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', height: '100vh', backgroundColor: '#f0f0f0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection:"column"}}>
-          <video ref={videoRef} autoPlay width="400" ></video>
-          <canvas ref={canvasRef}  width="200px" height="200px" />
-          {(change != 0) ? <h2>Capturing image in {change} seconds</h2> : null }
-          </div>
 
-      
-          
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '300px', padding: '20px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
-              <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Login</h2>
-              
-              <button type="submit" style={{ padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Login</button>
-              <button type="submit" style={{ padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Skip for now</button>
-              <Link to="/signup">Don't have an account ?</Link>
-          </form>
+    setIsProcessing(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("rollNumber", rollNumber);
+
+      if (capturedImage) {
+        const blob = await fetch(capturedImage).then(res => res.blob());
+        formData.append("image", blob, "face.jpg");
+      }
+
+      const response = await fetch(`${url}/api/attendance-login`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data?.success) {
+        setAuth({ ...auth, token: data.token });
+        toast.success("Attendance successfully marked");
+      } else {
+        toast.error(data.message || "Face not matched");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Network error. Try again.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  return (
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Facial Recognition Login</h1>
+        <p className={styles.subtitle}>Secure and contactless authentication</p>
+      </header>
+
+      {/* Steps */}
+      <div className={styles.steps}>
+        <div className={`${styles.step} ${step >= 1 ? styles.stepActive : ""}`}>
+          <div className={styles.stepNumber}>1</div>
+          <div className={styles.stepTitle}>Face Capture</div>
+        </div>
+        <div className={`${styles.step} ${step >= 2 ? styles.stepActive : ""}`}>
+          <div className={styles.stepNumber}>2</div>
+          <div className={styles.stepTitle}>Verify</div>
+        </div>
       </div>
-  );
-}
 
-export default RegisterStudent;
+      {/* Step 1 */}
+      {step === 1 && (
+        <div className={styles.cameraSection}>
+          <div className={styles.cameraContainer}>
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className={styles.cameraFeed}
+            />
+            <div className={styles.overlay}>
+              <div className={styles.countdown}>{countdown}</div>
+              <p className={styles.instruction}>Position your face in the center</p>
+            </div>
+          </div>
+          <canvas ref={canvasRef} style={{ display: "none" }} />
+        </div>
+      )}
+
+      {/* Step 2 */}
+      {step === 2 && (
+        <div className={styles.loginForm}>
+          <h2 className={styles.formTitle}>Verify Your Identity</h2>
+
+          {capturedImage && (
+            <img
+              src={capturedImage}
+              alt="Captured Face"
+              className={styles.facePreview}
+            />
+          )}
+
+          <form onSubmit={handleSubmit}>
+            <div className={styles.formGroup}>
+              <label htmlFor="rollNumber" className={styles.label}>
+                Roll Number
+              </label>
+              <input
+                type="text"
+                id="rollNumber"
+                value={rollNumber}
+                onChange={(e) => setRollNumber(e.target.value)}
+                className={styles.input}
+                placeholder="Enter university roll number"
+                autoFocus
+                required
+              />
+            </div>
+
+            <div className={styles.actions}>
+              <button
+                type="submit"
+                className={`${styles.button} ${styles.buttonPrimary}`}
+                disabled={isProcessing}
+              >
+                {isProcessing ? (
+                  <>
+                    <span className={styles.spinner}></span> Processing...
+                  </>
+                ) : (
+                  <>
+                    <FiArrowRight /> Confirm Login
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                className={`${styles.button} ${styles.buttonSecondary}`}
+                onClick={() => navigate("/")}
+              >
+                <FiSkipForward /> Skip
+              </button>
+            </div>
+          </form>
+
+          <p className={styles.linkText}>
+            Not registered?{" "}
+            <Link to="/signup" className={styles.link}>
+              Create account
+            </Link>
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default LoginStudent;

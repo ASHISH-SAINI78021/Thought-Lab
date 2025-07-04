@@ -49,15 +49,29 @@ const New = ({children}) => {
                 <p className={`${styles.a} ${styles.b}`}>Games</p>
                 <div className={styles.second}>
                     <p className={styles.b}><FullscreenOutlined /></p>
-                    <p onClick={()=> navigate("/admin/create-blog")}>Create New Game</p>
+                    <p onClick={()=> navigate("/admin/create-game")}>Create New Game</p>
                 </div>
                 <div className={styles.second}>
                     <p className={styles.b}><FullscreenExitOutlined /></p>
-                    <p>All Games</p>
+                    <p onClick={()=> navigate("/admin/all-games")}>All Games</p>
                 </div>
                 <div className={styles.second}>
                     <p className={styles.b}><FullscreenExitOutlined /></p>
                     <p onClick={()=> navigate("/admin/game-score-updater")}>Game Score Updater</p>
+                </div>
+            </div>
+            <div className={styles.navigation}>
+                <p className={`${styles.a} ${styles.b}`}>Counselling</p>
+                <div className={styles.second}>
+                    <p className={styles.b}><FullscreenOutlined /></p>
+                    <p onClick={()=> navigate("/admin/appointments")}>Appointments</p>
+                </div>
+            </div>
+            <div className={styles.navigation}>
+                <p className={`${styles.a} ${styles.b}`}>Attendance</p>
+                <div className={styles.second}>
+                    <p className={styles.b}><FullscreenOutlined /></p>
+                    <p onClick={()=> navigate("/admin/download-attendance")}>Download Attendance</p>
                 </div>
             </div>
         </div>

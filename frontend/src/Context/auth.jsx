@@ -28,7 +28,7 @@ export const AuthProvider = ({children})=> {
         } catch (error) {
             console.error("Error parsing auth data from localStorage" , error);
         }
-    } , []);
+    } , [auth]);
 
     return (
         <AuthContext.Provider value={[auth , setAuth]}>

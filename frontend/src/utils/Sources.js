@@ -41,7 +41,7 @@ export const features = [
 ];
 export const testimonials = [
   {
-    statement : "I’ve struggled with anxiety for years, but Deep Breathes gave me tools I could actually use. The breathing exercises are simple yet so effective!",
+    statement : "I’ve struggled with anxiety for years, but Thought Lab gave me tools I could actually use. The breathing exercises are simple yet so effective!",
     name : "Riya",
     age : 24,
     image : riyaImage
@@ -59,13 +59,13 @@ export const testimonials = [
     image : nikkiImage
   },
   {
-    statement : "Deep Breathes made me realize the importance of small steps. The mental health tips have been a game-changer for me!",
+    statement : "Thought Lab made me realize the importance of small steps. The mental health tips have been a game-changer for me!",
     name : "Aarav",
     age : 29,
     image : aaravImage
   },
   {
-    statement : "Deep Breathes helped me manage my anxiety before exams. The breathing exercises are a lifesaver!",
+    statement : "Thought Lab helped me manage my anxiety before exams. The breathing exercises are a lifesaver!",
     name : "Maya",
     age : 20,
     image : mayaImage
@@ -77,13 +77,13 @@ export const testimonials = [
     image : arjunImage
   },
   {
-    statement : "I found an amazing counselor through Deep Breathes, and it’s been life-changing.",
+    statement : "I found an amazing counselor at Thought Lab, and it’s been life-changing.",
     name : "Priya",
     age : 28,
     image : priyaImage
   },
   {
-    statement : "I found an amazing counselor through Deep Breathes, and it’s been life-changing.",
+    statement : "I found an amazing counselor at Thought Lab, and it’s been life-changing.",
     name : "Samay",
     age : 27,
     image : samayImage

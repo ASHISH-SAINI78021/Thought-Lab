@@ -5,10 +5,6 @@ const UtterYourThoughts = () => {
   const [thought, setThought] = useState('');
   var message = "";
 
-  useEffect(()=>{
-
-  })
-
   const readThought = () => {
     setAnimateDiv(!animateDiv);
     if (message.trim() != '') {
