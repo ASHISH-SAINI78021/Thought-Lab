@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+    background-color: #faf2eb;
+    /* margin: 0 1rem; */
+    border-bottom: 0.1px solid rgb(221, 221, 221);
+}
+.auth {
+    display: flex;
+    gap: 20px;
+}
+.name {
+    margin: auto 0;
+    color : rgb(21, 118, 255);
+}
+.cursor {
+    cursor: pointer;
+}
+.notification {
+    margin: auto 0;
+}

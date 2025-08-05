@@ -1,0 +1,431 @@
+/* Base Styles */
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  color: #2d3748;
+  font-weight: 700;
+  background: linear-gradient(90deg, #4f46e5, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: #718096;
+  font-size: 1.1rem;
+  margin-top: 0;
+}
+
+/* Progress Steps */
+.progressSteps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.stepIndicator {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.stepNumber {
+  background: #edf2f7;
+  color: #718096;
+  font-weight: 600;
+  font-size: 1rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.stepCompleted {
+  background: #10b981;
+  color: white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 3px solid white;
+}
+
+.stepLabel {
+  color: #a0aec0;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.stepConnector {
+  flex: 1;
+  height: 3px;
+  background: #edf2f7;
+  margin: 0 -10px;
+}
+
+.step.active .stepNumber {
+  background: #4f46e5;
+  color: white;
+}
+
+.step.active .stepLabel {
+  color: #2d3748;
+  font-weight: 600;
+}
+
+/* Capture Section */
+.captureSection {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cameraContainer {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  aspect-ratio: 4/3;
+}
+
+.cameraFeed {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.countdown {
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  animation: pulse 1.5s infinite;
+}
+
+.instruction {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  text-align: center;
+  max-width: 80%;
+}
+
+.faceGuide {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 3px dashed rgba(255, 255, 255, 0.5);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Review Section */
+.reviewSection {
+  margin: 2rem auto;
+  max-width: 600px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.facePreviewContainer {
+  margin: 1.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.facePreview {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid white;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.detailsForm {
+  margin-top: 2rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.inputLabel {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: #4a5568;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.inputIcon {
+  margin-right: 8px;
+  color: #718096;
+}
+
+.textInput {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+}
+
+.textInput:focus {
+  outline: none;
+  border-color: #4f46e5;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+/* Confirmation Section */
+.confirmationSection {
+  margin: 2rem auto;
+  max-width: 600px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.summaryCard {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.faceThumbnail {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 1.5rem;
+  flex-shrink: 0;
+  border: 3px solid white;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+}
+
+.faceThumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detailsSummary {
+  flex: 1;
+}
+
+.detailRow {
+  margin-bottom: 0.8rem;
+  display: flex;
+}
+
+.detailLabel {
+  font-weight: 500;
+  color: #4a5568;
+  min-width: 100px;
+}
+
+.detailValue {
+  color: #2d3748;
+  font-weight: 600;
+}
+
+/* Buttons */
+.formActions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.primaryButton {
+  background: #4f46e5;
+  color: white;
+  border: none;
+}
+
+.primaryButton:hover {
+  background: #4338ca;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.secondaryButton {
+  background: white;
+  color: #4f46e5;
+  border: 2px solid #e2e8f0;
+}
+
+.secondaryButton:hover {
+  border-color: #4f46e5;
+  transform: translateY(-2px);
+}
+
+/* Spinner */
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .progressSteps {
+    margin-bottom: 2rem;
+  }
+
+  .stepLabel {
+    font-size: 0.8rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+
+  .summaryCard {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .faceThumbnail {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .detailRow {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+  }
+}

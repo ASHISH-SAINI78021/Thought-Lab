@@ -1,0 +1,342 @@
+/* LoginStudent.module.css */
+
+/* Base Styles */
+.container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #2d3748;
+    font-weight: 700;
+    background: linear-gradient(90deg, #4f46e5, #10b981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .subtitle {
+    color: #718096;
+    font-size: 1.1rem;
+    margin-top: 0;
+  }
+  
+  /* Progress Steps */
+  .steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #edf2f7;
+    z-index: 1;
+  }
+  
+  .step {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    flex: 1;
+  }
+  
+  .stepNumber {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 0.8rem;
+    border-radius: 50%;
+    background: #edf2f7;
+    color: #718096;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    border: 3px solid white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .stepTitle {
+    color: #a0aec0;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+  }
+  
+  .stepActive .stepNumber {
+    background: #4f46e5;
+    color: white;
+    transform: scale(1.1);
+  }
+  
+  .stepActive .stepTitle {
+    color: #2d3748;
+    font-weight: 600;
+  }
+  
+  /* Camera Section */
+  .cameraSection {
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cameraContainer {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    aspect-ratio: 4/3;
+  }
+  
+  .cameraFeed {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  
+  .countdown {
+    font-size: 4.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    animation: pulse 1.5s infinite;
+  }
+  
+  .instruction {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    text-align: center;
+    max-width: 80%;
+  }
+  
+  /* Login Form Section */
+  .loginForm {
+    margin: 2rem auto;
+    max-width: 500px;
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  .formTitle {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .facePreview {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 2rem;
+    display: block;
+    border: 5px solid white;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .formGroup {
+    margin-bottom: 1.5rem;
+  }
+  
+  .label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #4a5568;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  
+  .button {
+    padding: 0.8rem 1.8rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .buttonPrimary {
+    background: #4f46e5;
+    color: white;
+    border: none;
+  }
+  
+  .buttonPrimary:hover {
+    background: #4338ca;
+    transform: translateY(-2px);
+  }
+  
+  .buttonSecondary {
+    background: white;
+    color: #4f46e5;
+    border: 2px solid #e2e8f0;
+  }
+  
+  .buttonSecondary:hover {
+    border-color: #4f46e5;
+    transform: translateY(-2px);
+  }
+  
+  .linkText {
+    text-align: center;
+    color: #718096;
+    margin-top: 1.5rem;
+  }
+  
+  .link {
+    color: #4f46e5;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 1.5rem;
+      margin: 1rem;
+    }
+  
+    .title {
+      font-size: 2rem;
+    }
+  
+    .steps {
+      margin-bottom: 2rem;
+    }
+  
+    .stepNumber {
+      width: 36px;
+      height: 36px;
+      font-size: 1rem;
+    }
+  
+    .stepTitle {
+      font-size: 0.8rem;
+    }
+  
+    .countdown {
+      font-size: 3.5rem;
+    }
+  
+    .actions {
+      flex-direction: column;
+    }
+  
+    .button {
+      width: 100%;
+    }
+  }
+
+  .spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+    animation: spin 0.7s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  

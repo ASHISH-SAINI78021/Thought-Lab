@@ -1,0 +1,72 @@
+
+.heroImage {
+  position: relative;
+}
+.heroImage::before {
+  content: '';
+  background-color: #FFC3A0;
+  position: absolute;
+  bottom: 0;
+  left: -30px;
+  z-index: -1;
+  border-radius: 400px 400px 0 0;
+  height: 110%;
+  width: 120%;
+  transition: 0.8s;
+  animation: rise-up-delayed 1s ease forwards;
+}
+
+.rise-up {
+  animation: rise-up 1s ease forwards;
+}
+@keyframes rise-up {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise-up-delayed{
+  animation: rise-up-delayed 1s ease forwards;
+}
+
+@keyframes rise-up-delayed {
+  0% {
+    opacity: 0;
+    transform: translateY(120px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.imageBackdrop {
+  position : relative;
+}
+.imageBackdrop::before {
+  content: '';
+  position : absolute;
+  top: 20px;
+  left: 20px;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background-color: #FFC3A0;
+  animation: rise-up-delayed 1s ease forwards;
+}
+.featurres{
+  background-image: url(../assets/featuresBackground.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.aboutUsImage{
+  background-image: url(../assets/hero-background.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

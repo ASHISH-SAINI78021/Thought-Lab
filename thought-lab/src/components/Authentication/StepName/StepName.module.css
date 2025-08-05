@@ -1,0 +1,85 @@
+/* StepName.module.css */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Adjust as needed */
+    background-color: #f0f2f5; /* Light background */
+    padding: 20px; /* Breathing room on smaller screens */
+    box-sizing: border-box; /* Ensure padding is included in element's total width and height */
+  }
+  
+  .paragraph {
+    font-size: 0.95rem; /* Slightly smaller */
+    color: #666;
+    text-align: center; /* Adjust based on overall card alignment */
+    margin-top: 20px; /* Space above paragraph */
+    margin-bottom: 30px; /* Space below paragraph */
+    line-height: 1.5;
+  }
+  
+  /* Assume Card.module.css or global Card styles */
+  /* .Card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 450px;
+    width: 100%;
+    text-align: center; 
+  }
+  
+  .Card h2 {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px; 
+  }
+  */
+  
+  /* Assume TextInput.module.css or global TextInput styles */
+  /* .TextInput {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 20px; 
+    box-sizing: border-box;
+  }
+  
+  .TextInput:focus {
+    outline: none;
+    border-color: #007bff; // Your primary brand color
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+  }
+  */
+  
+  /* Assume Button.module.css or global Button styles */
+  /* .Button {
+    background-color: #007bff; // Your primary brand color
+    color: #fff;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    width: 100%; // Make button full width of card
+  }
+  
+  .Button:hover {
+    background-color: #0056b3; // Slightly darker
+    transform: translateY(-2px);
+  }
+  
+  .Button:active {
+    background-color: #004085;
+    transform: translateY(0);
+  }
+  */

@@ -1,0 +1,330 @@
+/* ================ */
+/* Base Styles */
+/* ================ */
+:root {
+  --primary-color: #1890ff;
+  --danger-color: #ff4d4f;
+  --warning-color: #faad14;
+  --success-color: #52c41a;
+  --text-dark: #333;
+  --text-medium: #666;
+  --text-light: #999;
+  --border-color: #e8e8e8;
+  --background-light: #f5f5f5;
+  --background-hover: #f0f0f0;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition: all 0.2s ease;
+}
+
+/* ================ */
+/* Layout */
+/* ================ */
+.container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* ================ */
+/* Typography */
+/* ================ */
+.title {
+  font-size: 1.8rem;
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* ================ */
+/* Action Controls */
+/* ================ */
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.actionItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 500;
+}
+
+.actionItem:hover {
+  background-color: color-mix(in srgb, var(--primary-color), black 15%);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ================ */
+/* Games Grid */
+/* ================ */
+.gamesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* ================ */
+/* Game Cards */
+/* ================ */
+.gameCard {
+  background: white;
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.gameCard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-color);
+}
+
+.gameHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.gameHeader h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-dark);
+  font-weight: 600;
+  flex: 1;
+}
+
+.gameActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.editButton, 
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  font-size: 1.1rem;
+}
+
+.editButton {
+  color: var(--primary-color);
+}
+
+.editButton:hover {
+  background-color: color-mix(in srgb, var(--primary-color), white 90%);
+}
+
+.deleteButton {
+  color: var(--danger-color);
+}
+
+.deleteButton:hover {
+  background-color: color-mix(in srgb, var(--danger-color), white 90%);
+}
+
+.gameDescription {
+  color: var(--text-medium);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.gameDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detailItem span:first-child {
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.prize {
+  color: var(--warning-color);
+  font-weight: 600;
+}
+
+.formLink {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.formLink:hover {
+  text-decoration: underline;
+}
+
+/* ================ */
+/* Form Modal */
+/* ================ */
+.formOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.formContainer {
+  background: white;
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 540px;
+  box-shadow: var(--shadow-lg);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.formContainer h2 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  color: var(--text-dark);
+  font-size: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1.75rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.formGroup input,
+.formGroup textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color), white 70%);
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.formActions button {
+  padding: 0.875rem 1.75rem;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.formActions button:first-child {
+  background: var(--background-light);
+  color: var(--text-medium);
+}
+
+.formActions button:first-child:hover {
+  background: var(--background-hover);
+  color: var(--text-dark);
+}
+
+.formActions button:last-child {
+  background: var(--primary-color);
+  color: white;
+}
+
+.formActions button:last-child:hover {
+  background: color-mix(in srgb, var(--primary-color), black 15%);
+}
+
+/* ================ */
+/* Responsive */
+/* ================ */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .gamesGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .formContainer {
+    padding: 1.5rem;
+    margin: 0 1rem;
+  }
+}

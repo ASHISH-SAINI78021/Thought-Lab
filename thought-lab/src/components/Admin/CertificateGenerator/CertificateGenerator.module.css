@@ -1,0 +1,391 @@
+/* Base Styles */
+:root {
+  --gold-primary: #FFD700;
+  --gold-secondary: #D4AF37;
+  --gold-tertiary: #F5D07C;
+  --silver-primary: #C0C0C0;
+  --silver-secondary: #A8A8A8;
+  --silver-tertiary: #E0E0E0;
+  --dark-text: #333333;
+  --light-text: #f8f8f8;
+  --accent-color: #2c3e50;
+  --success-color: #27ae60;
+}
+
+.premiumContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.controlPanel {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.panelTitle {
+  color: var(--accent-color);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.actionButton {
+  padding: 0.875rem 1.75rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+  border: none;
+}
+
+.downloadButton {
+  background: linear-gradient(135deg, var(--accent-color), #34495e);
+  color: white;
+}
+
+.downloadButton:hover {
+  background: linear-gradient(135deg, #34495e, var(--accent-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.printButton {
+  background: linear-gradient(135deg, #f8f8f8, #e0e0e0);
+  color: var(--dark-text);
+  border: 1px solid #ddd;
+}
+
+.printButton:hover {
+  background: linear-gradient(135deg, #e0e0e0, #f8f8f8);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.buttonIcon {
+  font-size: 1.2rem;
+}
+
+.certificateCanvas {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+.premiumCertificate {
+  width: 210mm;
+  height: 297mm;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.goldTheme {
+  background: linear-gradient(135deg, #fff9e6 0%, #ffecb3 100%);
+  border: 20px solid var(--gold-secondary);
+}
+
+.silverTheme {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+  border: 20px solid var(--silver-secondary);
+}
+
+.cornerDecoration {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.cornerDecoration:nth-child(1) {
+  top: 20px;
+  left: 20px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23D4AF37" d="M50 0 L100 50 L50 100 L0 50 Z"/></svg>');
+}
+
+.cornerDecoration:nth-child(2) {
+  top: 20px;
+  right: 20px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23D4AF37" d="M50 0 L100 50 L50 100 L0 50 Z"/></svg>');
+  transform: rotate(90deg);
+}
+
+.cornerDecoration:nth-child(3) {
+  bottom: 20px;
+  left: 20px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23D4AF37" d="M50 0 L100 50 L50 100 L0 50 Z"/></svg>');
+  transform: rotate(270deg);
+}
+
+.cornerDecoration:nth-child(4) {
+  bottom: 20px;
+  right: 20px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23D4AF37" d="M50 0 L100 50 L50 100 L0 50 Z"/></svg>');
+  transform: rotate(180deg);
+}
+
+.goldTheme .cornerDecoration {
+  filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
+}
+
+.silverTheme .cornerDecoration {
+  filter: drop-shadow(0 0 5px rgba(192, 192, 192, 0.5));
+}
+
+.trophyBadge {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 80px;
+  height: 80px;
+  background: var(--gold-primary);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+  z-index: 1;
+}
+
+.trophyIcon {
+  font-size: 40px;
+  color: var(--dark-text);
+}
+
+.certificateContent {
+  width: 90%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.certificateHeader {
+  margin-bottom: 2rem;
+}
+
+.presentedTo {
+  font-size: 1.2rem;
+  color: var(--dark-text);
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.certificateTitle {
+  font-size: 2.5rem;
+  color: var(--dark-text);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 700;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.recipientSection {
+  margin: 2rem 0;
+  position: relative;
+  padding: 2rem 0;
+  width: 80%;
+  border-top: 2px solid var(--gold-secondary);
+  border-bottom: 2px solid var(--gold-secondary);
+}
+
+.silverTheme .recipientSection {
+  border-top: 2px solid var(--silver-secondary);
+  border-bottom: 2px solid var(--silver-secondary);
+}
+
+.recipientName {
+  font-size: 2.8rem;
+  margin: 0;
+  color: var(--dark-text);
+  font-weight: 600;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+
+.crownIcon {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  color: var(--gold-primary);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.achievementText {
+  width: 80%;
+  margin: 2rem 0;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: var(--dark-text);
+}
+
+.prizeSection {
+  margin: 2rem 0;
+}
+
+.prizeBadge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}
+
+.silverTheme .prizeBadge {
+  background: linear-gradient(135deg, var(--silver-primary), var(--silver-secondary));
+  box-shadow: 0 5px 15px rgba(192, 192, 192, 0.3);
+}
+
+.prizeAmount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--dark-text);
+}
+
+.prizeLabel {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--dark-text);
+  margin-top: 0.5rem;
+}
+
+.signatureSection {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin-top: 3rem;
+}
+
+.signatureBlock {
+  width: 45%;
+  text-align: center;
+}
+
+.signatureLine {
+  border-bottom: 1px solid var(--dark-text);
+  width: 80%;
+  margin: 0 auto 0.5rem;
+  height: 1px;
+}
+
+.signatureTitle {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--dark-text);
+}
+
+.organization, .date {
+  color: var(--dark-text);
+  font-style: italic;
+}
+
+.certificateFooter {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.certificateId {
+  font-size: 0.9rem;
+  color: var(--dark-text);
+  margin-bottom: 1rem;
+}
+
+.certificateId span {
+  font-weight: 600;
+}
+
+.watermark {
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .premiumContainer {
+    padding: 0;
+    background: none;
+  }
+  
+  .controlPanel {
+    display: none;
+  }
+  
+  .certificateCanvas {
+    padding: 0;
+    background: none;
+    box-shadow: none;
+  }
+  
+  .premiumCertificate {
+    border: none;
+    height: 100vh;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .premiumContainer {
+    padding: 1rem;
+  }
+  
+  .buttonGroup {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .actionButton {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .certificateCanvas {
+    padding: 0.5rem;
+  }
+  
+  .premiumCertificate {
+    transform: scale(0.9);
+    transform-origin: top center;
+  }
+}

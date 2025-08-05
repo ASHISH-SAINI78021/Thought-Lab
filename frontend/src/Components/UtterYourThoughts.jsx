@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 
 const UtterYourThoughts = () => {
   const [animateDiv, setAnimateDiv] = useState(false);

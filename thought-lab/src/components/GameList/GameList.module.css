@@ -1,0 +1,156 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  
+  .header h2 {
+    font-size: 2rem;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+  }
+  
+  .subtitle {
+    color: #718096;
+    font-size: 1rem;
+  }
+  
+  .loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    gap: 1rem;
+  }
+  
+  .loadingSpinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #4299e1;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .emptyState {
+    text-align: center;
+    padding: 3rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    color: #64748b;
+  }
+  
+  .gameGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .gameCard {
+    background: white;
+    border-radius: 10px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .gameCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .cardHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+  
+  .gameIcon {
+    font-size: 1.5rem;
+    color: #4299e1;
+    margin-right: 0.75rem;
+  }
+  
+  .gameTitle {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #2d3748;
+  }
+  
+  .gameDescription {
+    color: #4a5568;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    flex-grow: 1;
+  }
+  
+  .gameDetails {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  
+  .detailItem {
+    display: flex;
+    align-items: center;
+  }
+  
+  .detailIcon {
+    margin-right: 0.5rem;
+    color: #718096;
+    font-size: 1rem;
+  }
+  
+  .prize {
+    color: #d69e2e;
+    font-weight: 600;
+  }
+  
+  .formLink {
+    color: #4299e1;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .formLink:hover {
+    color: #3182ce;
+    text-decoration: underline;
+  }
+  
+  .joinButton {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #FFC3A0;
+    color: black;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  
+  @media (max-width: 768px) {
+    .container {
+      padding: 1.5rem;
+    }
+    
+    .gameGrid {
+      grid-template-columns: 1fr;
+    }
+  }

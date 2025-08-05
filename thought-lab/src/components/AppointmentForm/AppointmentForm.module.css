@@ -1,0 +1,257 @@
+/* AppointmentForm.module.css */
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #faf2eb;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  position: relative;
+  overflow: hidden;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+  z-index: 0;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  color: #000000;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.header p {
+  color: #000000;
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+.mandala {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1.5rem;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23FFC3A0" d="M50 15a5 5 0 0 1 5 5v10a5 5 0 0 1-10 0V20a5 5 0 0 1 5-5zm0 60a5 5 0 0 1 5 5v10a5 5 0 0 1-10 0V80a5 5 0 0 1 5-5zM20 50a5 5 0 0 1 5-5h10a5 5 0 0 1 0 10H25a5 5 0 0 1-5-5zm60 0a5 5 0 0 1 5-5h10a5 5 0 0 1 0 10H85a5 5 0 0 1-5-5z"/><circle cx="50" cy="50" r="15" fill="none" stroke="%23FFC3A0" stroke-width="2"/><circle cx="50" cy="50" r="25" fill="none" stroke="%23FFC3A0" stroke-width="2"/></svg>') no-repeat center;
+  opacity: 0.8;
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+}
+
+.inputGroup {
+  margin-bottom: 1.8rem;
+  position: relative;
+}
+
+.inputGroup label {
+  display: block;
+  margin-bottom: 0.6rem;
+  color: #000000;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.inputGroup input,
+.inputGroup textarea,
+.inputGroup select {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #d1c4e9;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  color: #333;
+}
+
+.inputGroup textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.inputGroup select {
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%234a2c82" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 12px;
+}
+
+.inputGroup input:focus,
+.inputGroup textarea:focus,
+.inputGroup select:focus {
+  outline: none;
+  border-color: #FFC3A0;
+  box-shadow: 0 0 0 3px #fecfb4;
+  background-color: white;
+}
+
+.focusBorder {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #FFC3A0;
+  transition: width 0.3s ease;
+}
+
+.inputGroup input:focus ~ .focusBorder,
+.inputGroup textarea:focus ~ .focusBorder,
+.inputGroup select:focus ~ .focusBorder {
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.row .inputGroup {
+  flex: 1;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 1.2rem;
+  background: #FFC3A0;
+  color: black;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  box-shadow: 0 4px 15px rgba(126, 87, 194, 0.3);
+}
+
+.submitButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px #fecfb4;
+}
+
+.submitButton:disabled {
+  background: #b39ddb;
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.errorMessage {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: #ffebee;
+  color: #c62828;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  border-left: 4px solid #c62828;
+}
+
+.successContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.successContent {
+  text-align: center;
+  max-width: 500px;
+  padding: 2.5rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.successContent h2 {
+  color: #4a2c82;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+.successContent p {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.lotusIcon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  color: #FFC3A0;
+}
+
+.peaceSymbol {
+  font-size: 2rem;
+  margin-top: 1.5rem;
+  color: #FFC3A0;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 3rem;
+  color: black;
+  font-size: 0.9rem;
+}
+
+.symbols {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  letter-spacing: 0.8rem;
+  padding-left: 0.8rem;
+  color: black;
+  opacity: 0.7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+    border-radius: 0;
+  }
+  
+  .row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+  }
+}
