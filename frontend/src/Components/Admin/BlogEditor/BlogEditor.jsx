@@ -141,6 +141,7 @@ const BlogEditor = ({ check }) => {
         response = await response.json();
         if (response.success) {
           message.success({ content: "Blog published successfully!", key: "updatable", duration: 2 });
+          localStorage.removeItem("blog");
           // setTimeout(() => navigate("/your-blog-list-or-home"), 2000); // optional redirect
         } else {
           message.error({ content: "Failed to publish blog.", key: "updatable", duration: 2 });

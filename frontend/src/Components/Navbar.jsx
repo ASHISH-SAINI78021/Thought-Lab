@@ -15,6 +15,7 @@ function Navbar() {
     { name: "Attendance", link: "/mark-attendance" },
   ];
 
+
   return (
     <nav className="sticky top-0 pt-[10px] z-50 backdrop-blur-[80px] h-[]">
       <div className="z-50 top-0 flex items-center justify-between px-[100px] py-2 relative">
@@ -65,8 +66,8 @@ function Navbar() {
           Contact Us
         </Link> */}
 
-        <Tooltip title="Ant User" placement="top">
-          <Avatar src={`${auth?.profilePicture}`} />
+        <Tooltip title={`${auth?.user?.name}`} placement="top">
+          <Avatar src={`${auth?.user?.profilePicture}`} />
         </Tooltip>
       </div>
     </nav>

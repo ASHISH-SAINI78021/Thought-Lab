@@ -30,6 +30,7 @@ import Unauthorized from "./components/Unauthorized/Unauthorized";
 import CreateGame from "./components/Admin/Game/GameForm/GameForm";
 import GameManagement from "./components/Admin/Game/GameManagement/GameManagement";
 import GameList from "./components/GameList/GameList";
+import CertificateGenerator from "./components/Admin/CertificateGenerator/CertificateGenerator";
 
 const App = () => {
   useEffect(() => {
@@ -91,6 +92,7 @@ const App = () => {
           <Route path="download-attendance" element={<DownloadAttendance />} />
           <Route path="create-game" element={<CreateGame />} />
           <Route path="all-games" element={<GameManagement />} />
+          <Route path="certificate/:gameId" element={<CertificateGenerator />} />
         </Route>
 
         {/* Blog Routes (Admin Protected) */}

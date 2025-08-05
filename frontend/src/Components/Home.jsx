@@ -56,7 +56,7 @@ const Home = () => {
         </div>
       </div>
       <About />
-      <Features />
+      {/* <Features /> */}
       <Testimonials />
       <div className="footer h-40px w-full bg-accent">
         dfsf

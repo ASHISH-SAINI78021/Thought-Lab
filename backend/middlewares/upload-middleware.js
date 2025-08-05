@@ -1,23 +1,47 @@
-const multer = require("multer");
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const streamifier = require('streamifier');
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-      cb(null, "storage/"); // Ensure this folder exists
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API,
+  api_secret: process.env.CLOUD_SECRET
+});
+
+// Single storage configuration for all uploads
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: (req, file) => {
+    // Dynamic folder based on route
+    const folder = req.originalUrl.includes('register') 
+      ? 'storage/registrations' 
+      : 'storage/logins';
+      
+    return {
+      folder: folder,
+      allowed_formats: ['jpg', 'jpeg', 'png'],
+      transformation: [{ width: 800, height: 800, crop: 'limit' }],
+      resource_type: 'auto'
+    };
   },
-  filename: (req, file, cb) => {
-      cb(null, Date.now() + "-" + file.originalname);
-  }
+  streamifier: streamifier
 });
 
+// Single multer instance for all routes
 const upload = multer({
-  storage,
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB limit
+  },
   fileFilter: (req, file, cb) => {
-      if (!file.mimetype.startsWith("image/")) {
-          return cb(new Error("Only image files are allowed!"), false);
-      }
+    if (file.mimetype.startsWith('image/')) {
       cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'), false);
+    }
   }
 });
-
 
 module.exports = upload;

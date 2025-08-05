@@ -115,6 +115,22 @@ const GameManagement = () => {
     }
   };
 
+
+  // redirecting to certificate
+  const handleGame = (game)=> {
+    navigate(`/admin/certificate/${game._id}`, {
+      state: {
+        game: game.name,
+        participant: {
+          name: "John Doe",
+          position: "1st Place",
+          score: "100/100"
+        },
+        result: 'winner' // or 'participant'
+      }
+    });
+  }
+
   if (isLoading) {
     return <div className={styles.loading}>Loading games...</div>;
   }
@@ -166,7 +182,7 @@ const GameManagement = () => {
           </div>
         ) : (
           games?.map(game => (
-            <div key={game._id} className={styles.gameCard}>
+            <div key={game._id} className={styles.gameCard} onClick={()=> handleGame(game)}>
               <div className={styles.gameHeader}>
                 <h3>{game.name}</h3>
                 <div className={styles.gameActions}>

@@ -17,7 +17,7 @@ const userSchema = new Schema({
     profilePicture: {
         type: String,
         required: false,
-        get: (avatar) => avatar ? `${process.env.BASE_URL}/${avatar}` : avatar
+        // get: (avatar) => avatar ? `${process.env.BASE_URL}/${avatar}` : avatar
     },
     attendance : [
         {

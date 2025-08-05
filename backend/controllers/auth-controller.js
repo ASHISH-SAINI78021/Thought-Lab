@@ -1,25 +1,15 @@
-const bcrypt = require("bcryptjs"); // for password hashing
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const cloudinary = require('cloudinary').v2;
 const userService = require("../services/user-service.js");
 const UserDto = require("../dtos/user-dtos.js");
 
 class AuthController {
   async registerStudent(req, res) {
     try {
-      const { name, rollNumber, year, branch, programme, email, password } =
-        req.body;
-      const profilePicture = req.file?.filename || "";
-
-      if (
-        !name ||
-        !rollNumber ||
-        !year ||
-        !branch ||
-        !programme ||
-        !email ||
-        !profilePicture ||
-        !password
-      ) {
+      const { name, rollNumber, year, branch, programme, email, password } = req.body;
+      
+      if (!name || !rollNumber || !year || !branch || !programme || !email || !password) {
         return res.status(400).json({
           success: false,
           message: "All fields are required",
@@ -35,6 +25,13 @@ class AuthController {
         });
       }
 
+      // Upload profile picture to Cloudinary if exists
+      let profilePictureUrl = '';
+      if (req.file) {
+        const result = await cloudinary.uploader.upload(req.file.path);
+        profilePictureUrl = result.secure_url;
+      }
+
       // Hash the password
       const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -46,10 +43,9 @@ class AuthController {
         branch,
         programme,
         email,
-        profilePicture,
+        profilePicture: profilePictureUrl,
         password: hashedPassword,
       });
-
 
       res.status(201).json({
         success: true,

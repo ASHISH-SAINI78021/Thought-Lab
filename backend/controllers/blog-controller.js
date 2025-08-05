@@ -1,21 +1,44 @@
 const blogService = require("../services/blog-service.js");
+const streamifier = require('streamifier');
+const cloudinary = require('cloudinary').v2;
 
 class BlogController {
-    async addBlog(req , res){
+    async addBlog(req, res) {
         try {
-            const data = req.body;
-            const thumbnail = req.file?.filename;
-            const blog = await blogService.addBlog(data , thumbnail);
-            return res.json({
-                success : true,
-                blog
+            // console.log("Request received with file:", req.file); // Debug log
+
+            // 2. Verify Cloudinary upload was successful
+            if (!req.file || !req.file.path) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Image upload failed - no Cloudinary URL returned"
+                });
+            }
+    
+            // 3. Create blog with existing Cloudinary URL
+            const blogData = {
+                title: req.body.title,
+                content: req.body.content,
+                author: req.body.author,
+                thumbnail: req.file.path // Using the already uploaded URL
+            };
+    
+            const blog = await blogService.addBlog(blogData);
+    
+            return res.status(201).json({
+                success: true,
+                message: 'Blog created successfully',
+                blog,
+                thumbnailUrl: req.file.path
             });
+    
         } catch (error) {
-            console.log(error);
-            return res.json({
-                success : false,
-                error
-            })
+            console.error('Blog creation error:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to create blog',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
         }
     }
 

@@ -74,6 +74,13 @@ const New = ({children}) => {
                     <p onClick={()=> navigate("/admin/download-attendance")}>Download Attendance</p>
                 </div>
             </div>
+            <div className={styles.navigation}>
+                <p className={`${styles.a} ${styles.b}`}>Certificates</p>
+                <div className={styles.second}>
+                    <p className={styles.b}><FullscreenOutlined /></p>
+                    <p onClick={()=> navigate("/admin/create-certificates/:id")}>Create Certificates</p>
+                </div>
+            </div>
         </div>
         <div className={styles.mainPage}>
             <div className={styles.header}>
