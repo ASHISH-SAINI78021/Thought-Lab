@@ -61,17 +61,17 @@ const App = () => {
         <Route
           path="/attendance"
           element={
-            // <PrivateRoute>
+             <PrivateRoute>
               <RegisterStudent />
-            // </PrivateRoute>
+             </PrivateRoute>
           }
         />
         <Route
           path="/mark-attendance"
           element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <LoginStudent />
-            // </PrivateRoute>
+             </PrivateRoute>
           }
         />
 
@@ -79,9 +79,9 @@ const App = () => {
         <Route
           path="/admin/*"
           element={
-           // <AdminRoute>
+           <AdminRoute>
               <AdminLayout />
-           // </AdminRoute>
+            </AdminRoute>
           }
         >
           <Route index element={<AdminPanel />} />
@@ -99,17 +99,17 @@ const App = () => {
         <Route
           path="/blogs"
           element={
-            // <AdminRoute>
+            <PrivateRoute>
               <Blog />
-          //  </AdminRoute>
+            </PrivateRoute>
           }
         />
         <Route
           path="/blog/:id"
           element={
-            // <AdminRoute>
+             <AdminRoute>
               <BlogItem />
-            // </AdminRoute>
+             </AdminRoute>
           }
         />
       </Routes>
