@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import styles from './Register.module.css';
+import url from '../../../url'
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -78,7 +79,7 @@ const Register = () => {
       });
       if (profilePicture) formDataToSend.append('profilePicture', profilePicture);
 
-      const response = await fetch('http://localhost:5500/register', {
+      const response = await fetch(`${url}/register`, {
         method: 'POST',
         body: formDataToSend,
       });
