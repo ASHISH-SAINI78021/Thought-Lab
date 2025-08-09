@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
 
-const LeaderboardSchema = new mongoose.Schema({
-  name: String,
-  rollNumber: String,
-  branch: String,
-  year: String,
-  score: Number,
-}, { timestamps: true });
+const LeaderboardSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // Reference to User collection
+      required: true,
+    },
+    score: { type: Number, default: 100},
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("Leaderboard", LeaderboardSchema);

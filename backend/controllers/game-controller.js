@@ -1,3 +1,4 @@
+const gameService = require("../services/game-service.js");
 const GameService = require("../services/game-service.js");
 
 class GameController {
@@ -130,6 +131,23 @@ class GameController {
         message: 'Failed to delete game',
         error: error.message
       });
+    }
+  }
+
+  async totalEvents(req, res){
+    try {
+      const events = await gameService.totalEvents();
+
+      return res.json({
+        success : true,
+        events
+      })
+    } catch (error) {
+      console.log(error);
+      return res.json({
+        success : false,
+        error : error.message
+      })
     }
   }
 }

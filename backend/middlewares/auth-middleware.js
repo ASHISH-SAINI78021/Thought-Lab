@@ -2,21 +2,31 @@ import jwt from "jsonwebtoken";
 
 export const isLogin = (req, res, next) => {
   try {
-    // If token comes from cookies:
+    // In Express, header keys are automatically converted to lowercase.
+    // So 'Authorization' from the frontend becomes 'authorization' on the backend.
     const token = req.cookies?.token
-      // Or if token is sent directly in the "authorization" header without Bearer
-      || req.headers["authorization"]
-      // Or from a custom header
+      || req.headers["authorization"] // Use lowercase 'a'
       || req.headers["x-auth-token"];
 
     if (!token) {
-      return res.status(401).json({ message: "No token provided" });
+      return res.status(401).json({ message: "Unauthorized: No token provided." });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // attach user payload to req
-    next();
+    
+    // Attach the decoded payload (which should contain user id, role, etc.) to the request object
+    req.user = decoded; 
+    
+    next(); // Token is valid, proceed to the next middleware or route handler
+
   } catch (err) {
-    return res.status(401).json({ message: "Invalid or expired token" });
+    // Provide a more specific error message for different token failures
+    if (err.name === 'JsonWebTokenError') {
+        return res.status(401).json({ message: "Unauthorized: The token is invalid." });
+    }
+    if (err.name === 'TokenExpiredError') {
+        return res.status(401).json({ message: "Unauthorized: The token has expired." });
+    }
+    return res.status(401).json({ message: "Unauthorized: Invalid token." });
   }
 };

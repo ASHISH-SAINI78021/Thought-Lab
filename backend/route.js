@@ -9,6 +9,7 @@ const CounsellorController = require('./controllers/counsellor-controller.js');
 const GameController = require('./controllers/game-controller.js');
 const { isLogin } = require('./middlewares/auth-middleware.js');
 const { isAdmin } = require('./middlewares/admin-middleware.js');
+const { isSuperAdmin } = require('./middlewares/superAdmin-middleware.js');
 
 router.post('/register', upload.single('profilePicture'), AuthController.registerStudent);
 router.post('/login', AuthController.loginStudent);
@@ -42,5 +43,12 @@ router.get('/all-games', GameController.getAllGames);// admin route
 router.post('/create-game', isLogin, isAdmin, GameController.createGame);// admin route
 router.put('/update-game/:id', isLogin, isAdmin, GameController.updateGame); // admin route
 router.delete('/delete-game/:id', isLogin, isAdmin, GameController.deleteGame); // admin route
+
+// register admin
+router.put('/promote-to-admin', isLogin, isSuperAdmin, AuthController.promotion);
+
+// admin dashboard
+router.get('/all-users-count', isLogin, isAdmin, AuthController.countAllUsers);
+router.get('/all-events-count', isLogin, isAdmin, GameController.totalEvents);
 
 module.exports = router;

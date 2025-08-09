@@ -5,6 +5,7 @@ const http = require("http");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { Server } = require("socket.io");
+const User = require("./Models/user-model.js");
 
 const Leaderboard = require("./Models/leaderboard-modal.js");
 const router = require("./route.js");
@@ -29,10 +30,10 @@ app.use(
   })
 );
 
-// ✅ Only parse JSON if it's not multipart
+// ✅ Only parse JSON if not multipart
 app.use((req, res, next) => {
   if (req.is("multipart/form-data")) {
-    return next(); // skip JSON parsing for file uploads
+    return next();
   }
   express.json({ limit: "8mb" })(req, res, next);
 });
@@ -65,40 +66,65 @@ const io = new Server(server, {
   },
 });
 
+let activeUserCount = 0;
 io.on("connection", async (socket) => {
   console.log(`🟢 Client connected: ${socket.id}`);
-
-  // Send initial leaderboard
+  activeUserCount++;
+  io.emit("active-users-update", activeUserCount);
+  // Send initial leaderboard with user details
   socket.on("get-initial-leaderboard", async () => {
-    const data = await Leaderboard.find().sort({ score: -1 });
+    let data = await Leaderboard.find()
+      .populate("user", "name rollNumber branch year")
+      .sort({ score: -1 });
+  
+    // If empty, auto-create from users
+    if (data.length === 0) {
+      const users = await User.find();
+      const entries = users.map(u => ({ user: u._id, score: 100 }));
+      await Leaderboard.insertMany(entries);
+  
+      data = await Leaderboard.find()
+        .populate("user", "name rollNumber branch year")
+        .sort({ score: -1 });
+    }
+  
     socket.emit("leaderboard-data", data);
   });
 
   // Update score in DB
   socket.on("update-score", async (updatedEntry) => {
-    console.log("Received update from server:", updatedEntry);
-    const existing = await Leaderboard.findOne({ _id: updatedEntry.id });
+    console.log("Received score update:", updatedEntry);
+    const { userId, score } = updatedEntry;
 
     let updatedDoc;
 
+    // Check if user already exists in leaderboard
+    const existing = await Leaderboard.findOne({ user: userId });
+
     if (existing) {
-      // Update existing
       updatedDoc = await Leaderboard.findByIdAndUpdate(
-        updatedEntry.id,
-        { $set: { score: updatedEntry.score } },
+        existing._id,
+        { $set: { score } },
         { new: true }
       );
     } else {
-      // Insert new
-      updatedDoc = await Leaderboard.create(updatedEntry);
+      updatedDoc = await Leaderboard.create({
+        user: userId,
+        score,
+      });
     }
 
-    // Send updated list
-    const fullLeaderboard = await Leaderboard.find().sort({ score: -1 });
+    // Send updated list to everyone with populated user data
+    const fullLeaderboard = await Leaderboard.find()
+      .populate("user", "name rollNumber branch")
+      .sort({ score: -1 });
+
     io.emit("leaderboard-update", fullLeaderboard);
   });
 
   socket.on("disconnect", () => {
+    activeUserCount--;
+    io.emit("active-users-update", activeUserCount);
     console.log(`🔴 Client disconnected: ${socket.id}`);
   });
 });

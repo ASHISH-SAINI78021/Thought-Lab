@@ -26,7 +26,7 @@ const userSchema = new Schema({
             status : String
         }
     ],
-    role: { type: String, enum: ['user', 'admin'], default: 'user' }
+    role: { type: String, enum: ['user', 'admin', 'superAdmin'], default: 'user' }
 }, {
     timestamps: true,
     toJSON: { getters: true }

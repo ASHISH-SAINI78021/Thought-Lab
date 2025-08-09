@@ -29,6 +29,12 @@ class GameService {
 
         return deletedGame;
     }
+
+    async totalEvents(){
+        const events = await Game.estimatedDocumentCount();
+        // console.log("Events : ", events);
+        return events;
+    }
 }
 
 module.exports = new GameService();

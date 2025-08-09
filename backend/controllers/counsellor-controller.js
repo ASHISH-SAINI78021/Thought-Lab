@@ -98,8 +98,7 @@ class CounsellorController {
         } catch (error) {
             
         }
-    }
-        
+    }        
 }
 
 

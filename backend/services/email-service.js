@@ -129,72 +129,156 @@ class EmailService {
     }
   }
 
-    async sendRejectionEmail(appointment) {
-      const mailOptions = {
-        from: 'Thought Lab <thoughtlab@example.com>',
-        to: appointment.email,
-        subject: 'Your Appointment Request Status',
-        html: `
-          <div style="
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            border-top: 4px solid #ff4757;
-          ">
-            <div style="text-align: center; margin-bottom: 20px;">
-              <svg width="60" height="60" viewBox="0 0 24 24" fill="#ff4757" style="margin-bottom: 15px;">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-              </svg>
-              <h2 style="color: #333; margin: 0;">Appointment Not Available</h2>
-            </div>
-            
-            <div style="background: white; padding: 20px; border-radius: 6px; margin-bottom: 20px;">
-              <p style="margin: 0 0 15px;">Dear ${appointment.name},</p>
-              
-              <p style="margin: 0 0 15px;">
-                We regret to inform you that we're unable to accommodate your requested session at this time.
-              </p>
-              
-              <div style="background: #fff8f8; border-left: 3px solid #ff4757; padding: 10px 15px; margin: 15px 0;">
-                <p style="margin: 5px 0; color: #555;">
-                  <strong>Request Details:</strong><br>
-                  ${new Date(appointment.preferredDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}<br>
-                  At ${appointment.preferredTime}<br>
-                  Session: ${appointment.sessionType}
-                </p>
-              </div>
-              
-              <p style="margin: 15px 0;">
-                We sincerely appreciate your interest in Thought Lab and regret any inconvenience this may cause.
-              </p>
-              
-              <p style="margin: 15px 0 0;">
-                You're welcome to submit a new request for a different date/time, or explore our <a href="/resources" style="color: #3a7bd5;">self-guided resources</a>.
-              </p>
-            </div>
-            
-            <div style="text-align: center; color: #777; font-size: 14px;">
-              <p style="margin: 5px 0;">With care,</p>
-              <p style="margin: 5px 0; font-weight: 600;">The Thought Lab Team</p>
-              <p style="margin: 15px 0 0;">
-              </p>
-            </div>
+  async sendRejectionEmail(appointment) {
+    const mailOptions = {
+      from: 'Thought Lab <thoughtlab@example.com>',
+      to: appointment.email,
+      subject: 'Your Appointment Request Status',
+      html: `
+        <div style="
+          font-family: 'Helvetica Neue', Arial, sans-serif;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background: #f9f9f9;
+          border-radius: 8px;
+          border-top: 4px solid #ff4757;
+        ">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="#ff4757" style="margin-bottom: 15px;">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+            <h2 style="color: #333; margin: 0;">Appointment Not Available</h2>
           </div>
-        `
-      };
-    
-      try {
-        await transporter.sendMail(mailOptions);
-        console.log(`Rejection email sent to ${appointment.email}`);
-      } catch (error) {
-        console.error('Error sending rejection email:', error);
-        throw new Error('Failed to send rejection email');
-      }
+          
+          <div style="background: white; padding: 20px; border-radius: 6px; margin-bottom: 20px;">
+            <p style="margin: 0 0 15px;">Dear ${appointment.name},</p>
+            
+            <p style="margin: 0 0 15px;">
+              We regret to inform you that we're unable to accommodate your requested session at this time.
+            </p>
+            
+            <div style="background: #fff8f8; border-left: 3px solid #ff4757; padding: 10px 15px; margin: 15px 0;">
+              <p style="margin: 5px 0; color: #555;">
+                <strong>Request Details:</strong><br>
+                ${new Date(appointment.preferredDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}<br>
+                At ${appointment.preferredTime}<br>
+                Session: ${appointment.sessionType}
+              </p>
+            </div>
+            
+            <p style="margin: 15px 0;">
+              We sincerely appreciate your interest in Thought Lab and regret any inconvenience this may cause.
+            </p>
+            
+            <p style="margin: 15px 0 0;">
+              You're welcome to submit a new request for a different date/time, or explore our <a href="/resources" style="color: #3a7bd5;">self-guided resources</a>.
+            </p>
+          </div>
+          
+          <div style="text-align: center; color: #777; font-size: 14px;">
+            <p style="margin: 5px 0;">With care,</p>
+            <p style="margin: 5px 0; font-weight: 600;">The Thought Lab Team</p>
+            <p style="margin: 15px 0 0;">
+            </p>
+          </div>
+        </div>
+      `
+    };
+  
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`Rejection email sent to ${appointment.email}`);
+    } catch (error) {
+      console.error('Error sending rejection email:', error);
+      throw new Error('Failed to send rejection email');
     }
-}
+  }
 
+  /**
+   * Sends an email to a user notifying them of their promotion to an admin role.
+   * @param {object} user - The user object, containing name and email.
+   * @param {string} user.name - The name of the user.
+   * @param {string} user.email - The email address of the user.
+   */
+  async sendAdminPromotionEmail(user) {
+    const mailOptions = {
+      from: 'Thought Lab <thoughtlab@example.com>',
+      to: user.email,
+      subject: 'Your Access Level Has Been Updated',
+      html: `
+        <div style="
+          font-family: 'Helvetica Neue', Arial, sans-serif;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 0;
+          background: #f9f9f9;
+          border-radius: 8px;
+          overflow: hidden;
+        ">
+          <!-- Email Header -->
+          <div style="
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            padding: 30px;
+            text-align: center;
+            color: white;
+          ">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white" style="margin-bottom: 15px;">
+              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+            </svg>
+            <h1 style="margin: 0; font-size: 24px;">Congratulations! You Are Now an Admin</h1>
+          </div>
+  
+          <!-- Email Body -->
+          <div style="padding: 30px; color: #333; line-height: 1.6;">
+            <p style="margin: 0 0 20px; font-size: 16px;">
+              Hello ${user.name},
+            </p>
+  
+            <p style="margin: 0 0 20px; font-size: 16px;">
+              We are pleased to inform you that your account on Thought Lab has been granted administrative privileges.
+            </p>
+  
+            <div style="
+              background: white;
+              border-radius: 6px;
+              padding: 20px;
+              margin-bottom: 25px;
+              box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            ">
+              <p style="margin: 0;">
+                You can now access the admin dashboard and other administrative functions. We trust you will use these new capabilities responsibly.
+              </p>
+            </div>
+  
+            <p style="margin: 0 0 20px; font-size: 16px;">
+              If you have any questions about your new role or responsibilities, please do not hesitate to reach out.
+            </p>
+          </div>
+  
+          <!-- Email Footer -->
+          <div style="
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+          ">
+            <p style="margin: 0;">Thank you for your contribution,</p>
+            <p style="margin: 10px 0 0; font-weight: 500;">The Thought Lab Team</p>
+          </div>
+        </div>
+      `
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`Admin promotion email sent to ${user.email}`);
+    } catch (error) {
+      console.error('Error sending admin promotion email:', error);
+      throw new Error('Failed to send admin promotion email');
+    }
+  }
+}
 
 module.exports = new EmailService();

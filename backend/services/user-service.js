@@ -19,6 +19,10 @@ class UserService {
         
         return users;
     }
+    async countAllUsers(){
+        const users = await UserModel.estimatedDocumentCount();
+        return users;
+    }
 }
 
 
