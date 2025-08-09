@@ -19,7 +19,7 @@ const server = http.createServer(app);
 // Middleware
 app.use(cookieParser());
 app.use(cors({
-  origin: ["http://localhost:3000", "https://thought-lab-ok2v-g4qk62hnp-ashish-saini78021s-projects.vercel.app"],
+  origin: ["http://localhost:3000", "https://thought-labv2.netlify.app"],
   credentials: true
 }));
 app.use(express.json({ limit: "8mb" }));
