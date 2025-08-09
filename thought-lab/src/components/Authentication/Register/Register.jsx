@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import styles from './Register.module.css';
-import url from '../../../url'
+import {url} from '../../../url'
 
 const Register = () => {
   const [formData, setFormData] = useState({
