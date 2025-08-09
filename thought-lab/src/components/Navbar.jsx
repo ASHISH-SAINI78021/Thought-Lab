@@ -66,13 +66,25 @@ function Navbar() {
                   </Link>
                 </li>
               ))}
+              {auth?.user?.role === 'admin' && <li key="1">
+                  <Link
+                    to='/admin'
+                    className={`text-[1.2em] font-sans px-[14px] rounded-full font-medium ${
+                      location.pathname === '/admin'
+                        ? "active-link"
+                        : "inactive-link"
+                    }`}
+                  >
+                    Admin
+                  </Link>
+                </li>}
             </ul>
           </div>
         }
 
-        <Tooltip title={`${auth?.user?.name}`} placement="top">
+        {auth?.user && <Tooltip title={`${auth?.user?.name}`} placement="top">
           <Avatar src={`${auth?.user?.profilePicture}`} />
-        </Tooltip>
+        </Tooltip>}
       </div>
     </nav>
   );

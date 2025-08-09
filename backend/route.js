@@ -7,12 +7,14 @@ const upload = require("./middlewares/upload-middleware.js");
 const BlogController = require('./controllers/blog-controller.js');
 const CounsellorController = require('./controllers/counsellor-controller.js');
 const GameController = require('./controllers/game-controller.js');
+const { isLogin } = require('./middlewares/auth-middleware.js');
+const { isAdmin } = require('./middlewares/admin-middleware.js');
 
 router.post('/register', upload.single('profilePicture'), AuthController.registerStudent);
 router.post('/login', AuthController.loginStudent);
 router.put('/api/increment-year' , UserController.incrementYear); // middleware
-router.post('/api/attendance-register' , upload.single("image") , attendanceController.register);
-router.post('/api/attendance-login' , upload.single("image") , attendanceController.login);
+router.post('/api/attendance-register', upload.single("image"), isLogin , attendanceController.register);
+router.post('/api/attendance-login', upload.single("image"), isLogin , attendanceController.login);
 
 router.get('/all-blogs' , BlogController.allBlogs);
 router.get('/all-blogs/:id' , BlogController.blog);
@@ -21,24 +23,24 @@ router.get('/all-blogs/:id' , BlogController.blog);
 
 
 // admin route
-router.post("/add-blog" , upload.single("thumbnail") , BlogController.addBlog);
-router.put("/blog/:id" , BlogController.updateBlog);
+router.post("/add-blog",upload.single("thumbnail"), isLogin, isAdmin, BlogController.addBlog);
+router.put("/blog/:id", isLogin, isAdmin, BlogController.updateBlog);
 
 
 // counsellor route
-router.post("/counsellor/create-appointment" , CounsellorController.createAppointment);
-router.patch("/counsellor/:id/approve" , CounsellorController.approveAppointment); // admin route
-router.patch("/counsellor/:id/reject" , CounsellorController.rejectAppointment); // admin route
-router.get("/counsellor/all-appointments" , CounsellorController.getAppointments);
+router.post("/counsellor/create-appointment", isLogin, CounsellorController.createAppointment);
+router.patch("/counsellor/:id/approve" ,isLogin, isAdmin, CounsellorController.approveAppointment); // admin route
+router.patch("/counsellor/:id/reject" ,isLogin, isAdmin, CounsellorController.rejectAppointment); // admin route
+router.get("/counsellor/all-appointments", isLogin, isAdmin, CounsellorController.getAppointments);
 
 
 // Attendance Route
-router.get("/download-attendance" , attendanceController.downloadAttendance); // admin route
+router.get("/download-attendance", isLogin, isAdmin, attendanceController.downloadAttendance); // admin route
 
 // Game Route
 router.get('/all-games', GameController.getAllGames);// admin route
-router.post('/create-game', GameController.createGame);// admin route
-router.put('/update-game/:id', GameController.updateGame); // admin route
-router.delete('/delete-game/:id', GameController.deleteGame); // admin route
+router.post('/create-game', isLogin, isAdmin, GameController.createGame);// admin route
+router.put('/update-game/:id', isLogin, isAdmin, GameController.updateGame); // admin route
+router.delete('/delete-game/:id', isLogin, isAdmin, GameController.deleteGame); // admin route
 
 module.exports = router;

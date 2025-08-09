@@ -107,9 +107,9 @@ const App = () => {
         <Route
           path="/blog/:id"
           element={
-            <AdminRoute>
+            <PrivateRoute>
               <BlogItem />
-            </AdminRoute>
+            </PrivateRoute>
           }
         />
       </Routes>

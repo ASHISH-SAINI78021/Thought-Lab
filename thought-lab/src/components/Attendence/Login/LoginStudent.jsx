@@ -91,14 +91,18 @@ const LoginStudent = () => {
 
       const response = await fetch(`${url}/api/attendance-login`, {
         method: "POST",
+        headers : {
+          Authorization : auth?.token
+        },
         body: formData,
       });
 
       const data = await response.json();
 
       if (data?.success) {
-        setAuth({ ...auth, token: data.token });
+        setAuth({ ...auth, token: data?.token });
         toast.success("Attendance successfully marked");
+        navigate('/');
       } else {
         toast.error(data.message || "Face not matched");
       }

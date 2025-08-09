@@ -110,6 +110,9 @@ const RegisterStudent = () => {
 
       const response = await fetch(`${url}/api/attendance-register`, {
         method: "POST",
+        headers : {
+          Authorization : auth?.token
+        },
         body: formData
       });
 
@@ -118,7 +121,7 @@ const RegisterStudent = () => {
       if (data.success) {
         setAuth({ ...auth, token: data.token });
         toast.success("Registration successful!");
-        navigate('/dashboard');
+        navigate('/mark-attendance');
       } else {
         throw new Error(data.message || "Registration failed");
       }

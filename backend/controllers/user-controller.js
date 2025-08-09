@@ -17,6 +17,21 @@ class UserController {
             return res.json(err);
         }
     }
+    
+    async adminDashboard(req, res){
+        try {
+            res.json({
+                success : true,
+                message : "Welcome to admin dashboard"
+            });
+        } catch (error) {
+            console.log(error);
+            return res.json({
+                success : false,
+                error : error.message
+            })
+        }
+    }
 }
 
 
