@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import styles from './AppointmentForm.module.css';
 import {url} from '../../url';
+import { useAuth } from '../../Context/auth';
 
 const AppointmentForm = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ const AppointmentForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [auth, setAuth] = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,6 +43,7 @@ const AppointmentForm = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization : auth?.token
         },
         body: JSON.stringify(payload),
       });

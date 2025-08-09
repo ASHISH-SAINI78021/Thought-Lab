@@ -3,6 +3,7 @@ import styles from './New.module.css';
 import { ClockCircleOutlined , LoginOutlined , LogoutOutlined , FullscreenOutlined , FullscreenExitOutlined } from '@ant-design/icons';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import { useNavigate } from 'react-router-dom';
+import NIT_Logo from '../../../assets/NIT-logo.png'
 
 
 
@@ -13,7 +14,7 @@ const New = ({children}) => {
     <div className={styles.container}>
         <div className={styles.slider}>
             <div className={styles.first}>
-                <img src="../../../../../assets/NIT-logo.png" alt="" className={styles.logo} />
+                <img src={NIT_Logo} alt="" className={styles.logo} />
                 <p className={styles.p}>NIT KKR</p>
             </div>
             <div className={styles.navigation}>
@@ -27,11 +28,11 @@ const New = ({children}) => {
                 <p className={`${styles.a} ${styles.b}`}>Authentication</p>
                 <div className={styles.second}>
                     <p className={styles.b}><LogoutOutlined /></p>
-                    <p onClick={() => navigate("/recruitment-portal")}>Register</p>
+                    <p onClick={() => navigate("/admin/promote-admin")}>Register</p>
                 </div>
                 <div className={styles.second}>
                     <p className={styles.b}><LoginOutlined /></p>
-                    <p onClick={() => navigate("/recruitment-portal")}>Login</p>
+                    <p onClick={() => navigate("/login")}>Login</p>
                 </div>
             </div>
             <div className={styles.navigation}>
@@ -78,7 +79,7 @@ const New = ({children}) => {
                 <p className={`${styles.a} ${styles.b}`}>Certificates</p>
                 <div className={styles.second}>
                     <p className={styles.b}><FullscreenOutlined /></p>
-                    <p onClick={()=> navigate("/admin/create-certificates/:id")}>Create Certificates</p>
+                    <p onClick={()=> navigate("/admin/create-certificates")}>Create Certificates</p>
                 </div>
             </div>
         </div>

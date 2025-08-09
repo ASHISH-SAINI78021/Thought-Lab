@@ -45,8 +45,8 @@ const GameScoreUpdater = ({ screen }) => {
 
   const filteredData = data.filter(
     (item) =>
-      item?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item?.rollNumber?.toLowerCase().includes(searchTerm.toLowerCase())
+      item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item?.user?.rollNumber?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const paginatedData = filteredData.slice(
@@ -59,10 +59,12 @@ const GameScoreUpdater = ({ screen }) => {
     setCurrentPage(1);
   };
 
-  const handleScoreUpdate = (id, currentScore, type) => {
-    const newScore = type === "increase" ? currentScore + 10 : Math.max(0, currentScore - 10);
+  // ✅ Send userId instead of leaderboard _id
+  const handleScoreUpdate = (userId, currentScore, type) => {
+    const newScore =
+      type === "increase" ? currentScore + 10 : Math.max(0, currentScore - 10);
     socket.emit("update-score", {
-      id,
+      userId,
       score: newScore,
     });
   };
@@ -93,24 +95,28 @@ const GameScoreUpdater = ({ screen }) => {
         </thead>
         <tbody className={styles.tbody}>
           {paginatedData.length > 0 ? (
-            paginatedData.map((item , index) => (
+            paginatedData.map((item, index) => (
               <tr key={item._id}>
-                  <td>{index + 1}</td>
-                <td>{item.name}</td>
-                <td>{item.rollNumber}</td>
-                <td>{item.branch}</td>
-                <td>{item.year}</td>
+                <td>{index + 1}</td>
+                <td>{item.user?.name}</td>
+                <td>{item.user?.rollNumber}</td>
+                <td>{item.user?.branch}</td>
+                <td>{item.user?.year}</td>
                 <td>{item.score}</td>
                 <td>
                   <button
                     className={styles.updateButton}
-                    onClick={() => handleScoreUpdate(item._id, item.score, "increase")}
+                    onClick={() =>
+                      handleScoreUpdate(item.user._id, item.score, "increase")
+                    }
                   >
                     +10
                   </button>
                   <button
                     className={styles.decreaseButton}
-                    onClick={() => handleScoreUpdate(item._id, item.score, "decrease")}
+                    onClick={() =>
+                      handleScoreUpdate(item.user._id, item.score, "decrease")
+                    }
                   >
                     -10
                   </button>

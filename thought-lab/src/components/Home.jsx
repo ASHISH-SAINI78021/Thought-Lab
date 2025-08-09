@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Features from "./Features";
 import About from "./About";
 import Testimonials from "./Testimonials";
+import Footer from "./Footer/Footer";
 
 const Home = () => {
   const buttonStyle = `transition-color duration-400 text-lg font-sans rounded-full px-8 py-3 font-medium`;
@@ -58,6 +59,33 @@ const Home = () => {
                 >
                   Join Our Community
                 </Link>
+                <Link
+                  to="/all-events"
+                  className={`${buttonStyle} border-[1px] text-black hover:bg-primary hover:border-primary`}
+                  style={{
+                    borderColor: "#FFC3A0", // border-primary
+                  }}
+                >
+                  Events
+                </Link>
+                <Link
+                  to="/quick-response-team"
+                  className={`${buttonStyle} border-[1px] text-black hover:bg-primary hover:border-primary`}
+                  style={{
+                    borderColor: "#FFC3A0", // border-primary
+                  }}
+                >
+                  QRT
+                </Link>
+                <Link
+                  to="/developer"
+                  className={`${buttonStyle} border-[1px] text-black hover:bg-primary hover:border-primary`}
+                  style={{
+                    borderColor: "#FFC3A0", // border-primary
+                  }}
+                >
+                  Developer
+                </Link>
               </div>
             </div>
           </div>
@@ -66,8 +94,8 @@ const Home = () => {
       <About />
       {/* <Features /> */}
       <Testimonials />
-      <div className="footer h-40px w-full" style={{ backgroundColor: "#D5E8D4" }}>
-        dfsf
+      <div className="footer h-40px w-full" style={{ backgroundColor: "#D5E8D4",zIndex:100000 }}>
+        <Footer />
       </div>
     </>
   );

@@ -31,6 +31,9 @@ import CreateGame from "./components/Admin/Game/GameForm/GameForm";
 import GameManagement from "./components/Admin/Game/GameManagement/GameManagement";
 import GameList from "./components/GameList/GameList";
 import CertificateGenerator from "./components/Admin/CertificateGenerator/CertificateGenerator";
+import RegisterAdmin from "./components/Admin/RegisterAdmin/RegisterAdmin";
+import QRTInfoPage from "./components/QRT";
+import Developer from "./components/Developer/Developer";
 
 const App = () => {
   useEffect(() => {
@@ -44,6 +47,9 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <Routes>
+        <Route path="/developer" element={<Developer />} />
+      </Routes>
       <Navbar />
       <Routes>
         {/* Public Routes */}
@@ -56,6 +62,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/all-events" element={<GameList />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/quick-response-team" element={<QRTInfoPage />} />
 
         {/* Authenticated Student Routes */}
         <Route
@@ -92,7 +99,8 @@ const App = () => {
           <Route path="download-attendance" element={<DownloadAttendance />} />
           <Route path="create-game" element={<CreateGame />} />
           <Route path="all-games" element={<GameManagement />} />
-          <Route path="certificate/:gameId" element={<CertificateGenerator />} />
+          <Route path="promote-admin" element={<RegisterAdmin />} />
+          <Route path="create-certificates" element={<CertificateGenerator />} />
         </Route>
 
         {/* Blog Routes (Admin Protected) */}

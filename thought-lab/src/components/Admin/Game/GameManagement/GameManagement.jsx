@@ -16,6 +16,8 @@ const GameManagement = () => {
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  // --- FIX: 1. Add state for a unique key ---
+  const [formKey, setFormKey] = useState(0);
   const navigate = useNavigate();
 
   // Fetch games from API
@@ -116,20 +118,20 @@ const GameManagement = () => {
   };
 
 
-  // redirecting to certificate
-  const handleGame = (game)=> {
-    navigate(`/admin/certificate/${game._id}`, {
-      state: {
-        game: game.name,
-        participant: {
-          name: "John Doe",
-          position: "1st Place",
-          score: "100/100"
-        },
-        result: 'winner' // or 'participant'
-      }
-    });
-  }
+  // // redirecting to certificate
+  // const handleGame = (game)=> {
+  //   navigate(`/admin/certificate/${game._id}`, {
+  //     state: {
+  //       game: game.name,
+  //       participant: {
+  //         name: "John Doe",
+  //         position: "1st Place",
+  //         score: "100/100"
+  //       },
+  //       result: 'winner' // or 'participant'
+  //     }
+  //   });
+  // }
 
   if (isLoading) {
     return <div className={styles.loading}>Loading games...</div>;
@@ -149,29 +151,29 @@ const GameManagement = () => {
             onClick={() => {
               setEditingGame(null);
               setShowForm(true);
+              // --- FIX: 2. Update the key every time we want to show the form ---
+              setFormKey(prevKey => prevKey + 1);
             }}
           >
             <FullscreenOutlined className={styles.icon} />
-            <span>Create New Game</span>
+            <span style={{cursor : "pointer"}}> Create New Game</span>
           </button>
           <button 
             className={styles.actionButton}
             onClick={() => window.location.reload()}
           >
             <FullscreenExitOutlined className={styles.icon} />
-            <span>Refresh Games</span>
+            <span style={{cursor : "pointer"}}> Refresh Games</span>
           </button>
         </div>
       </div>
 
       {showForm && (
         <GameForm 
+          // --- FIX: 3. Apply the unique key to the component ---
+          key={formKey}
           onSubmit={editingGame ? handleUpdate : handleCreate}
           initialData={editingGame || {}}
-          onCancel={() => {
-            setEditingGame(null);
-            setShowForm(false);
-          }}
         />
       )}
 
@@ -190,6 +192,8 @@ const GameManagement = () => {
                     onClick={() => {
                       setEditingGame(game);
                       setShowForm(true);
+                      // --- FIX: 4. Also update the key on edit ---
+                      setFormKey(prevKey => prevKey + 1);
                     }}
                     className={styles.editButton}
                     aria-label="Edit game"

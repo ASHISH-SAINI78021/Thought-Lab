@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  Pagination,
-  Dropdown,
-  Button,
-  Space,
-} from "antd";
-import {url} from "../../url";
+import { Pagination, Dropdown, Button, Space } from "antd";
+import { url } from "../../url";
 import styles from "./Table.module.css";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 
 const socket = io(`${url}`);
-
 
 const rowsOptions = [
   { label: "5", key: "5" },
@@ -20,73 +14,53 @@ const rowsOptions = [
 ];
 
 const Table = ({ screen }) => {
-  const [data, setData] = useState([
-    
-  ]);
-
+  const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const navigate = useNavigate();
 
-
-  // websocket intiation
-  useEffect(()=> {
-    // Fetch initial data from backend if needed
+  // WebSocket initiation
+  useEffect(() => {
     socket.emit("get-initial-leaderboard");
 
-    // Listen to full initial list
-    socket.on("leaderboard-data" , (leaderboard)=> {
+    // Initial load
+    socket.on("leaderboard-data", (leaderboard) => {
       setData(leaderboard);
     });
 
-    // Listent to updates from the server
-    socket.on("leaderboard-update", (updatedEntry) => {
-      setData((prevData) => {
-        const index = prevData.findIndex((item) => item.id === updatedEntry.id);
-        if (index !== -1) {
-          const newData = [...prevData];
-          newData[index] = updatedEntry; // ✅ FIX HERE
-          return newData;
-        } else {
-          return [...prevData, updatedEntry];
-        }
-      });
+    // Listen for leaderboard updates
+    socket.on("leaderboard-update", (leaderboard) => {
+      setData(leaderboard);
     });
 
-
-    return ()=> {
+    return () => {
       socket.off("leaderboard-data");
       socket.off("leaderboard-update");
-    }
-  } , []);
+    };
+  }, []);
 
-  const filteredData = data.filter(
-    (item) =>
-      item?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item?.rollNumber?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter based on user details
+  const filteredData = data.filter((item) => {
+    const name = item?.user?.name || "";
+    const rollNumber = item?.user?.rollNumber || "";
+    return (
+      name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      rollNumber.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
+  // Pagination
   const paginatedData = filteredData.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
 
+  console.log(paginatedData);
   const handleMenuClick = (e) => {
     setRowsPerPage(parseInt(e.key));
-    setCurrentPage(1); // Reset to first page on limit change
+    setCurrentPage(1);
   };
-
-  useEffect(()=> {
-    socket.on("leaderboard-update" , (leaderboard)=>{
-        setData(leaderboard);
-        // console.log(leaderboard);
-    });
-
-    return ()=> {
-      socket.off("leaeder-update");
-    }
-  } , [socket]);
 
   return (
     <div className={styles.container}>
@@ -113,19 +87,24 @@ const Table = ({ screen }) => {
         </thead>
         <tbody className={styles.tbody}>
           {paginatedData.length > 0 ? (
-            paginatedData.map((item , index) => (
-              <tr key={item.id} onClick={() => navigate(`/admin/${item.id}`)}>
+            paginatedData.map((item, index) => (
+              <tr
+                key={item._id}
+                onClick={() => navigate(`/admin/${item.user?._id}`)}
+              >
                 <td>{index + 1}</td>
-                <td>{item.name}</td>
-                <td>{item.rollNumber}</td>
-                <td>{item.branch}</td>
-                <td>{item.year}</td>
+                <td>{item.user?.name || "-"}</td>
+                <td>{item.user?.rollNumber || "-"}</td>
+                <td>{item.user?.branch || "-"}</td>
+                <td>{item.user?.year || "-"}</td>
                 <td>{item.score}</td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan={6} style={{ textAlign: "center" }}>No matching records found.</td>
+              <td colSpan={6} style={{ textAlign: "center" }}>
+                No matching records found.
+              </td>
             </tr>
           )}
         </tbody>
@@ -142,7 +121,9 @@ const Table = ({ screen }) => {
                 boxShadow: "inset 2px 2px 5px rgba(0, 0, 0, 0.2)",
               }}
             >
-              <Space style={{color : "black"}}>Rows per page: {rowsPerPage}</Space>
+              <Space style={{ color: "black" }}>
+                Rows per page: {rowsPerPage}
+              </Space>
             </Button>
           </Dropdown>
         </div>

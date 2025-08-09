@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import styles from './Register.module.css';
 import {url} from '../../../url'
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +19,7 @@ const Register = () => {
   const [profilePicturePreview, setProfilePicturePreview] = useState('');
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const branches = ['Computer Science', 'Electronics and Communication', 'Mechanical', 'Civil', 'Electrical', 'AI & Data Science', 'Mathematics', 'IIoT', 'IT', 'Production', 'MCA', 'Robotics', 'Other'];
   const programmes = ['B.Tech', 'M.Tech', 'PhD', 'Other'];
@@ -100,6 +102,7 @@ const Register = () => {
         });
         setProfilePicture(null);
         setProfilePicturePreview('');
+        navigate('/');
       } else {
         toast.error(result.message || 'Registration failed');
       }

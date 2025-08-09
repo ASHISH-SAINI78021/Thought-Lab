@@ -66,7 +66,7 @@ function Navbar() {
                   </Link>
                 </li>
               ))}
-              {auth?.user?.role === 'admin' && <li key="1">
+              {(auth?.user?.role === 'admin' || auth?.user?.role === 'superAdmin') && <li key="1">
                   <Link
                     to='/admin'
                     className={`text-[1.2em] font-sans px-[14px] rounded-full font-medium ${

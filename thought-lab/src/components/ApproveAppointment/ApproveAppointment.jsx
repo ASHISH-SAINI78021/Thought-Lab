@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './ApproveAppointment.module.css';
 import { url } from "../../url";
+import { useAuth } from '../../Context/auth';
 
 const ApproveAppointment = () => {
   const [appointments, setAppointments] = useState([]);
@@ -8,11 +9,17 @@ const ApproveAppointment = () => {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('Pending');
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [auth, setAuth] = useAuth();
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(`${url}/counsellor/all-appointments?status=${filter}`);
+        const response = await fetch(`${url}/counsellor/all-appointments?status=${filter}`, {
+          headers : {
+            "Content-Type" : 'application/json',
+            Authorization : auth?.token
+          }
+        });
         const data = await response.json();
         if (!response.ok) throw new Error(data.message || 'Failed to fetch appointments');
         setAppointments(data.appointments || []);

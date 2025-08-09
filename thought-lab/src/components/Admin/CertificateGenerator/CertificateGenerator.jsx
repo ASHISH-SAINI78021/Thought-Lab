@@ -1,180 +1,252 @@
 import React, { useState, useRef } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { DownloadOutlined, PrinterOutlined, TrophyFilled, CrownFilled } from '@ant-design/icons';
-import html2canvas from 'html2canvas';
+import { motion } from 'framer-motion';
+import { FaCertificate, FaUserTie, FaCalendarAlt, FaMagic } from 'react-icons/fa';
 import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import styles from './CertificateGenerator.module.css';
+import NIT_Logo from '../../../assets/NIT-logo.png';
 
 const CertificateGenerator = () => {
-  const { gameId } = useParams();
-  const location = useLocation();
-  const { game, participant, result } = location.state || {};
+  // State for form data, with default values for a better initial view
+  const [formData, setFormData] = useState({
+    eventName: 'Thought Lab Workshop',
+    participant: { name: 'John Doe', position: 'Active Participant' },
+    date: new Date().toISOString().split('T')[0], // Default to today
+    design: 'classic'
+  });
+
+  // State to handle the loading spinner on the button
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  // A ref to get direct access to the certificate preview DOM element
   const certificateRef = useRef(null);
-  const [loading, setLoading] = useState(false);
 
-  // Premium default data
-  const defaultGame = {
-    name: "Elite Coding Championship",
-    prize: "2500",
-    date: new Date().toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    }),
-    organizer: "Tech Masters International"
-  };
-
-  const defaultParticipant = {
-    name: "Alex Johnson",
-    position: "1st Place Champion",
-    score: "98/100"
-  };
-
-  const currentGame = game || defaultGame;
-  const currentParticipant = participant || defaultParticipant;
-  const isWinner = result === 'winner';
-
-  const handleDownloadPDF = () => {
-    if (!certificateRef.current) {
-      console.error("Certificate reference is not available.");
-      return;
+  // Handles changes for all form inputs
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    // Special handling for nested participant object
+    if (name.includes('participant.')) {
+      const field = name.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        participant: { ...prev.participant, [field]: value }
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
     }
-  
-    setLoading(true);
-  
-    setTimeout(async () => {
-      try {
-        console.log("Starting PDF generation...");
-  
-        const canvas = await html2canvas(certificateRef.current, {
-          scale: 2,
-          useCORS: true,
-          backgroundColor: '#ffffff'
-        });
-  
-        console.log("Canvas captured:", canvas.width, canvas.height);
-  
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('landscape', 'mm', 'a4');
-        const imgWidth = 297;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  
-        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-  
-        const fileName = `${(currentParticipant?.name || 'Participant').replace(/\s+/g, '_')}_${(currentGame?.name || 'Game').replace(/\s+/g, '_')}_Certificate.pdf`;
-        pdf.save(fileName);
-  
-        console.log("PDF downloaded:", fileName);
-      } catch (error) {
-        console.error("Error generating PDF:", error);
-      } finally {
-        setLoading(false);
-      }
-    }, 300);
   };
-  
 
-  const handlePrint = () => {
-    const originalTitle = document.title;
-    document.title = `${currentParticipant.name} - ${currentGame.name} Certificate`;
-    window.print();
-    document.title = originalTitle;
+  // The main function to generate the PDF
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsGenerating(true);
+
+    const certificateElement = certificateRef.current;
+    if (!certificateElement) {
+        setIsGenerating(false);
+        alert("Error: Certificate preview element not found.");
+        return;
+    }
+
+    // Use html2canvas to take a high-quality "screenshot" of the preview div
+    html2canvas(certificateElement, { 
+        scale: 3, // Higher scale results in a higher resolution image
+        useCORS: true // Needed to render external images like logos
+    }).then(canvas => {
+      // Convert the canvas (our screenshot) to a PNG image
+      const imgData = canvas.toDataURL('image/png');
+      
+      // Create a new PDF document with dimensions matching our captured image
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'px',
+        format: [canvas.width, canvas.height]
+      });
+
+      // Add the image to the PDF and save it
+      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+      pdf.save(`certificate-${formData.participant.name.replace(/ /g, '_')}.pdf`);
+
+      setIsGenerating(false);
+    }).catch(err => {
+        console.error("Error generating PDF:", err);
+        alert("An error occurred while generating the PDF. See console for details.");
+        setIsGenerating(false);
+    });
   };
+
+  const designOptions = [
+    { value: 'classic', label: 'Classic Elegance' },
+    { value: 'modern', label: 'Modern Minimal' },
+    { value: 'vintage', label: 'Vintage Charm' },
+    { value: 'corporate', label: 'Corporate Professional' }
+  ];
 
   return (
-    <div className={styles.premiumContainer}>
-      <div className={styles.controlPanel}>
-        <h2 className={styles.panelTitle}>Certificate Generator</h2>
-        <div className={styles.buttonGroup}>
-          <button 
-            onClick={handleDownloadPDF} 
-            disabled={loading}
-            className={`${styles.actionButton} ${styles.downloadButton}`}
-          >
-            <DownloadOutlined className={styles.buttonIcon} />
-            {loading ? 'Generating...' : 'Download High-Res PDF'}
-          </button>
-          <button 
-            onClick={handlePrint}
-            className={`${styles.actionButton} ${styles.printButton}`}
-          >
-            <PrinterOutlined className={styles.buttonIcon} />
-            Print Certificate
-          </button>
-        </div>
-      </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className={styles.container}
+    >
+      <div className={styles.wrapper}>
+        <motion.div initial={{ y: -20 }} animate={{ y: 0 }} className={styles.header}>
+          <FaCertificate className={styles.headerIcon} />
+          <h2 className={styles.headerTitle}>Certificate Generator</h2>
+          <p className={styles.headerSubtitle}>Create beautiful certificates in seconds</p>
+        </motion.div>
 
-      <div className={styles.certificateCanvas} ref={certificateRef}>
-        <div className={`${styles.premiumCertificate} ${isWinner ? styles.goldTheme : styles.silverTheme}`}>
-          
-          {/* Decorative Elements */}
-          <div className={styles.cornerDecoration}></div>
-          <div className={styles.cornerDecoration}></div>
-          <div className={styles.cornerDecoration}></div>
-          <div className={styles.cornerDecoration}></div>
-          
-          {isWinner && (
-            <div className={styles.trophyBadge}>
-              <TrophyFilled className={styles.trophyIcon} />
-            </div>
-          )}
-
-          <div className={styles.certificateContent}>
-            <div className={styles.certificateHeader}>
-              <p className={styles.presentedTo}>Presented To</p>
-              <h1 className={styles.certificateTitle}>
-                CERTIFICATE OF {isWinner ? 'EXCELLENCE' : 'PARTICIPATION'}
-              </h1>
-            </div>
-
-            <div className={styles.recipientSection}>
-              <h2 className={styles.recipientName}>{currentParticipant.name}</h2>
-              {isWinner && <CrownFilled className={styles.crownIcon} />}
-            </div>
-
-            <div className={styles.achievementText}>
-              <p>
-                {isWinner 
-                  ? `has demonstrated outstanding performance by achieving ${currentParticipant.position.toLowerCase()} 
-                    in ${currentGame.name} with a remarkable score of ${currentParticipant.score}, 
-                    showcasing exceptional skill and dedication.`
-                  : `has successfully completed and participated in ${currentGame.name} 
-                    held on ${currentGame.date}, demonstrating commitment and enthusiasm.`}
-              </p>
-            </div>
-
-            {isWinner && (
-              <div className={styles.prizeSection}>
-                <div className={styles.prizeBadge}>
-                  <span className={styles.prizeAmount}>${currentGame.prize}</span>
-                  <span className={styles.prizeLabel}>Award Prize</span>
+        {/* Form Section */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className={styles.card}
+        >
+          <div className={styles.formWrapper}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+              
+              <div>
+                <label htmlFor="eventName" className={styles.formLabel}>Event Name</label>
+                <div className={styles.inputGroup}>
+                  <div className={styles.inputIcon}><FaCertificate /></div>
+                  <input type="text" name="eventName" id="eventName" value={formData.eventName} onChange={handleChange} className={styles.inputField} placeholder="Annual Tech Conference 2023" required />
                 </div>
               </div>
-            )}
 
-            <div className={styles.signatureSection}>
-              <div className={styles.signatureBlock}>
-                <div className={styles.signatureLine}></div>
-                <p className={styles.signatureTitle}>Director of Competitions</p>
-                <p className={styles.organization}>{currentGame.organizer}</p>
+              <div>
+                <label htmlFor="participant.name" className={styles.formLabel}>Participant Name</label>
+                <div className={styles.inputGroup}>
+                  <div className={styles.inputIcon}><FaUserTie /></div>
+                  <input type="text" name="participant.name" id="participant.name" value={formData.participant.name} onChange={handleChange} className={styles.inputField} placeholder="John Doe" required />
+                </div>
               </div>
-              <div className={styles.signatureBlock}>
-                <div className={styles.signatureLine}></div>
-                <p className={styles.signatureTitle}>Date of Achievement</p>
-                <p className={styles.date}>{currentGame.date}</p>
-              </div>
-            </div>
 
-            <div className={styles.certificateFooter}>
-              <p className={styles.certificateId}>
-                Certificate ID: <span>{gameId || 'CERT-' + Math.random().toString(36).substr(2, 8).toUpperCase()}</span>
-              </p>
-              <p className={styles.watermark}>{currentGame.organizer}</p>
-            </div>
+              <div>
+                <label htmlFor="participant.position" className={styles.formLabel}>Position/Role</label>
+                <div className={styles.inputGroup}>
+                  <div className={styles.inputIcon}><FaUserTie /></div>
+                  <input type="text" name="participant.position" id="participant.position" value={formData.participant.position} onChange={handleChange} className={styles.inputField} placeholder="Senior Developer" required />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="date" className={styles.formLabel}>Date of Issue</label>
+                <div className={styles.inputGroup}>
+                  <div className={styles.inputIcon}><FaCalendarAlt /></div>
+                  <input type="date" name="date" id="date" value={formData.date} onChange={handleChange} className={styles.inputField} required />
+                </div>
+              </div>
+
+              <div>
+                <label className={styles.formLabel}>Certificate Design</label>
+                <div className={styles.designGrid}>
+                  {designOptions.map((option) => (
+                    <motion.div
+                      key={option.value}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`${styles.designOption} ${formData.design === option.value ? styles.selected : ''}`}
+                      onClick={() => setFormData({ ...formData, design: option.value })}
+                    >
+                      <div className={styles.designLabel}>
+                        <div className={styles.designCheckmark}></div>
+                        <span>{option.label}</span>
+                      </div>
+                      <div className={styles.designPreview}></div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  disabled={isGenerating}
+                  className={styles.submitButton}
+                >
+                  {isGenerating ? (
+                    <>
+                      <svg className={styles.spinner} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle style={{opacity: 0.25}} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path style={{opacity: 0.75}} fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <FaMagic style={{ marginRight: '0.5rem' }} />
+                      Generate Certificate
+                    </>
+                  )}
+                </motion.button>
+              </div>
+            </form>
           </div>
+        </motion.div>
+
+        {/* Live Preview Section */}
+        <div className={styles.previewWrapper}>
+            <h3 className={styles.previewHeader}>Live Preview</h3>
+            
+            <div className={styles.certificateWrapper}>
+                <div ref={certificateRef} className={styles.certificate}>
+                    
+                    <div className={styles.certHeader}>
+                        <div className={styles.headerLeft}>
+                            <h4 className={styles.headerTitleText}>Thought Lab</h4>
+                            <p className={styles.headerSubtitleText}>Inspiring Innovation</p>
+                        </div>
+                        <div className={styles.headerRight}>
+                            {/* IMPORTANT: Place your logo in the `public` folder */}
+                            <img 
+                                src={NIT_Logo} 
+                                alt="NIT Kurukshetra Logo" 
+                                className={styles.certLogo}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={styles.certMainContent}>
+                        <h1 className={styles.certTitle}>Certificate of Achievement</h1>
+                        <p className={styles.certSubtitle}>This certificate is proudly presented to</p>
+                        <p className={styles.certParticipantName}>
+                            {formData.participant.name || "Participant Name"}
+                        </p>
+                        <div className={styles.certLine}></div>
+                        <p className={styles.certDescription}>
+                            For outstanding performance and dedication in the 
+                            <strong> {formData.eventName || "Event Name"}</strong>, 
+                            achieving the position of 
+                            <strong> {formData.participant.position || "Participant"}.</strong>
+                        </p>
+                    </div>
+
+                    <div className={styles.certFooter}>
+                        <div className={styles.certDate}>
+                            <p>{formData.date || "YYYY-MM-DD"}</p>
+                            <hr/>
+                            <p>Date</p>
+                        </div>
+                        <div className={styles.certSignature}>
+                            {/* IMPORTANT: Place your signature image in the `public` folder */}
+                            <img 
+                                src="/signature.png" 
+                                alt="Coordinator's Signature" 
+                                className={styles.signatureImage}
+                            />
+                            <hr/>
+                            <p>Event Coordinator</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

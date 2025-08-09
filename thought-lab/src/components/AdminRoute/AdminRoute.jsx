@@ -48,7 +48,7 @@ const AdminRoute = ({ children }) => {
   }
 
   // Redirect if not admin
-  if (!auth?.user || auth.user.role !== "admin") {
+  if (!auth?.user || (auth.user.role !== "admin" && auth.user.role !== 'superAdmin')) {
     return <Navigate to="/unauthorized" replace />;
   }
 

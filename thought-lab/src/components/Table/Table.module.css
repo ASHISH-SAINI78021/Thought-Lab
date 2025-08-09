@@ -161,7 +161,7 @@
   .search:focus {
     border: 1px solid ;
     box-shadow: 0 0 10px #fecfb4;
-    color: white;
+    color: black;
   }
   
   /* Brighten placeholder on focus */
