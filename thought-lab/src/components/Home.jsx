@@ -86,6 +86,15 @@ const Home = () => {
                 >
                   Developer
                 </Link>
+                 <Link
+                  to="/Almuni"
+                  className={`${buttonStyle} border-[1px] text-black hover:bg-primary hover:border-primary`}
+                  style={{
+                    borderColor: "#FFC3A0", // border-primary
+                  }}
+                >
+                  Alumni
+                </Link>
               </div>
             </div>
           </div>

@@ -34,6 +34,7 @@ import CertificateGenerator from "./components/Admin/CertificateGenerator/Certif
 import RegisterAdmin from "./components/Admin/RegisterAdmin/RegisterAdmin";
 import QRTInfoPage from "./components/QRT";
 import Developer from "./components/Developer/Developer";
+import Alumni from "./components/Alumni/Almuni";
 
 const App = () => {
   useEffect(() => {
@@ -49,6 +50,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/developer" element={<Developer />} />
+        <Route path='/almuni' element={<Alumni />} />
       </Routes>
       <Navbar />
       <Routes>
