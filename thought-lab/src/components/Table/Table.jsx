@@ -18,7 +18,7 @@ const Table = ({ screen }) => {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
 
