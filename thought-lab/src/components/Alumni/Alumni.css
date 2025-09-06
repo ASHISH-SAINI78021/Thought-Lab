@@ -1,4 +1,25 @@
 /* Container */
+  body {
+    background-color:  #faf2eb;
+  }
+
+html{
+  font-size: 1vw;
+}
+body {
+  overflow-x: hidden;
+  background-color: #faf2eb;
+}
+
+.light-theme {
+  --primary: #FFC3A0;
+  --light : #fecfb4;
+  --secondary: #2f3d61;
+  --accent: #D5E8D4;
+  --text: #4A4A4A;
+  --background: #faf2eb ;
+  --black : #000000;
+}
 .alumni-container {
   max-width: 1100px;
   margin: 40px auto;
@@ -16,7 +37,7 @@
   background: linear-gradient(135deg, #fdfbfb, #ebedee);
   border-radius: 18px;
   padding: 28px;
-  box-shadow: 0 10px 25px rgba(108, 99, 255, 0.15);
+  box-shadow: 0 10px 25px rgba(231, 188, 78, 0.358);
   transition: transform 0.25s ease, box-shadow 0.3s ease;
 }
 
@@ -37,7 +58,7 @@
 
 .alumni-info h2 {
   margin: 0 0 12px 0;
-  color: #6C63FF;
+  color: #e2883f;
   font-size: 1.8rem;
   font-weight: 700;
 }
@@ -54,7 +75,7 @@
 }
 
 .alumni-info a {
-  color: #FF6B6B;
+  color: #444;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.2s ease;
@@ -72,16 +93,18 @@
 }
 
 .alumni-photo img {
-  max-width: 170px;
-  border-radius: 50%; /* 👈 circular avatar */
-  border: 4px solid #6C63FF;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  max-width:250px;
+  max-height: 300px;
+  border-radius: 18px;
+  /* border-radius: 50%; 👈 circular avatar */
+  border: 4px solid #d4984b;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.15);
   transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .alumni-photo img:hover {
   transform: scale(1.08);
-  border-color: #FF6B6B;
+  border-color: #f1ae4abb;
 }
 
 /* Responsive (Mobile) */

@@ -39,7 +39,7 @@ const Home = () => {
                 Thought Lab, we’re here to support you through life’s
                 challenges and celebrate your victories.
               </p>
-              <div className="flex space-x-3 pt-11 items-center">
+              <div className="flex space-x-3 pt-11 rise-up-more-delayed flex-wrap gap-3.5">
                 <Link
                   to="/blogs"
                   className={`${buttonStyle} text-white hover:text-black`}
@@ -86,6 +86,7 @@ const Home = () => {
                 >
                   Developer
                 </Link>
+                
                  <Link
                   to="/Almuni"
                   className={`${buttonStyle} border-[1px] text-black hover:bg-primary hover:border-primary`}
