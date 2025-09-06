@@ -7,6 +7,7 @@ import {url} from "../../url";
 
 const StudentProfile = () => {
   const [activeTab, setActiveTab] = useState('profile');
+  const [isLoading, setIsLoading] = useState(true);
   const {id} = useParams();
   
   // Sample data
@@ -37,6 +38,7 @@ const StudentProfile = () => {
 
   useEffect(()=> {
     const init = async()=> {
+        setIsLoading(true);
         try {
             let response = await fetch(`${url}/user/${id}`);
             if (response.ok){
@@ -52,14 +54,28 @@ const StudentProfile = () => {
             console.log(err);
             toast.error(err.message);
         }
+        finally {
+            setIsLoading(false);
+        }
     }
     init();
-  }, []);
+  }, [id]);
 
   // Calculate attendance stats
   const totalDays = studentData?.attendance?.length;
   const presentDays = studentData?.attendance?.filter(a => a.status === "Present").length;
   const attendancePercentage = Math.round((presentDays / totalDays) * 100);
+
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loadingContainer}>
+          <div className={styles.loadingSpinner}></div>
+          <p>Loading student profile...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
