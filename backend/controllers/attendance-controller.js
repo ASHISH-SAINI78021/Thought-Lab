@@ -94,84 +94,121 @@ class Attendance {
      */
     async login(req, res) {
         try {
-            const { rollNumber } = req.body;
-    
-            if (!rollNumber || !req.file) {
-                return res.status(400).json({ 
-                    success: false, 
-                    message: "Roll number and image are required" 
-                });
-            }
-    
-            // Process the uploaded image
-            const img = await loadImage(req.file.path);
-            const canvas = createCanvas(img.width, img.height);
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, img.width, img.height);
-    
-            // Face detection
-            const detection = await faceapi.detectSingleFace(canvas)
-                .withFaceLandmarks()
-                .withFaceDescriptor();
-    
-            if (!detection) {
-                return res.status(400).json({ 
-                    success: false, 
-                    message: "No face detected" 
-                });
-            }
-    
-            // Find user and compare faces
-            const user = await User.findOne({ rollNumber });
-            if (!user || !user.faceId) {
-                return res.status(404).json({ 
-                    success: false, 
-                    message: "User not found or no face registered" 
-                });
-            }
-    
-            const labeledDescriptor = new faceapi.LabeledFaceDescriptors(
-                user.rollNumber, 
-                [new Float32Array(user.faceId[0])]
-            );
-            const faceMatcher = new faceapi.FaceMatcher([labeledDescriptor]);
-            const bestMatch = faceMatcher.findBestMatch(detection.descriptor);
-    
-            if (bestMatch.label === "unknown" || bestMatch.distance > 0.3) {
-                return res.status(401).json({ 
-                    success: false, 
-                    message: "Face recognition failed" 
-                });
-            }
-    
-            // Record attendance
-            const now = new Date();
-            user.attendance.push({
-                date: now.toISOString().split('T')[0],
-                time: now.toTimeString().split(' ')[0],
-                status: "Present",
-                imageUrl: req.file.path
+          const { rollNumber } = req.body;
+      
+          if (!rollNumber || !req.file) {
+            return res.status(400).json({
+              success: false,
+              message: "Roll number and image are required"
             });
-            await user.save();
-    
-            return res.status(200).json({ 
-                success: true, 
-                message: "Login successful",
-                user: {
-                    name: user.name,
-                    rollNumber: user.rollNumber
-                }
+          }
+      
+          // Process uploaded image
+          const img = await loadImage(req.file.path);
+          const canvas = createCanvas(img.width, img.height);
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, img.width, img.height);
+      
+          // Face detection
+          const detection = await faceapi.detectSingleFace(canvas)
+            .withFaceLandmarks()
+            .withFaceDescriptor();
+      
+          if (!detection) {
+            return res.status(400).json({
+              success: false,
+              message: "No face detected"
             });
-    
+          }
+      
+          // Find user and compare faces
+          const user = await User.findOne({ rollNumber });
+          if (!user || !user.faceId) {
+            return res.status(404).json({
+              success: false,
+              message: "User not found or no face registered"
+            });
+          }
+      
+          const labeledDescriptor = new faceapi.LabeledFaceDescriptors(
+            user.rollNumber,
+            [new Float32Array(user.faceId[0])]
+          );
+          const faceMatcher = new faceapi.FaceMatcher([labeledDescriptor]);
+          const bestMatch = faceMatcher.findBestMatch(detection.descriptor);
+      
+          if (bestMatch.label === "unknown" || bestMatch.distance > 0.3) {
+            return res.status(401).json({
+              success: false,
+              message: "Face recognition failed"
+            });
+          }
+      
+          // Prevent double-marking for the same date
+          const now = new Date();
+          const today = now.toISOString().split('T')[0];
+          const alreadyMarked = (user.attendance || []).some(a => a.date === today);
+          if (alreadyMarked) {
+            return res.status(400).json({
+              success: false,
+              message: "Attendance already marked for today"
+            });
+          }
+      
+          // Record attendance on user
+          const attendanceRecord = {
+            date: today,
+            time: now.toTimeString().split(' ')[0],
+            status: "Present",
+            imageUrl: req.file.path
+          };
+      
+          user.attendance = user.attendance || [];
+          user.attendance.push(attendanceRecord);
+      
+          // Persist attendance
+          await user.save();
+      
+          // Update leaderboard atomically (add 10 points)
+          const awardPoints = 10;
+          const leaderboardEntry = await Leaderboard.findOneAndUpdate(
+            { user: user._id },
+            {
+              $inc: { score: awardPoints },
+              $setOnInsert: { user: user._id }
+            },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+          ).populate('user', 'name rollNumber branch year');
+      
+          // Emit updated full leaderboard to connected clients (populated & sorted)
+          const io = req.app.get('io');
+          if (io) {
+            const fullLeaderboard = await Leaderboard.find()
+              .populate('user', 'name rollNumber branch year')
+              .sort({ score: -1 });
+            io.emit('leaderboard-update', fullLeaderboard);
+          }
+      
+          // Return success (no leaderboard data or rank)
+          return res.status(200).json({
+            success: true,
+            message: "Login successful",
+            user: {
+              name: user.name,
+              rollNumber: user.rollNumber
+            }
+          });
+      
         } catch (error) {
-            console.error("Login error:", error);
-            return res.status(500).json({ 
-                success: false, 
-                message: "Login failed",
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
+          console.error("Login error:", error);
+          return res.status(500).json({
+            success: false,
+            message: "Login failed",
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+          });
         }
-    }
+      }
+      
 
     async downloadAttendance(req, res) {
         try {
