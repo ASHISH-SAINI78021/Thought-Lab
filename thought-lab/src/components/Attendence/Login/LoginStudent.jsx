@@ -4,69 +4,111 @@ import { useAuth } from "../../../Context/auth";
 import { toast } from "react-hot-toast";
 import { url } from "../../../url";
 import styles from "./LoginStudent.module.css";
-import { FiArrowRight, FiSkipForward } from "react-icons/fi";
+import { FiArrowRight, FiSkipForward, FiCamera } from "react-icons/fi";
 
 const LoginStudent = () => {
-  const [stream, setStream] = useState(null);
-  const [auth, setAuth] = useAuth();
+  // refs
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const streamRef = useRef(null); // authoritative stream ref
+
+  // state
+  const [auth, setAuth] = useAuth();
   const [capturedImage, setCapturedImage] = useState(null);
-  const [countdown, setCountdown] = useState(5);
   const [step, setStep] = useState(1);
   const [rollNumber, setRollNumber] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const initWebcam = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { width: 1280, height: 720 },
-          audio: false,
+  // helper to stop stream and clear video element
+  const stopStream = (s) => {
+    try {
+      const active = s || streamRef.current || videoRef.current?.srcObject;
+      if (active && typeof active.getTracks === "function") {
+        active.getTracks().forEach((track) => {
+          try {
+            track.stop();
+          } catch (e) {
+            /* ignore */
+          }
         });
-        videoRef.current.srcObject = stream;
-        setStream(stream);
-      } catch (error) {
-        console.error("Camera access error:", error);
-        toast.error("Camera access required for facial login");
       }
-    };
+    } catch (err) {
+      console.warn("stopStream error", err);
+    } finally {
+      if (videoRef.current) {
+        try {
+          videoRef.current.srcObject = null;
+        } catch (e) {
+          /* ignore */
+        }
+      }
+      streamRef.current = null;
+      setIsStreaming(false);
+    }
+  };
 
-    initWebcam();
+  // initialize webcam
+  const initWebcam = async () => {
+    try {
+      const s = await navigator.mediaDevices.getUserMedia({
+        video: { width: 1280, height: 720 },
+        audio: false,
+      });
+      streamRef.current = s;
+      if (videoRef.current) {
+        videoRef.current.srcObject = s;
+      }
+      setIsStreaming(true);
+    } catch (error) {
+      console.error("Camera access error:", error);
+      toast.error("Camera access required for facial login");
+      setIsStreaming(false);
+    }
+  };
+
+  // start camera on mount (or when returning to step 1)
+  useEffect(() => {
+    if (step === 1) {
+      stopStream();
+      setCapturedImage(null);
+      initWebcam();
+    } else {
+      // ensure stopped when leaving capture step
+      stopStream();
+    }
 
     return () => {
-      stream?.getTracks().forEach(track => track.stop());
+      stopStream();
     };
-  }, []);
-
-  useEffect(() => {
-    if (step !== 1) return;
-
-    const timer = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          captureImage();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step]);
 
+  // capture image manually
   const captureImage = () => {
     const canvas = canvasRef.current;
     const video = videoRef.current;
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    if (!video) {
+      toast.error("Camera not available");
+      return;
+    }
+
+    const width = video.videoWidth || 1280;
+    const height = video.videoHeight || 720;
+    canvas.width = width;
+    canvas.height = height;
 
     const ctx = canvas.getContext("2d");
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    setCapturedImage(canvas.toDataURL("image/jpeg", 0.9));
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+    setCapturedImage(dataUrl);
+
+    // stop camera immediately after capture
+    stopStream();
+
+    // move to verification step
     setStep(2);
   };
 
@@ -82,17 +124,17 @@ const LoginStudent = () => {
 
     try {
       const formData = new FormData();
-      formData.append("rollNumber", rollNumber);
+      formData.append("rollNumber", rollNumber.trim());
 
       if (capturedImage) {
-        const blob = await fetch(capturedImage).then(res => res.blob());
+        const blob = await fetch(capturedImage).then((res) => res.blob());
         formData.append("image", blob, "face.jpg");
       }
 
       const response = await fetch(`${url}/api/attendance-login`, {
         method: "POST",
-        headers : {
-          Authorization : auth?.token
+        headers: {
+          Authorization: auth?.token || "",
         },
         body: formData,
       });
@@ -102,7 +144,7 @@ const LoginStudent = () => {
       if (data?.success) {
         setAuth({ ...auth, token: data?.token });
         toast.success("Attendance successfully marked");
-        navigate('/');
+        navigate("/");
       } else {
         toast.error(data.message || "Face not matched");
       }
@@ -133,7 +175,7 @@ const LoginStudent = () => {
         </div>
       </div>
 
-      {/* Step 1 */}
+      {/* Step 1: Manual Capture */}
       {step === 1 && (
         <div className={styles.cameraSection}>
           <div className={styles.cameraContainer}>
@@ -145,15 +187,36 @@ const LoginStudent = () => {
               className={styles.cameraFeed}
             />
             <div className={styles.overlay}>
-              <div className={styles.countdown}>{countdown}</div>
-              <p className={styles.instruction}>Position your face in the center</p>
+              <p className={styles.instruction}>Position your face in the center and click Capture</p>
             </div>
           </div>
+
           <canvas ref={canvasRef} style={{ display: "none" }} />
+
+          <div className={styles.actionsInline}>
+            <button
+              type="button"
+              className={`${styles.button} ${styles.buttonPrimary}`}
+              onClick={captureImage}
+            >
+              <FiCamera /> Capture Now
+            </button>
+
+            <button
+              type="button"
+              className={`${styles.button} ${styles.buttonSecondary}`}
+              onClick={() => {
+                stopStream();
+                navigate("/");
+              }}
+            >
+              <FiSkipForward /> Cancel
+            </button>
+          </div>
         </div>
       )}
 
-      {/* Step 2 */}
+      {/* Step 2: Verify */}
       {step === 2 && (
         <div className={styles.loginForm}>
           <h2 className={styles.formTitle}>Verify Your Identity</h2>
@@ -203,16 +266,20 @@ const LoginStudent = () => {
               <button
                 type="button"
                 className={`${styles.button} ${styles.buttonSecondary}`}
-                onClick={() => navigate("/")}
+                onClick={() => {
+                  // go back to capture to retake: reopen camera and clear image
+                  setCapturedImage(null);
+                  setStep(1);
+                }}
               >
-                <FiSkipForward /> Skip
+                Back to Capture
               </button>
             </div>
           </form>
 
           <p className={styles.linkText}>
             Not registered?{" "}
-            <Link to="/signup" className={styles.link}>
+            <Link to="/register" className={styles.link}>
               Create account
             </Link>
           </p>

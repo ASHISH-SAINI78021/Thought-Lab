@@ -103,7 +103,7 @@ const Table = ({ screen }) => {
               ))
             ) : (
               <tr>
-                <td colSpan={5} style={{ textAlign: "center" }}>
+                <td colSpan={20} style={{ textAlign: "center" }}>
                   No matching records found.
                 </td>
               </tr>

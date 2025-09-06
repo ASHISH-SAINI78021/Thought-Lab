@@ -4,96 +4,129 @@ import { useAuth } from '../../../Context/auth';
 import { toast } from 'react-hot-toast';
 import { url } from '../../../url';
 import styles from './RegisterStudent.module.css';
-import { FiCamera, FiUser, FiRefreshCw, FiCheck, FiArrowRight } from 'react-icons/fi';
+import { FiCamera, FiUser, FiCheck, FiArrowRight, FiX } from 'react-icons/fi';
 
 const RegisterStudent = () => {
-  const [stream, setStream] = useState(null);
-  const [auth, setAuth] = useAuth();
+  // refs
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const streamRef = useRef(null); // single authoritative stream reference
+
+  // state
+  const [auth, setAuth] = useAuth();
   const [capturedImage, setCapturedImage] = useState(null);
-  const [countdown, setCountdown] = useState(5);
   const [isProcessing, setIsProcessing] = useState(false);
   const [registrationStep, setRegistrationStep] = useState(1);
   const [name, setName] = useState('');
   const [rollNumber, setRollNumber] = useState('');
+  const [isStreaming, setIsStreaming] = useState(false);
+
   const navigate = useNavigate();
 
-  // Initialize webcam with better constraints
-  useEffect(() => {
-    const initWebcam = async () => {
-      try {
-        const constraints = {
-          video: {
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
-            facingMode: 'user',
-            frameRate: { ideal: 30 }
-          },
-          audio: false
-        };
-        
-        const s = await navigator.mediaDevices.getUserMedia(constraints);
-        if (videoRef.current) {
-          videoRef.current.srcObject = s;
-          setStream(s);
-        }
-      } catch (error) {
-        console.error("Camera error:", error);
-        toast.error("Camera access required for registration");
+  // ---------- helper: stop stream ----------
+  const stopStream = (s) => {
+    try {
+      const active = s || streamRef.current || videoRef.current?.srcObject;
+      if (active && typeof active.getTracks === 'function') {
+        active.getTracks().forEach(track => {
+          try { track.stop(); } catch (e) { /* ignore */ }
+        });
       }
-    };
+    } catch (err) {
+      console.warn('stopStream error', err);
+    } finally {
+      // ensure video element is cleared
+      if (videoRef.current) {
+        try { videoRef.current.srcObject = null; } catch (e) { /* ignore */ }
+      }
+      streamRef.current = null;
+      setIsStreaming(false);
+    }
+  };
 
-    initWebcam();
+  // ---------- init webcam (re-usable) ----------
+  const initWebcam = async () => {
+    try {
+      const constraints = {
+        video: {
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          facingMode: 'user',
+          frameRate: { ideal: 30 }
+        },
+        audio: false
+      };
+      // request media
+      const s = await navigator.mediaDevices.getUserMedia(constraints);
+      streamRef.current = s;
+      if (videoRef.current) {
+        videoRef.current.srcObject = s;
+      }
+      setIsStreaming(true);
+    } catch (error) {
+      console.error("Camera error:", error);
+      toast.error("Camera access required for registration");
+      setIsStreaming(false);
+    }
+  };
 
+  // ---------- initialize webcam when entering capture step ----------
+  useEffect(() => {
+    if (registrationStep === 1) {
+      // stop any previous stream synchronously
+      stopStream();
+
+      // clear previous photo so user gets a fresh start
+      setCapturedImage(null);
+
+      // request camera
+      initWebcam();
+    } else {
+      // leaving capture step -> ensure camera stopped
+      stopStream();
+    }
+
+    // cleanup on unmount
     return () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
+      stopStream();
     };
-  }, []);
-
-  // Countdown timer with better UX
-  useEffect(() => {
-    if (registrationStep !== 1) return;
-
-    const timer = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          captureImage();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
+    // intentionally depend only on registrationStep
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [registrationStep]);
 
+  // ---------- capture image ----------
   const captureImage = () => {
-    const canvas = canvasRef.current;
+    // guard: don't capture twice
+    if (capturedImage || registrationStep !== 1) return;
+
     const video = videoRef.current;
-    
-    // Set canvas dimensions to match video
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    
+    const canvas = canvasRef.current;
+
+    if (!video) {
+      toast.error("Camera not available");
+      return;
+    }
+
+    // protect against zero dimensions
+    const width = video.videoWidth || 1280;
+    const height = video.videoHeight || 720;
+    canvas.width = width;
+    canvas.height = height;
+
     const ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    
-    // Use JPEG for smaller file size
+
     const imageData = canvas.toDataURL('image/jpeg', 0.85);
     setCapturedImage(imageData);
+
+    // Immediately stop any active stream and clear video srcObject
+    stopStream();
+
+    // finalize capture state: move to review/details step
     setRegistrationStep(2);
   };
 
-  const retakePhoto = () => {
-    setCountdown(5);
-    setRegistrationStep(1);
-    toast.success('Ready to retake photo');
-  };
-
+  // ---------- submit registration ----------
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsProcessing(true);
@@ -110,14 +143,14 @@ const RegisterStudent = () => {
 
       const response = await fetch(`${url}/api/attendance-register`, {
         method: "POST",
-        headers : {
-          Authorization : auth?.token
+        headers: {
+          Authorization: auth?.token || ''
         },
         body: formData
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         setAuth({ ...auth, token: data.token });
         toast.success("Registration successful!");
@@ -133,6 +166,7 @@ const RegisterStudent = () => {
     }
   };
 
+  // ---------- UI ----------
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -140,7 +174,6 @@ const RegisterStudent = () => {
         <p className={styles.subtitle}>Secure your attendance with biometric verification</p>
       </header>
 
-      {/* Progress Steps */}
       <div className={styles.progressSteps}>
         <div className={`${styles.step} ${registrationStep >= 1 ? styles.active : ''}`}>
           <div className={styles.stepIndicator}>
@@ -152,9 +185,9 @@ const RegisterStudent = () => {
           </div>
           <div className={styles.stepLabel}>Face Capture</div>
         </div>
-        
+
         <div className={styles.stepConnector}></div>
-        
+
         <div className={`${styles.step} ${registrationStep >= 2 ? styles.active : ''}`}>
           <div className={styles.stepIndicator}>
             {registrationStep > 2 ? (
@@ -165,9 +198,9 @@ const RegisterStudent = () => {
           </div>
           <div className={styles.stepLabel}>Details</div>
         </div>
-        
+
         <div className={styles.stepConnector}></div>
-        
+
         <div className={`${styles.step} ${registrationStep >= 3 ? styles.active : ''}`}>
           <div className={styles.stepIndicator}>
             <div className={styles.stepNumber}>3</div>
@@ -176,47 +209,56 @@ const RegisterStudent = () => {
         </div>
       </div>
 
-      {/* Step 1: Face Capture */}
       {registrationStep === 1 && (
         <div className={styles.captureSection}>
           <div className={styles.cameraContainer}>
-            <video 
-              ref={videoRef} 
-              autoPlay 
-              playsInline 
-              muted 
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
               className={styles.cameraFeed}
             />
             <div className={styles.overlay}>
-              <div className={styles.countdown}>{countdown}</div>
-              <p className={styles.instruction}>Position your face in the circle</p>
+              <p className={styles.instruction}>Position your face in the circle and click Capture</p>
               <div className={styles.faceGuide}></div>
             </div>
           </div>
           <canvas ref={canvasRef} style={{ display: 'none' }} />
+
+          <div className={styles.captureActions}>
+            <button
+              type="button"
+              onClick={() => {
+                stopStream();
+                navigate(-1);
+              }}
+              className={`${styles.button} ${styles.secondaryButton}`}
+            >
+              <FiX /> Cancel
+            </button>
+            <button
+              type="button"
+              onClick={captureImage}
+              className={`${styles.button} ${styles.primaryButton}`}
+            >
+              <FiCamera /> Capture Now
+            </button>
+          </div>
         </div>
       )}
 
-      {/* Step 2: Review & Details */}
       {registrationStep === 2 && (
         <div className={styles.reviewSection}>
           <h2 className={styles.sectionTitle}>Review Your Photo</h2>
-          
           <div className={styles.facePreviewContainer}>
-            {capturedImage && (
-              <img 
-                src={capturedImage} 
-                alt="Captured face" 
-                className={styles.facePreview}
-              />
-            )}
+            {capturedImage && <img src={capturedImage} alt="Captured face" className={styles.facePreview} />}
           </div>
 
           <form className={styles.detailsForm}>
             <div className={styles.formGroup}>
               <label htmlFor="name" className={styles.inputLabel}>
-                <FiUser className={styles.inputIcon} />
-                Full Name
+                <FiUser className={styles.inputIcon} /> Full Name
               </label>
               <input
                 type="text"
@@ -232,8 +274,7 @@ const RegisterStudent = () => {
 
             <div className={styles.formGroup}>
               <label htmlFor="rollNumber" className={styles.inputLabel}>
-                <FiUser className={styles.inputIcon} />
-                Roll Number
+                <FiUser className={styles.inputIcon} /> Roll Number
               </label>
               <input
                 type="text"
@@ -247,13 +288,16 @@ const RegisterStudent = () => {
             </div>
 
             <div className={styles.formActions}>
+              {/* No Retake button per your request.
+                  If user wants to retake, they can click Back to Capture (we'll reopen camera). */}
               <button
                 type="button"
-                onClick={retakePhoto}
+                onClick={() => setRegistrationStep(1)}
                 className={`${styles.button} ${styles.secondaryButton}`}
               >
-                <FiRefreshCw /> Retake Photo
+                Back to Capture
               </button>
+
               <button
                 type="button"
                 onClick={() => {
@@ -272,18 +316,11 @@ const RegisterStudent = () => {
         </div>
       )}
 
-      {/* Step 3: Confirmation */}
       {registrationStep === 3 && (
         <div className={styles.confirmationSection}>
           <h2 className={styles.sectionTitle}>Confirm Registration</h2>
-          
           <div className={styles.summaryCard}>
-            <div className={styles.faceThumbnail}>
-              {capturedImage && (
-                <img src={capturedImage} alt="Your face" />
-              )}
-            </div>
-            
+            <div className={styles.faceThumbnail}>{capturedImage && <img src={capturedImage} alt="Your face" />}</div>
             <div className={styles.detailsSummary}>
               <div className={styles.detailRow}>
                 <span className={styles.detailLabel}>Name:</span>
@@ -298,24 +335,11 @@ const RegisterStudent = () => {
 
           <form onSubmit={handleSubmit} className={styles.confirmationForm}>
             <div className={styles.formActions}>
-              <button
-                type="button"
-                onClick={() => setRegistrationStep(2)}
-                className={`${styles.button} ${styles.secondaryButton}`}
-              >
+              <button type="button" onClick={() => setRegistrationStep(2)} className={`${styles.button} ${styles.secondaryButton}`}>
                 Back to Edit
               </button>
-              <button
-                type="submit"
-                className={`${styles.button} ${styles.primaryButton}`}
-                disabled={isProcessing}
-              >
-                {isProcessing ? (
-                  <>
-                    <span className={styles.spinner}></span>
-                    Registering...
-                  </>
-                ) : 'Complete Registration'}
+              <button type="submit" className={`${styles.button} ${styles.primaryButton}`} disabled={isProcessing}>
+                {isProcessing ? (<><span className={styles.spinner}></span> Registering...</>) : 'Complete Registration'}
               </button>
             </div>
           </form>
