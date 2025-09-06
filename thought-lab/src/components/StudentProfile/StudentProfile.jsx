@@ -46,7 +46,7 @@ const StudentProfile = () => {
                 // console.log(response);
                 if (response.success){
                     setStudentData(response.user);
-                    // console.log(response.user);
+                    console.log(response.user);
                 }
             }
         }
