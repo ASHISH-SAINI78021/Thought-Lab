@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-node": "^4.22.0",
     "bcryptjs": "^3.0.2",
     "canvas": "^3.0.1",
     "cloudinary": "^1.41.3",

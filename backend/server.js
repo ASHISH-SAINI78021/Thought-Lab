@@ -66,6 +66,9 @@ const io = new Server(server, {
   },
 });
 
+// Pass io to routes/controllers if needed
+app.set("io", io);
+
 let activeUserCount = 0;
 io.on("connection", async (socket) => {
   console.log(`🟢 Client connected: ${socket.id}`);
@@ -82,11 +85,14 @@ io.on("connection", async (socket) => {
       const users = await User.find();
       const entries = users.map(u => ({ user: u._id, score: 100 }));
       await Leaderboard.insertMany(entries);
+      // console.log(entries);
   
       data = await Leaderboard.find()
         .populate("user", "name rollNumber branch year")
         .sort({ score: -1 });
     }
+
+    // console.log(data);
   
     socket.emit("leaderboard-data", data);
   });
