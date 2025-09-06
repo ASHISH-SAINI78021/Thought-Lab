@@ -1,20 +1,14 @@
-// From your theme:
-// --primary: #FFC3A0;
-// --secondary: #2f3d61;
-// --accent: #D5E8D4;
-// --text: #4A4A4A;
-// --background: #faf2eb ;
-// --black: #000000;
-
 import logo from "../assets/logo.png";
 import { Link, useLocation } from "react-router-dom";
 import { Avatar, Tooltip } from 'antd';
-import "../styles/Navbar.css";
+import "./Navbar.css";
 import { useAuth } from "../Context/auth";
+import { useState } from "react";
 
 function Navbar() {
   const location = useLocation();
   const [auth, setAuth] = useAuth();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const Links = [
     { name: "Home", link: "/" },
@@ -25,66 +19,111 @@ function Navbar() {
     { name: "Attendance", link: "/mark-attendance" },
   ];
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <nav className="sticky top-0 pt-[10px] z-50 backdrop-blur-[80px]">
-      <div className="z-50 top-0 flex items-center justify-between px-[100px] py-2 relative">
-        {
-          // Logo
-          <Link to={"/"} className="">
-            <div className="flex items-center space-x-5">
-              <div
-                id="logo-div"
-                className="rounded-full p-3"
-                style={{ backgroundColor: "#FFC3A0" }} // replaced bg-primary
-              >
-                <img src={logo} alt="logo" className="h-[3.5vw]" />
-              </div>
-              <span className="font-display text-3xl leading-[1] font-extrabold">
-                Thought
-                <br />
-                Lab
-              </span>
+    <nav className="navbar">
+      <div className="navbar-container">
+        {/* Logo */}
+        <Link to="/" className="navbar-logo" onClick={() => setIsMobileMenuOpen(false)}>
+          <div className="logo-container">
+            <div className="logo-icon">
+              <img src={logo} alt="Thought Lab Logo" />
             </div>
-          </Link>
-        }
-
-        {
-          // Desktop Nav Items
-          <div className="flex items-center">
-            <ul className="flex space-x-[0.4vw]">
-              {Links.map((items) => (
-                <li key={items.name}>
-                  <Link
-                    to={items.link}
-                    className={`text-[1.2em] font-sans px-[14px] rounded-full font-medium ${
-                      location.pathname === items.link
-                        ? "active-link"
-                        : "inactive-link"
-                    }`}
-                  >
-                    {items.name}
-                  </Link>
-                </li>
-              ))}
-              {(auth?.user?.role === 'admin' || auth?.user?.role === 'superAdmin') && <li key="1">
-                  <Link
-                    to='/admin'
-                    className={`text-[1.2em] font-sans px-[14px] rounded-full font-medium ${
-                      location.pathname === '/admin'
-                        ? "active-link"
-                        : "inactive-link"
-                    }`}
-                  >
-                    Admin
-                  </Link>
-                </li>}
-            </ul>
+            <span className="logo-text">
+              Thought<br />Lab
+            </span>
           </div>
-        }
+        </Link>
 
-        {auth?.user && <Tooltip title={`${auth?.user?.name}`} placement="top">
-          <Avatar src={`${auth?.user?.profilePicture}`} />
-        </Tooltip>}
+        {/* Desktop Navigation */}
+        <div className="navbar-menu">
+          <ul className="nav-links">
+            {Links.map((item) => (
+              <li key={item.name}>
+                <Link
+                  to={item.link}
+                  className={`nav-link ${location.pathname === item.link ? 'active' : ''}`}
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+            {(auth?.user?.role === 'admin' || auth?.user?.role === 'superAdmin') && (
+              <li>
+                <Link
+                  to="/admin"
+                  className={`nav-link ${location.pathname === '/admin' ? 'active' : ''}`}
+                >
+                  Admin
+                </Link>
+              </li>
+            )}
+          </ul>
+        </div>
+
+        {/* User Avatar */}
+        <div className="navbar-user">
+          {auth?.user && (
+            <Tooltip title={auth.user.name} placement="bottom">
+              <Avatar src={auth.user.profilePicture} className="user-avatar" />
+            </Tooltip>
+          )}
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button 
+          className={`mobile-menu-toggle ${isMobileMenuOpen ? 'active' : ''}`}
+          onClick={toggleMobileMenu}
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        
+      </div>
+
+      {/* Mobile Navigation */}
+      <div className={`mobile-menu ${isMobileMenuOpen ? 'active' : ''}`}>
+        <div className="mobile-menu-content">
+          <ul className="mobile-nav-links">
+            {Links.map((item) => (
+              <li key={item.name}>
+                <Link
+                  to={item.link}
+                  className={`mobile-nav-link ${location.pathname === item.link ? 'active' : ''}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+            {(auth?.user?.role === 'admin' || auth?.user?.role === 'superAdmin') && (
+              <li>
+                <Link
+                  to="/admin"
+                  className={`mobile-nav-link ${location.pathname === '/admin' ? 'active' : ''}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Admin
+                </Link>
+              </li>
+            )}
+          </ul>
+
+          {auth?.user && (
+            <div className="mobile-user-info">
+              <Avatar src={auth.user.profilePicture} size={64} />
+              <div className="user-details">
+                <p className="user-name">{auth.user.name}</p>
+                <p className="user-role">{auth.user.role}</p>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   );

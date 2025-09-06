@@ -5,6 +5,7 @@ const userService = require("../services/user-service.js");
 const UserDto = require("../dtos/user-dtos.js");
 const emailService = require("../services/email-service.js");
 const User = require('../Models/user-model.js');
+const Leaderboard = require("../Models/leaderboard-modal.js")
 
 class AuthController {
   async registerStudent(req, res) {
@@ -185,6 +186,30 @@ class AuthController {
         success : false,
         error : error.message
       })
+    }
+  }
+
+  async getUser(req, res){
+    try {
+      const {id} = req.params;
+      const user = await userService.getUser(id);
+      // console.log(user);
+      if (!user) return res.json({
+        success : false,
+        message : "No information available for this user"
+      });
+
+      return res.json({
+        success : true,
+        user
+      });
+    }
+    catch(err){
+      console.log(err);
+      return res.json({
+        success : false,
+        err
+      });
     }
   }
 }

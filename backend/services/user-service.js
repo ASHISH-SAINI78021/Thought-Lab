@@ -23,6 +23,10 @@ class UserService {
         const users = await UserModel.estimatedDocumentCount();
         return users;
     }
+    async getUser(id){
+        const user =  await UserModel.findById(id);
+        return user;
+    }
 }
 
 

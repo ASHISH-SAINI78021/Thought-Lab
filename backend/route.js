@@ -19,6 +19,7 @@ router.post('/api/attendance-login', upload.single("image"), isLogin , attendanc
 
 router.get('/all-blogs' , BlogController.allBlogs);
 router.get('/all-blogs/:id' , BlogController.blog);
+router.get('/user/:id', AuthController.getUser);
 // router.put('/:id/like' , BlogController.likeBlog);
 // router.get('/:id' , BlogController.comment);
 

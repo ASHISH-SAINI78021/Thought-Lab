@@ -35,6 +35,7 @@ import RegisterAdmin from "./components/Admin/RegisterAdmin/RegisterAdmin";
 import QRTInfoPage from "./components/QRT";
 import Developer from "./components/Developer/Developer";
 import Alumni from "./components/Alumni/Almuni";
+import StudentProfile from "./components/StudentProfile/StudentProfile";
 
 const App = () => {
   useEffect(() => {
@@ -59,6 +60,7 @@ const App = () => {
         <Route path="/about" element={<AboutMe />} />
         <Route path="/utter-your-thoughts" element={<UtterYourThoughts />} />
         <Route path="/leaderboard" element={<Table />} />
+        <Route path="/leaderboard/:id" element={<StudentProfile />} />
         <Route path="/appointment-form" element={<AppointmentForm />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

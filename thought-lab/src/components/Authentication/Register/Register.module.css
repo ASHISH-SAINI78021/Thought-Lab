@@ -3,19 +3,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  font-family: 'Inter', sans-serif;
+  padding: 1rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background: transparent;
 }
 
 .card {
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 1000px;
   padding: 2.5rem;
   position: relative;
   overflow: hidden;
+  margin: 1rem;
 }
 
 .card::before {
@@ -34,16 +36,18 @@
 }
 
 .header h1 {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.2rem;
+  font-weight: 800;
   color: #2c3e50;
   margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
 }
 
 .header p {
   color: #7f8c8d;
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin: 0;
+  font-weight: 500;
 }
 
 .form {
@@ -54,7 +58,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .formColumn {
@@ -70,48 +74,111 @@
 }
 
 .inputGroup label {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #2c3e50;
+  display: flex;
+  align-items: center;
+}
+
+.required {
+  color: #e74c3c;
+  margin-left: 3px;
 }
 
 input, select {
-  padding: 0.8rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  padding: 0.9rem 1.2rem;
+  border: 2px solid #eef2f7;
+  border-radius: 10px;
   font-size: 1rem;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  background: #fafbfc;
 }
 
 input:focus, select:focus {
   outline: none;
   border-color: #3a7bd5;
-  box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.2);
+  box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.15);
+  background: white;
 }
 
 .errorInput {
   border-color: #e74c3c !important;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.15) !important;
 }
 
 .error {
   color: #e74c3c;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.error::before {
+  content: '!';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background: #e74c3c;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+/* Fixed size scrollable container for branches */
+.branchesContainer {
+  max-height: 200px; /* Fixed height */
+  overflow-y: auto; /* Vertical scrollbar */
+  padding: 0.5rem;
+  border: 1px solid #eef2f7;
+  border-radius: 10px;
+  background: #fafbfc;
+  margin-top: 0.25rem;
+}
+
+.branchesContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.branchesContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.branchesContainer::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.branchesContainer::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 
 .radioGroup {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 0.75rem;
 }
 
 .radioLabel {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   cursor: pointer;
   font-size: 0.9rem;
   position: relative;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.radioLabel:hover {
+  background: #f8f9fa;
 }
 
 .radioLabel input {
@@ -120,8 +187,8 @@ input:focus, select:focus {
 }
 
 .radioButton {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border: 2px solid #bdc3c7;
   border-radius: 50%;
   display: inline-block;
@@ -137,8 +204,8 @@ input:focus, select:focus {
 .radioLabel input:checked ~ .radioButton::after {
   content: '';
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 4px;
+  left: 4px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -154,35 +221,61 @@ input:focus, select:focus {
   cursor: pointer;
 }
 
+.previewContainer {
+  position: relative;
+  display: inline-block;
+}
+
 .previewImage {
-  width: 100px;
-  height: 100px;
-  border-radius: 8px;
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
   object-fit: cover;
-  border: 2px dashed #3a7bd5;
+  border: 2px solid #3a7bd5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.removeImage {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .uploadPlaceholder {
   width: 100%;
-  height: 100px;
+  height: 120px;
   border: 2px dashed #bdc3c7;
-  border-radius: 8px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #7f8c8d;
   transition: all 0.2s;
+  background: #fafbfc;
 }
 
 .uploadPlaceholder:hover {
   border-color: #3a7bd5;
   color: #3a7bd5;
+  background: #f0f7ff;
 }
 
 .uploadIcon {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   margin-bottom: 0.5rem;
   fill: currentColor;
 }
@@ -191,38 +284,70 @@ input:focus, select:focus {
   display: none;
 }
 
+.termsContainer {
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.loginRedirect {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}
+
+.link {
+  color: #3a7bd5;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.link:hover {
+  color: #2c5ebb;
+  text-decoration: underline;
+}
+
 .submitButton {
   width: 100%;
-  padding: 1rem;
+  padding: 1.1rem;
   background: linear-gradient(90deg, #3a7bd5, #00d2ff);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(58, 123, 213, 0.3);
 }
 
 .submitButton:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(58, 123, 213, 0.2);
+  opacity: 0.95;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(58, 123, 213, 0.4);
+}
+
+.submitButton:active {
+  transform: translateY(0);
 }
 
 .submitButton:disabled {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
 .spinner {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   border-top-color: white;
@@ -231,4 +356,86 @@ input:focus, select:focus {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .card {
+    padding: 2rem;
+  }
+  
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .radioGroup {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  
+  /* Adjust branches container for tablet */
+  .branchesContainer {
+    max-height: 180px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0.5rem;
+  }
+  
+  .card {
+    padding: 1.5rem;
+    margin: 0.5rem;
+  }
+  
+  .header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .header p {
+    font-size: 1rem;
+  }
+  
+  input, select {
+    padding: 0.8rem 1rem;
+  }
+  
+  .radioGroup {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .previewImage {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .uploadPlaceholder {
+    height: 100px;
+  }
+  
+  /* Adjust branches container for mobile */
+  .branchesContainer {
+    max-height: 160px;
+  }
+}
+
+@media (max-width: 400px) {
+  .card {
+    padding: 1.2rem;
+  }
+  
+  .radioGroup {
+    grid-template-columns: 1fr;
+  }
+  
+  .submitButton {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  
+  /* Adjust branches container for small mobile */
+  .branchesContainer {
+    max-height: 140px;
+  }
 }

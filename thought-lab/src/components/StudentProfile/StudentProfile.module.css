@@ -1,0 +1,545 @@
+/* StudentProfile.module.css */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 10px;
+    background: transparent;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .profileCard {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 800px;
+    overflow: hidden;
+  }
+  
+  /* IMPROVED HEADER SECTION */
+  .header {
+    display: flex;
+    padding: 25px 20px;
+    background: linear-gradient(135deg, #FFC3A0 0%, #FFAFBD 100%);
+    color: black;
+    position: relative;
+  }
+  
+  .avatarSection {
+    position: relative;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Prevent shrinking on mobile */
+  }
+  
+  .avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .roleBadge {
+    margin-top: 8px;
+    background: #ff6b6b;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+  
+  .userInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0; /* Important for text truncation */
+  }
+  
+  .userName {
+    margin: 0 0 4px 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .userRoll {
+    margin: 0 0 12px 0;
+    opacity: 0.85;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .userMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .metaItem {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 5px 10px;
+    border-radius: 16px;
+    font-weight: 500;
+    backdrop-filter: blur(5px);
+    white-space: nowrap;
+  }
+  
+  .metaItem i {
+    margin-right: 5px;
+    font-size: 11px;
+  }
+  
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid #eaeaea;
+    background: #f9f9f9;
+  }
+  
+  .tab {
+    flex: 1;
+    padding: 14px 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  
+  .tab:hover {
+    background: #f0f0f0;
+    color: #c23b3b;
+  }
+  
+  .activeTab {
+    color: #c23b3b;
+    border-bottom: 3px solid #FFC3A0;
+    background: rgba(255, 195, 160, 0.1);
+  }
+  
+  .tabContent {
+    padding: 25px 20px;
+  }
+  
+  .detailGroup {
+    margin-bottom: 25px;
+  }
+  
+  .detailTitle {
+    margin: 0 0 15px 0;
+    font-size: 17px;
+    color: #333;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+  }
+  
+  .detailItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid #f5f5f5;
+    align-items: flex-start;
+  }
+  
+  .detailLabel {
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+    flex: 1;
+  }
+  
+  .detailValue {
+    color: #222;
+    font-size: 14px;
+    flex: 1.5;
+    text-align: right;
+    word-break: break-word;
+  }
+  
+  .attendanceStats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 25px;
+  }
+  
+  .statCard {
+    background: #f9f9f9;
+    padding: 18px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .statCard h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .percentageCircle {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFC3A0 0%, #FFAFBD 100%);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(255, 195, 160, 0.3);
+  }
+  
+  .summaryItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .summaryItem:last-child {
+    border-bottom: none;
+  }
+  
+  .summaryLabel {
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+  }
+  
+  .summaryValue {
+    color: #333;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  .attendanceHistoryTitle {
+    margin: 0 0 15px 0;
+    font-size: 17px;
+    color: #333;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+  }
+  
+  .attendanceList {
+    max-height: 300px;
+    overflow-y: auto;
+    border-radius: 8px;
+    border: 1px solid #eee;
+  }
+  
+  .attendanceItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+    align-items: center;
+  }
+  
+  .attendanceItem:last-child {
+    border-bottom: none;
+  }
+  
+  .attendanceItem:hover {
+    background: #f9f9f9;
+  }
+  
+  .attendanceDate {
+    color: #555;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .attendanceStatus {
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    min-width: 75px;
+    text-align: center;
+  }
+  
+  .statusPresent {
+    background: #e6f7ee;
+    color: #28a745;
+  }
+  
+  .statusAbsent {
+    background: #ffe6e6;
+    color: #dc3545;
+  }
+  
+  .loading, .error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    font-size: 18px;
+    color: #666;
+  }
+  
+  .error {
+    color: #dc3545;
+  }
+  
+  /* IMPROVED MOBILE RESPONSIVENESS */
+  @media (max-width: 768px) {
+    .container {
+      padding: 8px;
+    }
+    
+    .profileCard {
+      border-radius: 10px;
+    }
+    
+    .header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px 15px;
+    }
+    
+    .avatarSection {
+      margin-right: 0;
+      margin-bottom: 15px;
+      width: 100%;
+    }
+    
+    .avatar {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 8px;
+    }
+    
+    .userInfo {
+      width: 100%;
+      align-items: center;
+    }
+    
+    .userName {
+      font-size: 20px;
+      margin-bottom: 5px;
+      text-align: center;
+      width: 100%;
+    }
+    
+    .userRoll {
+      font-size: 13px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    
+    .userMeta {
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+    }
+    
+    .metaItem {
+      font-size: 11px;
+      padding: 4px 8px;
+    }
+    
+    .tabs {
+      flex-direction: row;
+    }
+    
+    .tab {
+      padding: 12px 10px;
+      font-size: 13px;
+    }
+    
+    .tabContent {
+      padding: 20px 15px;
+    }
+    
+    .detailItem {
+      flex-direction: column;
+      gap: 5px;
+      padding: 12px 0;
+    }
+    
+    .detailLabel, .detailValue {
+      text-align: left;
+      flex: none;
+    }
+    
+    .detailValue {
+      font-size: 13px;
+    }
+    
+    .percentageCircle {
+      width: 75px;
+      height: 75px;
+      font-size: 16px;
+    }
+    
+    .statCard {
+      padding: 15px;
+    }
+    
+    .summaryItem {
+      padding: 8px 0;
+    }
+    
+    .summaryLabel, .summaryValue {
+      font-size: 13px;
+    }
+    
+    .attendanceItem {
+      padding: 12px;
+    }
+    
+    .attendanceDate {
+      font-size: 13px;
+    }
+    
+    .attendanceStatus {
+      font-size: 12px;
+      padding: 4px 10px;
+      min-width: 70px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header {
+      padding: 18px 12px;
+    }
+    
+    .avatar {
+      width: 70px;
+      height: 70px;
+    }
+    
+    .userName {
+      font-size: 18px;
+    }
+    
+    .userMeta {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+    }
+    
+    .metaItem {
+      width: auto;
+      justify-content: center;
+    }
+    
+    .tab {
+      padding: 10px 8px;
+      font-size: 12px;
+    }
+    
+    .tabContent {
+      padding: 18px 12px;
+    }
+    
+    .detailTitle {
+      font-size: 16px;
+    }
+    
+    .detailGroup {
+      margin-bottom: 20px;
+    }
+    
+    .attendanceStats {
+      gap: 15px;
+    }
+    
+    .percentageCircle {
+      width: 65px;
+      height: 65px;
+      font-size: 14px;
+    }
+    
+    .statCard h4 {
+      font-size: 15px;
+    }
+    
+    .attendanceHistoryTitle {
+      font-size: 16px;
+    }
+    
+    .attendanceList {
+      max-height: 250px;
+    }
+  }
+  
+  /* Additional improvements for very small screens */
+  @media (max-width: 350px) {
+    .container {
+      padding: 5px;
+    }
+    
+    .profileCard {
+      border-radius: 8px;
+    }
+    
+    .header {
+      padding: 15px 10px;
+    }
+    
+    .avatar {
+      width: 60px;
+      height: 60px;
+    }
+    
+    .userName {
+      font-size: 16px;
+    }
+    
+    .userMeta {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .metaItem {
+      width: 100%;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    
+    .tab {
+      padding: 8px 6px;
+      font-size: 11px;
+    }
+    
+    .tabContent {
+      padding: 15px 10px;
+    }
+    
+    .detailItem {
+      padding: 10px 0;
+    }
+  }

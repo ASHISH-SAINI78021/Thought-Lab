@@ -1,189 +1,179 @@
+/* Table.module.css */
 .container {
-    max-width: 100%;
-    font-family: Arial, sans-serif;
-    color: black;
-    margin-bottom: 10rem;
-    /* background: #36AFEC; */
-    background-color: #faf2eb;
-    padding: 2rem 10rem;
-  }
-
-  .table tbody tr:nth-child(odd) {
-    /* background: #72b7ef; */
-    background-color: #fecfb4;
-    cursor: pointer;
-  }
-  
-  .table tbody tr:nth-child(even) {
-    /* background: #36AFEC; */
-    background-color: #FFC3A0;
-    cursor: pointer;
-    border: none;
-  }
-
-  .table tbody tr:nth-child(even):hover {
-    /* background-color: #3992da; */
-    background-color: #FFC3A0;
-  }
-  .table tbody tr:nth-child(odd):hover {
-    /* background-color: #3992da; */
-    background-color: #FFC3A0;
-  }
-  
-  .toolbar {
-    margin-bottom: 1rem;
-    text-align: right;
-    display: flex;
-    gap: 20px;
-  }
-  
-  .alertButton {
-    padding: 0.5rem 1rem;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .alertButton:hover {
-    background: #0056b3;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    /* padding: 1rem; */
-    border: none;
-  }
-  
-  .table th,
-  .table td {
-    padding: 0.75rem;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .head {
-    /* background: #36AFEC; */
-    background-color: #FFC3A0;
-    color: white;
-    font-weight: bold;
-    border-radius: 1rem;
-  }
-
-  .tbody {
-    border-radius: 1rem;
-  }
-  
-  
-  .actions button {
-    margin: 0 5px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: transform 0.1s;
-  }
-  
-  .actions button:hover {
-    transform: scale(1.1);
-  }
-  
-  .likeButton {
-    color: white;
-    font-size: 0.5rem;
-  }
-  
-  .editButton {
-    color: orange;
-  }
-  
-  .removeButton {
-    color: #dc3545;
-  }
-
-  .table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    overflow: hidden;
-  }
+  max-width: 100%;
+  font-family: Arial, sans-serif;
+  color: black;
+  margin-bottom: 5rem;
+  background-color: #faf2eb;
+  padding: 5rem;
+  box-sizing: border-box;
+}
 
 
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  
-  .table th, .table td {
-    border: none;
-    padding: 12px;
-    text-align: left;
-  }
-  
-  /* Optional: Add background color to distinguish rows */
-  .tbody tr {
-    background: #f9f9f9;
-  }
-  
-  .tbody tr:nth-child(even) {
-    background: #eaeaea;
-  }
+.table tbody tr:nth-child(odd) {
+  background-color: #fecfb4;
+  cursor: pointer;
+}
 
-  .search {
-    width: 200px;
-    padding: 8px 12px;
-    font-size: 16px;
-    border: 2px solid #FFC3A0;
-    border-radius: 5px;
-    outline: none;
-    transition: all 1s ease;
-    background: transparent;
-    color: white;
-    border-radius: 1.5rem;
-    margin-left: 1rem;
-  }
-  
-  /* Placeholder transition */
-  .search::placeholder {
-    color: black;
-    transition: color 1s ease;
-  }
-  
-  /* Focus effect */
-  .search:focus {
-    border: 1px solid ;
-    box-shadow: 0 0 10px #fecfb4;
-    color: black;
-  }
-  
-  /* Brighten placeholder on focus */
-  .search:focus::placeholder {
-    color: black;
-  }
+.table tbody tr:nth-child(even) {
+  background-color: #FFC3A0;
+  cursor: pointer;
+  border: none;
+}
 
-  .footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 1rem;
-  }
+.table tbody tr:nth-child(even):hover {
+  background-color: #FFC3A0;
+}
 
+.table tbody tr:nth-child(odd):hover {
+  background-color: #FFC3A0;
+}
 
+.toolbar {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+}
 
-  /* Container styling */
+.alertButton {
+  padding: 0.5rem 1rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.alertButton:hover {
+  background: #0056b3;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.head {
+  background-color: #FFC3A0;
+  color: white;
+  font-weight: bold;
+  border-radius: 1rem;
+}
+
+.tbody {
+  border-radius: 1rem;
+}
+
+.actions button {
+  margin: 0 5px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: transform 0.1s;
+}
+
+.actions button:hover {
+  transform: scale(1.1);
+}
+
+.likeButton {
+  color: white;
+  font-size: 0.5rem;
+}
+
+.editButton {
+  color: orange;
+}
+
+.removeButton {
+  color: #dc3545;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table th, .table td {
+  border: none;
+  padding: 12px;
+  text-align: left;
+}
+
+.tbody tr {
+  background: #f9f9f9;
+}
+
+.tbody tr:nth-child(even) {
+  background: #eaeaea;
+}
+
+.search {
+  width: 180px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 2px solid #FFC3A0;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease;
+  background: transparent;
+  color: black;
+  border-radius: 1.5rem;
+}
+
+.search::placeholder {
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.search:focus {
+  border: 2px solid #fecfb4;
+  box-shadow: 0 0 8px rgba(254, 207, 180, 0.6);
+  color: black;
+  width: 220px;
+}
+
+.search:focus::placeholder {
+  color: #999;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1.5rem 0 0;
+  margin-top: 1.5rem;
+  flex-wrap: nowrap;
+}
+
+/* Container styling */
 :global(.ant-pagination) {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
+  margin: 0;
   background-color: transparent;
 }
 
@@ -213,7 +203,6 @@
   transform: scale(1.1);
 }
 
-
 /* Hover effect on arrows */
 :global(.ant-pagination-prev:hover),
 :global(.ant-pagination-next:hover) {
@@ -222,9 +211,271 @@
   transform: scale(1.1);
 }
 
-  
-  
+.rowsButton {
+  color: white;
+  background: transparent;
+  border: none;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  padding: 8px 16px;
+  white-space: nowrap;
+}
 
+.rowsButton:hover {
+  background: rgba(255, 195, 160, 0.3);
+  color: black;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.scoreColumn {
+  font-weight: bold;
+  text-align: center !important;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .container {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1.2rem;
+    margin-bottom: 4rem;
+  }
   
+  .toolbar {
+    justify-content: flex-start;
+    margin-bottom: 1.5rem;
+  }
   
+  .search {
+    width: 160px;
+  }
   
+  .search:focus {
+    width: 180px;
+  }
+  
+  .tableWrapper {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    margin: 0 0.5rem;
+  }
+  
+  .table {
+    min-width: 500px;
+  }
+  
+  .footer {
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 0.5rem 0;
+    margin-top: 1rem;
+  }
+  
+  .hideOnMobile {
+    display: none;
+  }
+  
+  .table th, 
+  .table td {
+    padding: 1rem 0.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem 0.8rem;
+  }
+  
+  .table th, 
+  .table td {
+    padding: 0.9rem 0.6rem;
+    font-size: 14px;
+  }
+  
+  .search {
+    font-size: 14px;
+    padding: 7px 12px;
+    width: 140px;
+  }
+  
+  .search:focus {
+    width: 160px;
+  }
+  
+  :global(.ant-pagination-item) {
+    min-width: 30px;
+    height: 30px;
+    margin: 0 3px;
+  }
+  
+  :global(.ant-pagination-item a) {
+    font-size: 12px;
+  }
+  
+  .rowsButton {
+    padding: 7px 14px;
+    font-size: 13px;
+  }
+  
+  .footer {
+    padding: 1rem 0.3rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    /* padding: 1rem 0.5rem; */
+    padding: 3rem;
+  }
+  
+  .table {
+    min-width: 400px;
+  }
+  
+  .table th, 
+  .table td {
+    padding: 0.8rem 0.5rem;
+    font-size: 13px;
+  }
+  
+  .scoreColumn {
+    font-size: 14px;
+  }
+  
+  .search {
+    font-size: 13px;
+    width: 130px;
+    padding: 6px 10px;
+  }
+  
+  .search:focus {
+    width: 150px;
+  }
+  
+  .rowsButton {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  :global(.ant-pagination-item) {
+    min-width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .footer {
+    gap: 0.8rem;
+    padding: 1rem 0.2rem 0;
+  }
+  
+  :global(.ant-pagination) {
+    transform: scale(0.9);
+  }
+}
+
+/* For very small screens, make table cells stack */
+@media (max-width: 360px) {
+  .container {
+    padding: 0.8rem 0.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  .toolbar {
+    margin-bottom: 1.2rem;
+  }
+  
+  .tableWrapper {
+    overflow-x: visible;
+    margin: 0 0.3rem;
+  }
+  
+  .table {
+    display: block;
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .table thead {
+    display: none;
+  }
+  
+  .table tbody {
+    display: block;
+    width: 100%;
+  }
+  
+  .table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 0.5rem;
+  }
+  
+  .table td {
+    display: block;
+    text-align: right;
+    padding: 10px 15px;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 195, 160, 0.3);
+  }
+  
+  .table td:last-child {
+    border-bottom: none;
+  }
+  
+  .table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 15px;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  .table tbody tr:nth-child(odd),
+  .table tbody tr:nth-child(even) {
+    background-color: #fecfb4;
+  }
+  
+  .scoreColumn {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .footer {
+    margin-top: 1rem;
+    gap: 0.5rem;
+    padding: 0.5rem 0.2rem 0;
+    flex-wrap: nowrap;
+  }
+  
+  .rowsButton {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+  
+  :global(.ant-pagination) {
+    transform: scale(0.85);
+    margin-left: -5px;
+  }
+}
+
+

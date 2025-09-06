@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import styles from './Register.module.css';
-import {url} from '../../../url'
+import { url } from '../../../url';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -126,7 +126,7 @@ const Register = () => {
             {/* Personal Info Column */}
             <div className={styles.formColumn}>
               <div className={styles.inputGroup}>
-                <label>Full Name</label>
+                <label>Full Name <span className={styles.required}>*</span></label>
                 <input
                   type="text"
                   name="name"
@@ -139,7 +139,7 @@ const Register = () => {
               </div>
 
               <div className={styles.inputGroup}>
-                <label>Roll Number</label>
+                <label>Roll Number <span className={styles.required}>*</span></label>
                 <input
                   type="text"
                   name="rollNumber"
@@ -152,7 +152,7 @@ const Register = () => {
               </div>
 
               <div className={styles.inputGroup}>
-                <label>Year</label>
+                <label>Year <span className={styles.required}>*</span></label>
                 <select
                   name="year"
                   value={formData.year}
@@ -172,13 +172,25 @@ const Register = () => {
                 <div className={styles.fileUpload}>
                   <label className={styles.uploadLabel}>
                     {profilePicturePreview ? (
-                      <img src={profilePicturePreview} alt="Preview" className={styles.previewImage} />
+                      <div className={styles.previewContainer}>
+                        <img src={profilePicturePreview} alt="Preview" className={styles.previewImage} />
+                        <button 
+                          type="button" 
+                          className={styles.removeImage}
+                          onClick={() => {
+                            setProfilePicture(null);
+                            setProfilePicturePreview('');
+                          }}
+                        >
+                          ×
+                        </button>
+                      </div>
                     ) : (
                       <div className={styles.uploadPlaceholder}>
                         <svg className={styles.uploadIcon} viewBox="0 0 24 24">
                           <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
                         </svg>
-                        <span>Upload Photo</span>
+                        <span>Upload Photo (Max 2MB)</span>
                       </div>
                     )}
                     <input
@@ -195,27 +207,29 @@ const Register = () => {
             {/* Academic Info Column */}
             <div className={styles.formColumn}>
               <div className={styles.inputGroup}>
-                <label>Branch</label>
-                <div className={styles.radioGroup}>
-                  {branches.map(branch => (
-                    <label key={branch} className={styles.radioLabel}>
-                      <input
-                        type="radio"
-                        name="branch"
-                        value={branch}
-                        checked={formData.branch === branch}
-                        onChange={handleChange}
-                      />
-                      <span className={styles.radioButton}></span>
-                      {branch}
-                    </label>
-                  ))}
+                <label>Branch <span className={styles.required}>*</span></label>
+                <div className={styles.branchesContainer}>
+                  <div className={styles.radioGroup}>
+                    {branches.map(branch => (
+                      <label key={branch} className={styles.radioLabel}>
+                        <input
+                          type="radio"
+                          name="branch"
+                          value={branch}
+                          checked={formData.branch === branch}
+                          onChange={handleChange}
+                        />
+                        <span className={styles.radioButton}></span>
+                        {branch}
+                      </label>
+                    ))}
+                  </div>
                 </div>
                 {errors.branch && <span className={styles.error}>{errors.branch}</span>}
               </div>
 
               <div className={styles.inputGroup}>
-                <label>Programme</label>
+                <label>Programme <span className={styles.required}>*</span></label>
                 <div className={styles.radioGroup}>
                   {programmes.map(programme => (
                     <label key={programme} className={styles.radioLabel}>
@@ -235,7 +249,7 @@ const Register = () => {
               </div>
 
               <div className={styles.inputGroup}>
-                <label>Email</label>
+                <label>Email <span className={styles.required}>*</span></label>
                 <input
                   type="email"
                   name="email"
@@ -251,7 +265,7 @@ const Register = () => {
             {/* Password Column */}
             <div className={styles.formColumn}>
               <div className={styles.inputGroup}>
-                <label>Password</label>
+                <label>Password <span className={styles.required}>*</span></label>
                 <input
                   type="password"
                   name="password"
@@ -264,7 +278,7 @@ const Register = () => {
               </div>
 
               <div className={styles.inputGroup}>
-                <label>Confirm Password</label>
+                <label>Confirm Password <span className={styles.required}>*</span></label>
                 <input
                   type="password"
                   name="checkPassword"
@@ -278,6 +292,10 @@ const Register = () => {
             </div>
           </div>
 
+          <div className={styles.termsContainer}>
+            <p>By registering, you agree to our <a href="/terms" className={styles.link}>Terms of Service</a> and <a href="/privacy" className={styles.link}>Privacy Policy</a></p>
+          </div>
+
           <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
             {isSubmitting ? (
               <>
@@ -286,6 +304,10 @@ const Register = () => {
               </>
             ) : 'Register Now'}
           </button>
+          
+          <div className={styles.loginRedirect}>
+            <p>Already have an account? <a href="/login" className={styles.link}>Login here</a></p>
+          </div>
         </form>
       </div>
     </div>
