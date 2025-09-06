@@ -178,7 +178,7 @@ const StudentProfile = () => {
 
               <h3 className={styles.attendanceHistoryTitle}>Attendance History</h3>
               <div className={styles.attendanceList}>
-                {studentData.attendance.map((record) => (
+                {studentData?.attendance?.map((record) => (
                   <div key={record._id} className={styles.attendanceItem}>
                     <span className={styles.attendanceDate}>{record.date}</span>
                     <span className={`${styles.attendanceStatus} ${record.status === 'Present' ? styles.statusPresent : styles.statusAbsent}`}>
