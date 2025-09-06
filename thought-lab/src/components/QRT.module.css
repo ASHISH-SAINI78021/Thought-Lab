@@ -10,24 +10,41 @@
   --highlight: #e8f5e9;
 }
 
+/* Simulate viewport meta tag behavior */
+.responsiveMeta::before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+}
+
 .pageWrapper {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
   margin: 0;
-  padding: 0;
+  padding: 20px;
   color: var(--text);
   line-height: 1.6;
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-size: 16px; /* Base font size for better mobile readability */
 }
 
 .container {
   max-width: 900px;
-  margin: 40px auto;
+  margin: 0 auto;
   background: var(--card-bg);
-  padding: 40px;
+  padding: 30px;
   border-radius: 20px;
   box-shadow: 0 15px 30px rgba(0,0,0,0.1);
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .container::before {
@@ -43,10 +60,11 @@
 .container h1 {
   text-align: center;
   color: var(--primary);
-  font-size: 2.5em;
-  margin-bottom: 30px;
+  font-size: clamp(2rem, 5vw, 2.5rem); /* Increased minimum size */
+  margin-bottom: 25px;
   position: relative;
   padding-bottom: 15px;
+  line-height: 1.3;
 }
 
 .container h1::after {
@@ -63,18 +81,19 @@
 
 .container h2 {
   color: var(--secondary);
-  margin-top: 40px;
+  margin-top: 35px;
   padding: 10px 15px;
   border-radius: 8px;
   background-color: rgba(21, 101, 192, 0.1);
   display: inline-block;
-  font-size: 1.5em;
+  font-size: clamp(1.5rem, 4vw, 1.8rem); /* Increased sizes */
   transform: translateX(-15px);
 }
 
 .container p {
-  font-size: 1.1em;
+  font-size: clamp(1.1rem, 3vw, 1.2rem); /* Increased sizes */
   margin-bottom: 20px;
+  line-height: 1.7; /* Improved line height for readability */
 }
 
 .container ul {
@@ -85,7 +104,7 @@
 
 .container ul li {
   margin: 15px 0;
-  font-size: 1.1em;
+  font-size: clamp(1.1rem, 3vw, 1.2rem); /* Increased sizes */
   background: var(--light-bg);
   padding: 15px 20px;
   border-radius: 10px;
@@ -93,6 +112,7 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  line-height: 1.6; /* Improved line height */
 }
 
 .container ul li:hover {
@@ -103,7 +123,7 @@
 .container ul li::before {
   content: "🌱";
   margin-right: 10px;
-  font-size: 1.2em;
+  font-size: 1.3em; /* Slightly larger icon */
 }
 
 .highlight {
@@ -132,6 +152,11 @@
   padding: 0;
   margin-top: 0;
   transform: none;
+  font-size: clamp(1.5rem, 4vw, 1.8rem); /* Increased to match other h2 */
+}
+
+.highlight p {
+  font-size: clamp(1.1rem, 3vw, 1.2rem); /* Increased to match other paragraphs */
 }
 
 .footer {
@@ -143,6 +168,8 @@
   background: rgba(233, 245, 233, 0.5);
   border-radius: 10px;
   position: relative;
+  font-size: clamp(1rem, 3vw, 1.1rem); /* Increased sizes */
+  line-height: 1.7; /* Improved line height */
 }
 
 .footer::before {
@@ -190,18 +217,114 @@
   100% { transform: scale(1); }
 }
 
-/* Responsive */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .container {
-    padding: 25px;
-    margin: 20px;
+  .pageWrapper {
+    padding: 15px;
+    font-size: 17px; /* Slightly larger base font size for tablets */
   }
   
-  .container h1 {
-    font-size: 2em;
+  .container {
+    padding: 25px 20px;
+    margin: 0;
+    border-radius: 15px;
+  }
+  
+  .container h2 {
+    transform: none;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-left: 0;
+    margin-right: 0;
+    font-size: 1.6rem; /* Explicit size for medium screens */
+  }
+  
+  .container ul li {
+    padding: 15px; /* Slightly more padding for touch targets */
+    font-size: 1.1rem; /* Explicit size for medium screens */
+  }
+  
+  .highlight {
+    padding: 20px;
   }
   
   .footer::before, .footer::after {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageWrapper {
+    padding: 12px;
+    font-size: 18px; /* Even larger base font size for mobile */
+  }
+  
+  .container {
+    padding: 22px 18px;
+    border-radius: 12px;
+  }
+  
+  .container h1 {
+    padding-bottom: 12px;
+    margin-bottom: 22px;
+    font-size: 2.2rem; /* Explicit size for small screens */
+  }
+  
+  .container h1::after {
+    width: 90px;
+  }
+  
+  .container h2 {
+    padding: 12px 15px;
+    font-size: 1.5rem; /* Explicit size for small screens */
+    margin-top: 30px;
+  }
+  
+  .container p {
+    font-size: 1.15rem; /* Explicit size for small screens */
+    margin-bottom: 22px;
+  }
+  
+  .container ul li {
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-size: 1.1rem; /* Explicit size for small screens */
+  }
+  
+  .highlight {
+    padding: 18px 16px;
+    margin: 28px 0;
+  }
+  
+  .highlight h2 {
+    font-size: 1.5rem; /* Match other h2 sizes */
+  }
+  
+  .highlight p {
+    font-size: 1.15rem; /* Match other paragraph sizes */
+  }
+  
+  .footer {
+    padding: 18px;
+    margin-top: 45px;
+    font-size: 1.05rem; /* Explicit size for small screens */
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .container ul li:hover {
+    transform: none;
+  }
+  
+  .container ul li:active {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  }
+  
+  /* Increase tap target sizes for mobile */
+  .container ul li {
+    min-height: 24px; /* Minimum height for better touch */
   }
 }

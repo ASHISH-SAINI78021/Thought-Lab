@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import 'animate.css'; // Import the library's CSS
-import styles from './QRT.module.css'; // Import our local styles
+import 'animate.css';
+import styles from './QRT.module.css';
 
 const QRTInfoPage = () => {
   useEffect(() => {
-    const elementsToAnimate = document.querySelectorAll(`[${'data-animate'}]`);
+    const elementsToAnimate = document.querySelectorAll(`[data-animate]`);
     
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -21,12 +21,12 @@ const QRTInfoPage = () => {
       observer.observe(element);
     });
 
-    
     return () => observer.disconnect();
-  }, []); 
+  }, []);
 
   return (
     <div className={styles.pageWrapper}>
+      <div className={styles.responsiveMeta}></div> {/* For responsive meta tag simulation */}
       <div className={`${styles.container} animate__animated animate__fadeIn`}>
         <h1><span className={styles.floatingIcon}>🌱</span> Thought Lab Quick Response Team (QRT)</h1>
         <p data-animate="animate__fadeIn">To strengthen our community and ensure the smooth execution of Thought Lab's activities, we are launching the <strong>Quick Response Team (QRT)</strong>.</p>
@@ -35,7 +35,7 @@ const QRTInfoPage = () => {
         <p data-animate="animate__fadeIn">The QRT will be a dynamic team of dedicated members responsible for ensuring that all initiatives of Thought Lab run efficiently and with creativity.</p>
         
         <h2 data-animate="animate__fadeIn">🛠️ Responsibilities</h2>
-        <ul data-animate-on-scroll>
+        <ul>
           <li data-animate="animate__fadeInUp">📢 Preparing advertisements for newspapers and social media</li>
           <li data-animate="animate__fadeInUp" style={{animationDelay: '0.1s'}}>📸 Capturing event moments through photos and videos</li>
           <li data-animate="animate__fadeInUp" style={{animationDelay: '0.2s'}}>💡 Proposing innovative ideas for club growth</li>
@@ -75,4 +75,3 @@ const QRTInfoPage = () => {
 };
 
 export default QRTInfoPage;
-
