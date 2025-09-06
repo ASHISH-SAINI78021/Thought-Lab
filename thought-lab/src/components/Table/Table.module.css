@@ -390,7 +390,7 @@
 }
 
 /* For very small screens, make table cells stack */
-@media (max-width: 360px) {
+/* @media (max-width: 360px) {
   .container {
     padding: 0.8rem 0.5rem;
     margin-bottom: 3rem;
@@ -476,6 +476,6 @@
     transform: scale(0.85);
     margin-left: -5px;
   }
-}
+} */
 
 
