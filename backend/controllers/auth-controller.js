@@ -45,11 +45,11 @@ class AuthController {
         role: role || "user", // Default is user
       });
 
-      await Leaderboard.create({user:user_id, score:100});
+      await Leaderboard.create({user:student._id, score:100});
       let leaderboard = await Leaderboard.find().populate("user", "name rollNumber branch year").sort({score : -1});
 
       const io = req.app.get("io");
-      io.emit("leaderboard-data", leaderboard);
+      io.emit("leaderboard-update", leaderboard);
 
       // Generate token
       const token = jwt.sign(
