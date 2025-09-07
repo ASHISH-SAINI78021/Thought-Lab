@@ -479,3 +479,16 @@
 } */
 
 
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 16px;
+}
+
+.loadingContainer p {
+  margin: 0;
+  color: #666;
+}
