@@ -116,10 +116,10 @@ function Navbar() {
 
           {auth?.user && (
             <div className="mobile-user-info">
-              <Avatar src={auth.user.profilePicture} size={64} />
+              <Avatar src={auth?.user?.profilePicture} size={64} />
               <div className="user-details">
-                <p className="user-name">{auth.user.name}</p>
-                <p className="user-role">{auth.user.role}</p>
+                <p className="user-name">{auth?.user?.name}</p>
+                <p className="user-role">{auth?.user?.role}</p>
               </div>
             </div>
           )}

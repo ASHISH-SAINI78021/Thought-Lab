@@ -36,6 +36,7 @@ import QRTInfoPage from "./components/QRT";
 import Developer from "./components/Developer/Developer";
 import Alumni from "./components/Alumni/Almuni";
 import StudentProfile from "./components/StudentProfile/StudentProfile";
+import MeditationTracker from "./components/MeditationTracker/MeditationTracker";
 
 const App = () => {
   useEffect(() => {
@@ -67,6 +68,7 @@ const App = () => {
         <Route path="/all-events" element={<GameList />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/quick-response-team" element={<QRTInfoPage />} />
+        
 
         {/* Authenticated Student Routes */}
         <Route
@@ -124,6 +126,12 @@ const App = () => {
             </PrivateRoute>
           }
         />
+
+        <Route path="/meditation-tracker" element={
+          <PrivateRoute>
+            <MeditationTracker />
+          </PrivateRoute>
+        } />
       </Routes>
     </BrowserRouter>
   );

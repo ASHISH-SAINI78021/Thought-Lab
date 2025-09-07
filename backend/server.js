@@ -68,6 +68,7 @@ const io = new Server(server, {
 });
 
 // Pass io to routes/controllers if needed
+global.io = io;
 app.set("io", io);
 
 let activeUserCount = 0;

@@ -7,6 +7,7 @@ const upload = require("./middlewares/upload-middleware.js");
 const BlogController = require('./controllers/blog-controller.js');
 const CounsellorController = require('./controllers/counsellor-controller.js');
 const GameController = require('./controllers/game-controller.js');
+const MeditationController = require('./controllers/meditation-controller.js');
 const { isLogin } = require('./middlewares/auth-middleware.js');
 const { isAdmin } = require('./middlewares/admin-middleware.js');
 const { isSuperAdmin } = require('./middlewares/superAdmin-middleware.js');
@@ -51,5 +52,9 @@ router.put('/promote-to-admin', isLogin, isSuperAdmin, AuthController.promotion)
 // admin dashboard
 router.get('/all-users-count', isLogin, isAdmin, AuthController.countAllUsers);
 router.get('/all-events-count', isLogin, isAdmin, GameController.totalEvents);
+
+// meditation session routes
+router.get('/meditation-history', MeditationController.meditationHistory);
+router.post('/meditation-session/:id', MeditationController.meditationSession);
 
 module.exports = router;

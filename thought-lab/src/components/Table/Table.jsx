@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pagination, Dropdown, Button, Space } from "antd";
+import { Pagination, Dropdown, Button, Space, Spin } from "antd";
 import { url } from "../../url";
 import styles from "./Table.module.css";
 import { useNavigate } from "react-router-dom";
@@ -20,30 +20,50 @@ const Table = ({ screen }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const [auth, setAuth] = useAuth();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // WebSocket initiation
   useEffect(() => {
+    setLoading(true);
     socket.emit("get-initial-leaderboard");
 
     // Initial load
     socket.on("leaderboard-data", (leaderboard) => {
       setData(leaderboard);
+      setLoading(false);
     });
 
     // Listen for leaderboard updates
     socket.on("leaderboard-update", (leaderboard) => {
       setData(leaderboard);
+      setLoading(false);
     });
+
+    // Handle connection errors
+    socket.on("connect_error", () => {
+      console.log("Connection error");
+      setLoading(false);
+    });
+
+    // Set timeout to stop loading if no response
+    const timeoutId = setTimeout(() => {
+      if (loading) {
+        setLoading(false);
+        console.log("Loading timeout");
+      }
+    }, 10000);
 
     return () => {
       socket.off("leaderboard-data");
       socket.off("leaderboard-update");
+      socket.off("connect_error");
+      clearTimeout(timeoutId);
     };
   }, []);
 
   // Filter based on user details
-  const filteredData = data.filter((item) => {
+  const filteredData = data?.filter((item) => {
     const name = item?.user?.name || "";
     const rollNumber = item?.user?.rollNumber || "";
     return (
@@ -53,7 +73,7 @@ const Table = ({ screen }) => {
   });
 
   // Pagination
-  const paginatedData = filteredData.slice(
+  const paginatedData = filteredData?.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
@@ -72,68 +92,79 @@ const Table = ({ screen }) => {
           className={styles.search}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          disabled={loading}
         />
       </div>
 
       <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr className={styles.head}>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Roll Number</th>
-              <th className={styles.hideOnMobile}>Branch</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody className={styles.tbody}>
-            {paginatedData.length > 0 ? (
-              paginatedData.map((item, index) => (
-                <tr
-                  key={item._id}
-                  onClick={() => navigate(`/leaderboard/${item.user?._id}`)}
-                  className={styles.tableRow}
-                >
-                  <td data-label="ID">{(currentPage - 1) * rowsPerPage + index + 1}</td>
-                  <td data-label="Name">{item.user?.name || "-"}</td>
-                  <td data-label="Roll Number">{item.user?.rollNumber || "-"}</td>
-                  <td data-label="Branch" className={styles.hideOnMobile}>{item.user?.branch || "-"}</td>
-                  <td data-label="Score" className={styles.scoreColumn}>{item.score}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={20} style={{ textAlign: "center" }}>
-                  No matching records found.
-                </td>
+        {loading ? (
+          <div className={styles.loadingContainer}>
+            <Spin size="large" />
+            <p>Loading leaderboard data...</p>
+          </div>
+        ) : (
+          <table className={styles.table}>
+            <thead>
+              <tr className={styles.head}>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Roll Number</th>
+                <th className={styles.hideOnMobile}>Branch</th>
+                <th>Score</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className={styles.tbody}>
+              {paginatedData?.length > 0 ? (
+                paginatedData?.map((item, index) => (
+                  <tr
+                    key={item._id}
+                    onClick={() => navigate(`/leaderboard/${item.user?._id}`)}
+                    className={styles.tableRow}
+                  >
+                    <td data-label="ID">{(currentPage - 1) * rowsPerPage + index + 1}</td>
+                    <td data-label="Name">{item.user?.name || "-"}</td>
+                    <td data-label="Roll Number">{item.user?.rollNumber || "-"}</td>
+                    <td data-label="Branch" className={styles.hideOnMobile}>{item.user?.branch || "-"}</td>
+                    <td data-label="Score" className={styles.scoreColumn}>{item.score}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={20} style={{ textAlign: "center" }}>
+                    {searchTerm ? "No matching records found." : "No data available."}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
 
-      <div className={styles.footer}>
-        <div className={styles.rows}>
-          <Dropdown menu={{ items: rowsOptions, onClick: handleMenuClick }}>
-            <Button className={styles.rowsButton}>
-              <Space style={{color : "black"}}>
-              Rows per page: {rowsPerPage}
-              </Space>
-            </Button>
-          </Dropdown>
+      {!loading && (
+        <div className={styles.footer}>
+          <div className={styles.rows}>
+            <Dropdown menu={{ items: rowsOptions, onClick: handleMenuClick }}>
+              <Button className={styles.rowsButton} disabled={filteredData?.length === 0}>
+                <Space style={{color : "black"}}>
+                  Rows per page: {rowsPerPage}
+                </Space>
+              </Button>
+            </Dropdown>
+          </div>
+          <div className={styles.pagination}>
+            <Pagination
+              current={currentPage}
+              total={filteredData?.length}
+              pageSize={rowsPerPage}
+              onChange={(page) => setCurrentPage(page)}
+              showSizeChanger={false}
+              responsive={true}
+              size="small"
+              disabled={filteredData?.length === 0}
+            />
+          </div>
         </div>
-        <div className={styles.pagination}>
-          <Pagination
-            current={currentPage}
-            total={filteredData.length}
-            pageSize={rowsPerPage}
-            onChange={(page) => setCurrentPage(page)}
-            showSizeChanger={false}
-            responsive={true}
-            size="small"
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 };
