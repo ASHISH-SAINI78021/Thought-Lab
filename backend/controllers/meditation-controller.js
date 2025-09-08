@@ -30,9 +30,9 @@ class MeditationController {
     async meditationSession(req, res) {
         try {
             const { id } = req.params; // This is userId
-            const { score, details, duration, date } = req.body;
+            const { score, details, duration, date, name, profilePicture } = req.body;
             
-            if (!details) {
+            if (!name || !details) {
                 console.log("All fields are required");
                 return res.status(400).json({
                     success: false,
@@ -62,9 +62,10 @@ class MeditationController {
                     .sort({ score: -1 });
                 global.io.emit("leaderboard-update", fullLeaderboard);
             }
+
     
             // Create meditation session
-            const session = await meditationService.meditationSession(scoreValue, details, duration, date);
+            const session = await meditationService.meditationSession(scoreValue, details, duration, date, profilePicture, name);
     
             return res.json({
                 success: true,

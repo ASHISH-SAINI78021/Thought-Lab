@@ -55,6 +55,6 @@ router.get('/all-events-count', isLogin, isAdmin, GameController.totalEvents);
 
 // meditation session routes
 router.get('/meditation-history', MeditationController.meditationHistory);
-router.post('/meditation-session/:id', isLogin, MeditationController.meditationSession);
+router.post('/meditation-session/:id', isLogin,  MeditationController.meditationSession);
 
 module.exports = router;

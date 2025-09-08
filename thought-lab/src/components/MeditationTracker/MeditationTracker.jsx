@@ -34,6 +34,7 @@ const MeditationTracker = () => {
         const data = await response.json();
         if (data.success){
           setHistory(data?.sessions);
+          console.log(data?.sessions);
         }
         else {
           toast.success("No meditation sessions yet");
@@ -91,12 +92,15 @@ const MeditationTracker = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization : auth?.token
         },
         body: JSON.stringify({
           score,
           details,
           duration: details.includes('minutes') ? parseInt(details.split(' ')[0]) : 0,
-          date: new Date().toISOString()
+          date: new Date().toISOString(),
+          profilePicture : auth?.user?.profilePicture,
+          name : auth?.user?.name
         }),
       });
       
@@ -195,8 +199,8 @@ const MeditationTracker = () => {
             ) : history.length > 0 ? (
               history.map((item, index) => (
                 <div key={index} className={styles.historyItem}>
-                  <div><Avatar src={auth?.user?.profilePicture} size={30} /></div>
-                  <div className={styles.historyScore} >{auth?.user?.name}</div>
+                  <div><Avatar src={item?.profilePicture} size={30} /></div>
+                  <div className={styles.historyScore} >{item?.name}</div>
                   {/* <div className={styles.historyDate}>
                     {new Date(item.date).toLocaleDateString('en-US', { 
                       month: 'short', 

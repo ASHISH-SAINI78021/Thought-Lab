@@ -6,14 +6,18 @@ class meditationService {
         return sessions;
     }
 
-    async meditationSession(score, details, duration, date){
+    async meditationSession(score, details, duration, date, profilePicture, name){
         const newSession = new Meditation({
             score,
             details,
             duration,
-            date: date || new Date()
+            date: date || new Date(),
+            profilePicture : profilePicture,
+            name : name
         });
         await newSession.save();
+
+        // console.log(newSession);
 
         return newSession;
     }
