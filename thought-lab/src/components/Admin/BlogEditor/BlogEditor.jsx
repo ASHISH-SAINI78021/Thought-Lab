@@ -12,14 +12,35 @@ import { Upload } from "antd";
 import { useBlog } from "../../../Context/blog";
 import { url } from "../../../url";
 import { message } from "antd";
+import { useAuth } from "../../../Context/auth";
 
 const { Dragger } = Upload;
 
 const BlogEditor = ({ check }) => {
   const [blog, setBlog] = useBlog();
   const [previewMode, setPreviewMode] = useState(false);
+  const [thumbnailPreviewUrl, setThumbnailPreviewUrl] = useState("");
   const navigate = useNavigate();
   const quill = useRef();
+  const [auth, setAuth] = useAuth();
+
+  // Handle thumbnail changes and create preview URL
+  useEffect(() => {
+    if (blog.thumbnail && blog.thumbnail instanceof File) {
+      const objectUrl = URL.createObjectURL(blog.thumbnail);
+      setThumbnailPreviewUrl(objectUrl);
+      
+      // Clean up the object URL when component unmounts or thumbnail changes
+      return () => {
+        URL.revokeObjectURL(objectUrl);
+      };
+    } else if (typeof blog.thumbnail === "string") {
+      // If thumbnail is already a URL string (e.g., when editing an existing blog)
+      setThumbnailPreviewUrl(blog.thumbnail);
+    } else {
+      setThumbnailPreviewUrl("");
+    }
+  }, [blog.thumbnail]);
 
   const handleChange = (field, value) => {
     const updatedBlog = { ...blog, [field]: value };
@@ -31,6 +52,11 @@ const BlogEditor = ({ check }) => {
     name: "file",
     multiple: false,
     beforeUpload: (file) => {
+      // Validate that the file is an image
+      if (!file.type.startsWith('image/')) {
+        message.error('You can only upload image files!');
+        return false;
+      }
       handleChange("thumbnail", file);
       return false;
     },
@@ -47,6 +73,12 @@ const BlogEditor = ({ check }) => {
   
     input.onchange = () => {
       const file = input.files[0];
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        message.error('You can only upload image files!');
+        return;
+      }
+      
       const reader = new FileReader();
   
       reader.onload = () => {
@@ -123,10 +155,21 @@ const BlogEditor = ({ check }) => {
   ];
 
   const handleSubmit = async () => {
+    // Validate required fields
+    if (!blog.title || !blog.value) {
+      message.error("Title and content are required!");
+      return;
+    }
+    
     const formData = new FormData();
     formData.append("title", blog.title);
     formData.append("tags", blog.tags);
-    formData.append("thumbnail", blog.thumbnail);
+    
+    // Only append thumbnail if it's a File object
+    if (blog.thumbnail instanceof File) {
+      formData.append("thumbnail", blog.thumbnail);
+    }
+    
     formData.append("content", blog.value);
   
     try {
@@ -134,6 +177,9 @@ const BlogEditor = ({ check }) => {
   
       let response = await fetch(`${url}/add-blog`, {
         method: "POST",
+        headers : {
+          Authorization : auth?.token
+        },
         body: formData,
       });
   
@@ -141,7 +187,6 @@ const BlogEditor = ({ check }) => {
         response = await response.json();
         if (response.success) {
           message.success({ content: "Blog published successfully!", key: "updatable", duration: 2 });
-          localStorage.removeItem("blog");
           // setTimeout(() => navigate("/your-blog-list-or-home"), 2000); // optional redirect
         } else {
           message.error({ content: "Failed to publish blog.", key: "updatable", duration: 2 });
@@ -198,9 +243,9 @@ const BlogEditor = ({ check }) => {
         </p>
       </Dragger>
 
-      {blog.thumbnail && (
+      {thumbnailPreviewUrl && (
         <div className={styles.thumbnailPreview}>
-          <img src={URL.createObjectURL(blog.thumbnail)} alt="Thumbnail" />
+          <img src={thumbnailPreviewUrl} alt="Thumbnail preview" />
         </div>
       )}
 
@@ -227,13 +272,13 @@ const BlogEditor = ({ check }) => {
       <div className={styles.btnGroup}>
         <button
           onClick={() => setPreviewMode(!previewMode)}
-          className="animate-button ml-[18px] text-[1.2em] rounded-full border-secondary text-secondary border-[1px] px-[2rem] py-[1vh] hover:border-primary hover:text-black"
+          className="animate-button ml-[18px] text-[1.2em] rounded-full border-secondary text-secondary border-[1px] px-[2rem] py-[1vh] hover:border-primary hover:text-black cursor-pointer"
         >
           {previewMode ? "Back to Edit" : "Preview"}
         </button>
         <button
           onClick={handleSubmit}
-          className="animate-button ml-[18px] text-[1.2em] rounded-full border-secondary text-secondary border-[1px] px-[2rem] py-[1vh] hover:border-primary hover:text-black"
+          className="animate-button ml-[18px] text-[1.2em] rounded-full border-secondary text-secondary border-[1px] px-[2rem] py-[1vh] hover:border-primary hover:text-black cursor-pointer"
         >
           Publish Blog
         </button>

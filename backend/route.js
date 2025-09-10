@@ -18,15 +18,22 @@ router.put('/api/increment-year' , UserController.incrementYear); // middleware
 router.post('/api/attendance-register', upload.single("image"), isLogin , attendanceController.register);
 router.post('/api/attendance-login', upload.single("image"), isLogin , attendanceController.login);
 
-router.get('/all-blogs' , BlogController.allBlogs);
-router.get('/all-blogs/:id' , BlogController.blog);
+
+
 router.get('/user/:id', AuthController.getUser);
 // router.put('/:id/like' , BlogController.likeBlog);
 // router.get('/:id' , BlogController.comment);
 
 
 // admin route
-router.post("/add-blog",upload.single("thumbnail"), isLogin, isAdmin, BlogController.addBlog);
+
+router.post('/blog/:id/react', isLogin, BlogController.reactToBlog);
+router.get('/blog/:id/reactions', isLogin, BlogController.getReactions);
+router.post('/blog/:blogId/comment', isLogin, BlogController.comment);
+
+router.get('/all-blogs' , BlogController.allBlogs);
+router.get('/all-blogs/:id' , BlogController.blog);
+router.post("/add-blog", upload.single("thumbnail"), isLogin, isAdmin, BlogController.addBlog);
 router.put("/blog/:id", isLogin, isAdmin, BlogController.updateBlog);
 
 

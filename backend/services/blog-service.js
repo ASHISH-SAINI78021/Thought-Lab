@@ -1,93 +1,149 @@
-const Blog = require("../Models/blog-model");
+// In your blog-service.js
+const Blog = require("../Models/blog-model.js");
 
 class BlogService {
-    async addBlog(data , thumbnail){
-        const {title , content , tags} = data;
-        // console.log("title : " , title);
-        // console.log("content : " , content);
-        // console.log("tags : " , tags);
-        // console.log("thumbnail : " , thumbnail);
-
-        if (!title || !content || !tags){
-            return ;
+    async addBlog(blogData) {
+        try {
+            const blog = new Blog(blogData);
+            return await blog.save();
+        } catch (error) {
+            throw error;
         }
-
-        const NewBlog = new Blog({
-            title : title,
-            content : content,
-            tags : tags,
-            thumbnail: `/storage/${thumbnail}`
-        });
-        await NewBlog.save();
-        return NewBlog;
     }
 
-    async allBlogs(){
-        const blogs = await Blog.find().sort({ createdAt: -1 });
-        return blogs;
+    async blog(id) {
+        try {
+            return await Blog.findById(id);
+        } catch (error) {
+            throw error;
+        }
     }
 
-    async likeBlog(id , userId){
-        if (!id){
-            return {
-                success : false,
-                message : "Id is required"
-            };
+    async allBlogs() {
+        try {
+            return await Blog.find().sort({ createdAt: -1 });
+        } catch (error) {
+            throw error;
         }
-        if (!userId){
-            return {
-                success : false,
-                message : "UserId is required"
-            };
-        }
-
-        const blog = await Blog.findById(id);
-
-        if (!blog.likes.includes(userId)){
-            blog.likes.push(userId);
-        }
-        else {
-            blog.likes = blog.likes.filter((id) => id !== userId)
-        }
-
-        await blog.save();
-
-        return {
-            success : true,
-            likes : blog.likes.length
-        };
     }
 
-    async comment(blogId){
-        if (!blogId){
+    async reactToBlog(blogId, userId, type) {
+        try {
+            const blog = await Blog.findById(blogId);
+            
+            if (!blog) {
+                throw new Error('Blog not found');
+            }
+            
+            // Check if user already reacted
+            const existingReactionIndex = blog.reactions.findIndex(
+                reaction => reaction.userId.toString() === userId
+            );
+            
+            if (existingReactionIndex !== -1) {
+                const existingReaction = blog.reactions[existingReactionIndex];
+                
+                // If clicking the same reaction again, remove it
+                if (existingReaction.type === type) {
+                    blog.reactions.splice(existingReactionIndex, 1);
+                    if (type === 'like') blog.likes -= 1;
+                    if (type === 'dislike') blog.dislikes -= 1;
+                } else {
+                    // If changing reaction type
+                    if (existingReaction.type === 'like') blog.likes -= 1;
+                    if (existingReaction.type === 'dislike') blog.dislikes -= 1;
+                    
+                    blog.reactions[existingReactionIndex].type = type;
+                    
+                    if (type === 'like') blog.likes += 1;
+                    if (type === 'dislike') blog.dislikes += 1;
+                }
+            } else {
+                // Add new reaction
+                blog.reactions.push({
+                    userId: userId,
+                    type: type
+                });
+                
+                if (type === 'like') blog.likes += 1;
+                if (type === 'dislike') blog.dislikes += 1;
+            }
+            
+            await blog.save();
+            
             return {
-                success : false,
-                message :  "BlogId is required"
+                likes: blog.likes,
+                dislikes: blog.dislikes,
+                userReaction: type
             };
+        } catch (error) {
+            throw error;
         }
-
-        const comment = await Blog.find({blogId : blogId});
-        
-        if (!comment){
-            return {
-                success : false,
-                message : "Comment doesn't exist"
-            };
-        }
-
-        return {
-            success : true,
-            comment
-        };
     }
 
-    async blog(id){
-        if (!id){
-            return ;
+    async getReactions(blogId) {
+        try {
+            const blog = await Blog.findById(blogId).populate('reactions.userId', 'username name');
+            
+            if (!blog) {
+                throw new Error('Blog not found');
+            }
+            
+            const likes = blog.reactions
+                .filter(reaction => reaction.type === 'like')
+                .map(reaction => reaction.userId);
+            
+            const dislikes = blog.reactions
+                .filter(reaction => reaction.type === 'dislike')
+                .map(reaction => reaction.userId);
+            
+            return { likes, dislikes };
+        } catch (error) {
+            throw error;
         }
+    }
 
-        const blog = await Blog.findById(id);
-        return blog;
+    async comment(blogId, userId, content) {
+        try {
+            const blog = await Blog.findById(blogId);
+            
+            if (!blog) {
+                throw new Error('Blog not found');
+            }
+            
+            blog.comments.push({
+                userId: userId,
+                content: content,
+                createdAt: new Date()
+            });
+            
+            await blog.save();
+            
+            // Return the last comment (the one just added)
+            return blog.comments[blog.comments.length - 1];
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateBlog(blogId, updateData) {
+        try {
+            return await Blog.findByIdAndUpdate(
+                blogId, 
+                updateData, 
+                { new: true, runValidators: true }
+            );
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async deleteBlog(blogId) {
+        try {
+            return await Blog.findByIdAndDelete(blogId);
+        } catch (error) {
+            throw error;
+        }
     }
 }
 

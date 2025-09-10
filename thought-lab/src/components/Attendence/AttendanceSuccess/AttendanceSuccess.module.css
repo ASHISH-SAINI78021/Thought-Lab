@@ -1,0 +1,268 @@
+/* AttendanceSuccess.module.css */
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:  #FFC3A0;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .successCard {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    max-width: 500px;
+    width: 100%;
+    animation: fadeInUp 0.8s ease-out;
+  }
+  
+  /* Checkmark Animation */
+  .checkmarkContainer {
+    margin-bottom: 30px;
+  }
+  
+  .checkmark {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+  }
+  
+  .checkmarkCircle {
+    stroke: #4CAF50;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+  }
+  
+  .checkmarkCheck {
+    transform-origin: 50% 50%;
+    stroke: #4CAF50;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-miterlimit: 10;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+  }
+  
+  /* Text Styles */
+  .successTitle {
+    color: #2d3748;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .successMessage {
+    color: #718096;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+  
+  /* Button Styles */
+  .homeButton {
+    background:  #FFC3A0;
+    color: black;
+    border: none;
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 
+      0 4px 15px rgba(102, 126, 234, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.2);
+  }
+  
+  .homeButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 8px 25px rgba(102, 126, 234, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.3);
+  }
+  
+  .homeButton:active {
+    transform: translateY(0);
+  }
+
+  .homeButton2 {
+    background:  #FFC3A0;
+    color: black;
+    border: none;
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 
+      0 4px 15px rgba(102, 126, 234, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.2);
+  }
+  
+  .homeButton2:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 8px 25px rgba(102, 126, 234, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.3);
+  }
+  
+  .homeButton2:active {
+    transform: translateY(0);
+  }
+  
+  .buttonIcon {
+    font-size: 1.2rem;
+  }
+  
+  /* Decorative Circles */
+  .decorativeCircle1 {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    z-index: -1;
+  }
+  
+  .decorativeCircle2 {
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(69, 160, 73, 0.1) 100%);
+    z-index: -1;
+  }
+  
+  .decorativeCircle3 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    z-index: -1;
+  }
+  
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes stroke {
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .successCard {
+      padding: 40px 24px;
+      margin: 20px;
+    }
+    
+    .successTitle {
+      font-size: 2rem;
+    }
+    
+    .successMessage {
+      font-size: 1rem;
+    }
+    
+    .checkmark {
+      width: 60px;
+      height: 60px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .successTitle {
+      font-size: 5rem;
+    }
+    
+    .homeButton {
+      padding: 14px 28px;
+      font-size: 5rem;
+    }
+
+    .successMessage {
+        font-size: 3rem;
+    }
+    
+    .successCard {
+      padding: 30px 20px;
+    }
+    .buttonIcon {
+        font-size: 3rem;
+    }
+    .checkmark {
+      width: 50px;
+      height: 50px;
+    }
+    .homeButton2 {
+        padding: 12px 24px;
+        font-size: 3rem;
+        margin-top: 1rem;
+    }
+  }
+  
+  /* For very small devices */
+  @media (max-width: 320px) {
+    .successTitle {
+      font-size: 5rem;
+    }
+
+    .buttonIcon {
+        font-size: 3rem;
+    }
+    
+    .successMessage {
+      font-size: 3rem;
+    }
+    
+    .homeButton {
+      padding: 12px 24px;
+      font-size: 3rem;
+    }
+    .homeButton2 {
+        padding: 12px 24px;
+        font-size: 3rem;
+        margin-top: 1rem;
+    }
+  }

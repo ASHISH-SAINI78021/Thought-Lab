@@ -298,6 +298,9 @@
   }
   
   @media (max-width: 480px) {
+    .historyItem {
+      overflow: scroll;
+    }
     .container {
       margin: 10px;
       border-radius: 12px;
@@ -386,6 +389,9 @@
   
   /* For very small devices */
   @media (max-width: 320px) {
+    .historyItem{
+      overflow: scroll;
+    }
     .header h1 {
       font-size: 18px;
     }

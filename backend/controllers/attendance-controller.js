@@ -6,6 +6,7 @@ faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
 const ExcelJS = require("exceljs");
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
+const Leaderboard = require("../Models/leaderboard-modal.js")
 
 const userService = require("../services/user-service.js");
 const User = require("../Models/user-model.js");
@@ -179,6 +180,7 @@ class Attendance {
             },
             { upsert: true, new: true, setDefaultsOnInsert: true }
           ).populate('user', 'name rollNumber branch year');
+          // console.log("leaderboardEntry : ", leaderboardEntry);
       
           // Emit updated full leaderboard to connected clients (populated & sorted)
           const io = req.app.get('io');

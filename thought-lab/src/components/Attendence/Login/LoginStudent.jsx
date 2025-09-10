@@ -144,7 +144,7 @@ const LoginStudent = () => {
       if (data?.success) {
         setAuth({ ...auth, token: data?.token });
         toast.success("Attendance successfully marked");
-        navigate("/");
+        navigate("/attendance-success");
       } else {
         toast.error(data.message || "Face not matched");
       }

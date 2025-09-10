@@ -27,6 +27,7 @@ const Blog = () => {
         console.log("Parsed response:", resData);
         
         if (resData.success) {
+          console.log(resData.blogs);
           setBlogs(resData.blogs);
         } else {
           throw new Error(resData.message || "Failed to fetch blogs");
@@ -100,7 +101,7 @@ const Blog = () => {
           onKeyPress={(e) => e.key === "Enter" && navigate(`/blog/${blog._id}`)}
         >
           <img
-            src={`${url}${blog.thumbnail}`}
+            src={`${blog.thumbnail}`}
             alt={blog.title || "Blog thumbnail"}
             className={styles.thumbnail}
             onError={(e) => {

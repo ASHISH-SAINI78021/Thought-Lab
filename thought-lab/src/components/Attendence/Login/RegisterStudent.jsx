@@ -154,7 +154,7 @@ const RegisterStudent = () => {
       if (data.success) {
         setAuth({ ...auth, token: data.token });
         toast.success("Registration successful!");
-        navigate('/mark-attendance');
+        navigate('/');
       } else {
         throw new Error(data.message || "Registration failed");
       }

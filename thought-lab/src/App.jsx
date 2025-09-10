@@ -37,6 +37,7 @@ import Developer from "./components/Developer/Developer";
 import Alumni from "./components/Alumni/Almuni";
 import StudentProfile from "./components/StudentProfile/StudentProfile";
 import MeditationTracker from "./components/MeditationTracker/MeditationTracker";
+import AttendanceSuccess from "./components/Attendence/AttendanceSuccess/AttendanceSuccess";
 
 const App = () => {
   useEffect(() => {
@@ -130,6 +131,11 @@ const App = () => {
         <Route path="/meditation-tracker" element={
           <PrivateRoute>
             <MeditationTracker />
+          </PrivateRoute>
+        } />
+        <Route path="/attendance-success" element={
+          <PrivateRoute>
+            <AttendanceSuccess />
           </PrivateRoute>
         } />
       </Routes>

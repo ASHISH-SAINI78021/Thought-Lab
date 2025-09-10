@@ -1,7 +1,6 @@
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const streamifier = require('streamifier');
 
 // Configure Cloudinary
 cloudinary.config({
@@ -18,15 +17,15 @@ const storage = new CloudinaryStorage({
     const folder = req.originalUrl.includes('register') 
       ? 'storage/registrations' 
       : 'storage/logins';
-      
+    
     return {
       folder: folder,
       allowed_formats: ['jpg', 'jpeg', 'png'],
       transformation: [{ width: 800, height: 800, crop: 'limit' }],
-      resource_type: 'auto'
+      resource_type: 'auto',
+      public_id: `${Date.now()}-${Math.round(Math.random() * 1E9)}` // Unique filename
     };
-  },
-  streamifier: streamifier
+  }
 });
 
 // Single multer instance for all routes
