@@ -134,9 +134,9 @@ const App = () => {
           </PrivateRoute>
         } />
         <Route path="/attendance-success" element={
-          <PrivateRoute>
+          // <PrivateRoute>
             <AttendanceSuccess />
-          </PrivateRoute>
+          // </PrivateRoute>
         } />
       </Routes>
     </BrowserRouter>
