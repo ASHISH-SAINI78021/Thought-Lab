@@ -40,7 +40,7 @@ const Home = () => {
                 challenges and celebrate your victories.
               </p>
               <div className="flex space-x-3 pt-11 items-center">
-                <Link
+                {/* <Link
                   to="/blogs"
                   className={`${buttonStyle} text-white hover:text-black`}
                   style={{
@@ -49,7 +49,7 @@ const Home = () => {
                   }}
                 >
                   Explore
-                </Link>
+                </Link> */}
                 <Link
                   to="/register"
                   className={`${buttonStyle} border-[1px] text-black hover:bg-primary hover:border-primary`}
@@ -57,7 +57,7 @@ const Home = () => {
                     borderColor: "#FFC3A0", // border-primary
                   }}
                 >
-                  Join Our Community
+                  Register
                 </Link>
                 <Link
                   to="/all-events"
@@ -87,13 +87,13 @@ const Home = () => {
                   Developer
                 </Link>
                  <Link
-                  to="/Almuni"
+                  to="/meditation-tracker"
                   className={`${buttonStyle} border-[1px] text-black hover:bg-primary hover:border-primary`}
                   style={{
                     borderColor: "#FFC3A0", // border-primary
                   }}
                 >
-                  Alumni
+                  Meditation Tracker
                 </Link>
               </div>
             </div>
