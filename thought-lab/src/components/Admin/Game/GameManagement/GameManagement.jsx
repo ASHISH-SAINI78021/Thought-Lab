@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './GameManagement.module.css';
 import GameForm from '../GameForm/GameForm';
 import { url } from "../../../../url";
+import {useAuth} from "../../../../Context/auth";
 
 const GameManagement = () => {
   const [games, setGames] = useState([]);
@@ -18,6 +19,7 @@ const GameManagement = () => {
   const [error, setError] = useState(null);
   // --- FIX: 1. Add state for a unique key ---
   const [formKey, setFormKey] = useState(0);
+  const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
 
   // Fetch games from API
@@ -48,7 +50,8 @@ const GameManagement = () => {
       const response = await fetch(`${url}/create-game`, {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json' 
+          'Content-Type': 'application/json' ,
+          Authorization : auth?.token
         },
         body: JSON.stringify(gameData)
       });
@@ -72,7 +75,8 @@ const GameManagement = () => {
       const response = await fetch(`${url}/update-game/${editingGame._id}`, {
         method: 'PUT',
         headers: { 
-          'Content-Type': 'application/json' 
+          'Content-Type': 'application/json' ,
+          Authorization : auth?.token
         },
         body: JSON.stringify(gameData)
       });
@@ -103,7 +107,10 @@ const GameManagement = () => {
     
     try {
       const response = await fetch(`${url}/delete-game/${gameId}`, { 
-        method: 'DELETE' 
+        method: 'DELETE',
+        headers : {
+          Authorization : auth?.token
+        }
       });
       
       if (!response.ok) {
