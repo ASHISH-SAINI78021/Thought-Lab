@@ -5,7 +5,7 @@
     max-width: 1000px;
     margin: 2rem auto;
     padding: 2rem;
-    background: #fff;
+    background: transparent;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -25,6 +25,12 @@
     background: linear-gradient(90deg, #4f46e5, #10b981);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+  .cameraSection {
+    gap: 10px;
+  }
+  .button {
+    margin: 1rem;
   }
   
   .subtitle {
@@ -337,6 +343,43 @@
   @keyframes spin {
     to {
       transform: rotate(360deg);
+    }
+  }
+
+
+  @media (max-width:500px){
+    .title {
+      font-size: 7rem;
+    }
+    .subtitle {
+      font-size: 5rem;
+    }
+    .container {
+      max-width: 1000px;
+      margin-top: 20rem;
+      padding: 2rem;
+      background-color: transparent;
+      border-radius: 16px;
+    }
+
+    .button {
+      font-size: 5rem;
+      margin: 1rem;
+    }
+    .cameraSection {
+      gap: 10px;
+    }
+    .stepNumber {
+      font-size: 3rem;
+    }
+    .stepTitle {
+      font-size: 3rem;
+    }
+    .instruction {
+      font-size: 3rem;
+    }
+    .formTitle, .label, .input, .linkText {
+      font-size: 3rem;
     }
   }
   

@@ -5,15 +5,16 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f3f4f6;
+  background-color: transparent;
   padding: 1rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  padding: 1rem;
 }
 
 .loginCard {
   width: 100%;
   max-width: 400px;
-  background-color: white;
+  background-color: transparent;
   border-radius: 0.75rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   padding: 2.5rem;
@@ -277,48 +278,58 @@
   }
   
   .loginTitle {
-    font-size: 1.5rem; /* Smaller title on mobile */
+    font-size: 7rem; /* Smaller title on mobile */
+  }
+  .inputLabel {
+    font-size: 5rem;
   }
 
   .loginSubtitle {
-    font-size: 0.875rem; /* Smaller subtitle */
+    font-size: 5rem; /* Smaller subtitle */
   }
 
   .loginForm {
-    gap: 1rem; /* Reduces space between form elements */
+    gap: 3rem; /* Reduces space between form elements */
   }
 
   .inputField {
-    padding: 0.625rem 0.625rem 0.625rem 2.25rem; /* Adjust padding for smaller screens */
-    font-size: 0.875rem;
+    padding: 3rem; /* Adjust padding for smaller screens */
+    font-size: 3rem;
   }
   
   .inputIcon,
   .eyeIcon {
-    width: 1.125rem;
-    height: 1.125rem;
+    width: 3rem;
+    height: 3rem;
   }
 
   .inputIcon {
-    left: 0.5rem;
+    left: 3rem;
   }
 
   .passwordToggle {
-    right: 0.5rem;
+    right: 2rem;
   }
 
   .loginButton {
-    padding: 0.625rem; /* Smaller button padding */
-    font-size: 0.875rem;
+    padding: 3rem; /* Smaller button padding */
+    font-size: 3rem;
   }
 
   .socialButtons {
     flex-direction: column; /* Stack social login buttons vertically */
-    gap: 0.75rem;
+    gap: 3rem;
   }
 
   .socialButton {
-    padding: 0.625rem;
-    font-size: 0.875rem;
+    padding: 3rem;
+    font-size: 3rem;
+  }
+
+  .footerLinks {
+    font-size: 3rem;
+  }
+  .loginContainer {
+    margin-top: 15rem;
   }
 }

@@ -1,0 +1,199 @@
+/* About.css */
+.aboutUs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    padding-top: 10vh;
+    margin-top: 3px;
+    padding-bottom: 15vh;
+    height: auto;
+    min-height: 100vh;
+    width: 100%;
+    z-index: -1;
+}
+
+.about-container {
+    width: 100%;
+    max-width: 1920px;
+    padding: 0 1.5rem;
+}
+
+.aboutUsWelcome {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    color: #2f3d61;
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    opacity: 0; /* Initially hidden for animation */
+}
+
+.aboutUsWelcome.mobile-visible {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    gap: 1.5rem;
+}
+
+.aboutUsHeading {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-weight: 600;
+    color: #2f3d61;
+    font-size: 2.25rem;
+    line-height: 1.2;
+    width: 100%;
+    margin-bottom: 0;
+    text-align: center;
+    opacity: 0; /* Initially hidden for animation */
+}
+
+.aboutUsHeading.mobile-visible {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.about-content-text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    text-align: justify;
+    width: 100%;
+    color: #4A4A4A;
+    font-size: 1rem;
+    padding-left: 0;
+}
+
+.aboutUsContent {
+    opacity: 0; /* Initially hidden for animation */
+}
+
+.aboutUsContent.mobile-visible {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.aboutUsImage {
+    width: 100%;
+    height: 30vh;
+    margin-top: 2rem;
+    border-radius: 1rem;
+    background-color: #f3f4f6; /* Light gray background as placeholder */
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .aboutUs {
+        padding-top: 25vh;
+        padding-bottom: 30vh;
+        height: 105vh;
+    }
+    
+    .about-container {
+        padding: 0 3rem;
+    }
+    
+    .aboutUsWelcome {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+    
+    .aboutUsWelcome.mobile-visible {
+        opacity: 0; /* Reset for desktop animations */
+    }
+    
+    .content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 0.5rem;
+        gap: 0;
+    }
+    
+    .aboutUsHeading {
+        font-size: 3rem;
+        width: 25rem;
+        text-align: left;
+        flex-shrink: 0;
+    }
+    
+    .aboutUsHeading.mobile-visible {
+        opacity: 0; /* Reset for desktop animations */
+    }
+    
+    .about-content-text {
+        width: 55%;
+        font-size: 1.125rem;
+        padding-left: 2rem;
+    }
+    
+    .aboutUsContent.mobile-visible {
+        opacity: 0; /* Reset for desktop animations */
+    }
+    
+    .aboutUsImage {
+        height: 50vh;
+        margin-top: 3.75rem;
+        border-radius: 1.875rem;
+    }
+}
+
+/* Large devices (desktops, 1024px and up) */
+@media (min-width: 1024px) {
+    .about-container {
+        padding: 0 5rem;
+    }
+    
+    .aboutUsWelcome {
+        font-size: 1.875rem;
+    }
+    
+    .aboutUsHeading {
+        font-size: 4rem;
+    }
+    
+    .about-content-text {
+        width: 47vw;
+        font-size: 1.25rem;
+        padding-left: 2.5rem;
+    }
+}
+
+/* Extra large devices (large desktops, 1280px and up) */
+@media (min-width: 1280px) {
+    .about-container {
+        padding: 0 15rem;
+    }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    .aboutUsWelcome,
+    .aboutUsHeading,
+    .aboutUsContent {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+
+@media (max-width:500px){
+    .aboutUsWelcome{
+        font-size: 8rem;
+    }
+    .aboutUsHeading {
+        font-size: 5rem;
+    }
+    .aboutUsContent {
+        font-size: 3rem;
+    }
+    .aboutUs {
+        padding-top: 0;
+        /* margin-top: -10vh; */
+    }
+}

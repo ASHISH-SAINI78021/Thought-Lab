@@ -1,115 +1,122 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
+    const [isMobile, setIsMobile] = useState(false);
+    
     useEffect(() => {
-        let aboutUs = gsap.utils.toArray(".aboutUs");
-        let aboutUsHeading = gsap.utils.toArray(".aboutUsHeading");
-        let aboutUsContent = gsap.utils.toArray(".aboutUsContent");
-        let aboutUsWelcome = gsap.utils.toArray(".aboutUsWelcome");
+        // Check if device is mobile
+        const checkMobile = () => {
+            const isMobileDevice = window.innerWidth < 768;
+            setIsMobile(isMobileDevice);
+        };
+        
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        
+        // Only run animations on non-mobile devices
+        if (!isMobile) {
+            let aboutUs = gsap.utils.toArray(".aboutUs");
+            let aboutUsHeading = gsap.utils.toArray(".aboutUsHeading");
+            let aboutUsContent = gsap.utils.toArray(".aboutUsContent");
+            let aboutUsWelcome = gsap.utils.toArray(".aboutUsWelcome");
 
-        gsap.to(aboutUs, {
-            opacity: 0,
-            scale: 0.8,
-            y: "-50%",
-            scrollTrigger: {
-                trigger: aboutUs,
-                start: "35% top",
-                end: "top -250%",
-                scrub: 0.2,
-                markers: true
-            },
-        });
-
-        gsap.fromTo(aboutUsHeading,
-            {
-                y: 100,
-                opacity: 0
-            },
-            {
-                delay: 2,
-                opacity: 1,
-                y: 0,
+            gsap.to(aboutUs, {
+                opacity: 0,
+                scale: 0.8,
+                y: "-50%",
                 scrollTrigger: {
                     trigger: aboutUs,
-                    start: "top 45%",
-                    end: "top 10%",
-                    scrub: 0.5,
+                    start: "35% top",
+                    end: "top -250%",
+                    scrub: 0.2,
+                    markers: false
                 },
             });
 
-        gsap.fromTo(aboutUsContent,
-            {
-                opacity: 0
-            },
-            {
-                opacity: 1,
-                delay: 4,
-                duration: 3,
-                y: 0,
-                scrollTrigger: {
-                    trigger: aboutUs,
-                    start: "top 55%",
-                    end: "top top",
-                    scrub: true,
+            gsap.fromTo(aboutUsHeading,
+                {
+                    y: 100,
+                    opacity: 0
                 },
-            });
+                {
+                    delay: 2,
+                    opacity: 1,
+                    y: 0,
+                    scrollTrigger: {
+                        trigger: aboutUs,
+                        start: "top 45%",
+                        end: "top 10%",
+                        scrub: 0.5,
+                    },
+                });
 
-        gsap.fromTo(aboutUsWelcome,
-            {
-                y: 200,
-                opacity: 0
-            },
-            {
-                opacity: 1,
-                delay: 4,
-                y: 0,
-                scrollTrigger: {
-                    trigger: aboutUs,
-                    start: "top 65%",
-                    end: "top 25%",
-                    scrub: 1,
+            gsap.fromTo(aboutUsContent,
+                {
+                    opacity: 0
                 },
-            });
-    });
-    useEffect(() => {
+                {
+                    opacity: 1,
+                    delay: 4,
+                    duration: 3,
+                    y: 0,
+                    scrollTrigger: {
+                        trigger: aboutUs,
+                        start: "top 55%",
+                        end: "top top",
+                        scrub: true,
+                    },
+                });
+
+            gsap.fromTo(aboutUsWelcome,
+                {
+                    y: 200,
+                    opacity: 0
+                },
+                {
+                    opacity: 1,
+                    delay: 4,
+                    y: 0,
+                    scrollTrigger: {
+                        trigger: aboutUs,
+                        start: "top 65%",
+                        end: "top 25%",
+                        scrub: 1,
+                    },
+                });
+        }
+        
         return () => {
+            window.removeEventListener('resize', checkMobile);
             ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
         }
-    }, [])
+    }, [isMobile]);
+
     return (
-        <div className="aboutUs flex justify-center items-ce top-0 pt-[25vh] mt-[3px] pb-[30vh] h-[105vh]">
-            <div className="px-[15rem]">
-                <p
-                    className="aboutUsWelcome font-sans"
-                    style={{ color: "#2f3d61" }} // secondary
-                >
+        <div className="aboutUs">
+            <div className="about-container">
+                <p className={`aboutUsWelcome ${isMobile ? 'mobile-visible' : ''}`}>
                     Welcome to Thought Lab
                 </p>
-                <div className="content w-fit justify-between flex mt-[8px]">
-                    <h1
-                        className="aboutUsHeading font-display font-semibold text-[4rem] leading-[1] flex-shrink-0 w-[25rem]"
-                        style={{ color: "#2f3d61" }} // secondary
-                    >
+                <div className="content">
+                    <h1 className={`aboutUsHeading ${isMobile ? 'mobile-visible' : ''}`}>
                         Who We Are?
                     </h1>
-                    <div
-                        className="font-sans pl-[40px] text-justify w-[47vw]"
-                        style={{ color: "#4A4A4A" }} // text
-                    >
-                        <p className="aboutUsContent">
+                    <div className="about-content-text">
+                        <p className={`aboutUsContent ${isMobile ? 'mobile-visible' : ''}`}>
                             Thought Lab is a supportive platform for students and young
                             adults, making mental wellness approachable and actionable.
-                            "We’re committed to creating a safe space where everyone feels
+                            "We're committed to creating a safe space where everyone feels
                             heard, supported, and empowered to prioritize their mental
                             well-being."
                         </p>
                     </div>
                 </div>
-                <div className="aboutUsImage w-full h-[50vh] mt-[60px] rounded-[30px]"></div>
+                <div className="aboutUsImage"></div>
             </div>
         </div>
     )

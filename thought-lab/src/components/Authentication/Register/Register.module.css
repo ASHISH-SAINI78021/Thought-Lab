@@ -9,9 +9,7 @@
 }
 
 .card {
-  background: white;
   border-radius: 20px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 1000px;
   padding: 2.5rem;
@@ -27,7 +25,6 @@
   left: 0;
   right: 0;
   height: 6px;
-  background: linear-gradient(90deg, #3a7bd5, #00d2ff);
 }
 
 .header {
@@ -313,8 +310,8 @@ input:focus, select:focus {
 .submitButton {
   width: 100%;
   padding: 1.1rem;
-  background: linear-gradient(90deg, #3a7bd5, #00d2ff);
-  color: white;
+  background: #FFC3A0;
+  color: black;
   border: none;
   border-radius: 12px;
   font-size: 1.1rem;
@@ -379,26 +376,38 @@ input:focus, select:focus {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 500px) {
   .container {
-    padding: 0.5rem;
+    padding: 3rem;
   }
   
   .card {
-    padding: 1.5rem;
-    margin: 0.5rem;
+    padding: 3rem;
+    margin: 3rem;
   }
   
   .header h1 {
-    font-size: 1.8rem;
+    font-size: 5rem;
   }
   
   .header p {
-    font-size: 1rem;
+    font-size: 3rem;
   }
   
   input, select {
-    padding: 0.8rem 1rem;
+    padding: 3rem;
+  }
+ 
+  .inputGroup label, .inputGroup input {
+    font-size: 3rem;
+  }
+
+  .termsContainer p, .loginRedirect p {
+    font-size: 3rem;
+  }
+
+  .submitButton p {
+    font-size: 3rem;
   }
   
   .radioGroup {

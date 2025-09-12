@@ -409,6 +409,12 @@ body.mobile-menu-open {
 }
 
 @media (max-width : 500px){
+  .mobile-nav-link {
+    font-size: 5rem;
+  }
+  .user-name, .user-role {
+    font-size: 3rem;
+  }
   .nav-links{
     font-size: 5rem;
   }
@@ -418,10 +424,13 @@ body.mobile-menu-open {
   li {
     font-size: 5rem;
   }
+  .logo-text {
+    font-size: 5rem;
+  }
 }
 
 /* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
+/* @media (prefers-reduced-motion: reduce) {
   .navbar-logo,
   .logo-icon,
   .nav-link,
@@ -442,4 +451,4 @@ body.mobile-menu-open {
     transform: none;
     font-size: 5rem;
   }
-}
+} */

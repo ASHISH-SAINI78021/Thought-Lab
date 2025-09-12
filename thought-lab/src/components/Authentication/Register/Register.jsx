@@ -302,7 +302,7 @@ const Register = () => {
                 <span className={styles.spinner}></span>
                 Registering...
               </>
-            ) : 'Register Now'}
+            ) : <p>Register Now</p>}
           </button>
           
           <div className={styles.loginRedirect}>

@@ -110,3 +110,18 @@
 }
 
 
+
+@media (max-width:500px) {
+  .blogList {
+    margin:1rem;
+  }
+  .details h1 {
+    font-size: 5rem;
+  }
+  .details p {
+    font-size: 2rem;
+  }
+  .details span {
+    font-size: 2rem;
+  }
+}

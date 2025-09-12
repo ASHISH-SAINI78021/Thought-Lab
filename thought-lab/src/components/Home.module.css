@@ -1,0 +1,223 @@
+.container {
+    width: 100%;
+    overflow: hidden;
+    z-index: 1000;
+  }
+  
+  .heroSection {
+    position: relative;
+    padding: 0 1rem;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0px;
+  }
+  
+  .heroContent {
+    position: absolute;
+    bottom: -5px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .heroImageContainer {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  
+  .heroImage {
+    height: 65vh;
+    max-height: 500px;
+    min-height: 300px;
+    object-fit: contain;
+    margin-top: -20vh;
+    animation: riseUp 1s ease-out forwards;
+  }
+  
+  .heroText {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  
+  .heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    line-height: 0.9;
+    color: #2f3d61;
+    animation: riseUp 1s ease-out forwards;
+  }
+  
+  .subtitle {
+    text-align: justify;
+    font-family: sans-serif;
+    font-size: 1rem;
+    padding: 10px;
+    animation: riseUpDelayed 1.2s ease-out forwards;
+  }
+  
+  .buttonsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-top: 2rem;
+    align-items: center;
+  }
+  
+  .button {
+    transition: all 0.4s;
+    font-size: 1.125rem;
+    font-family: sans-serif;
+    border-radius: 9999px;
+    padding: 0.75rem 2rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+  
+  .primaryButton {
+    composes: button;
+    background-color: #2f3d61;
+    color: white;
+    border: 1px solid #2f3d61;
+  }
+  
+  .primaryButton:hover {
+    background-color: #FFC3A0;
+    color: black;
+    border-color: #FFC3A0;
+  }
+  
+  .secondaryButton {
+    composes: button;
+    border: 1px solid #FFC3A0;
+    color: black;
+  }
+  
+  .secondaryButton:hover {
+    background-color: #FFC3A0;
+    border-color: #FFC3A0;
+  }
+  
+  .footer {
+    background-color: #D5E8D4;
+    z-index: 100000;
+    width: 100%;
+  }
+  
+  @keyframes riseUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes riseUpDelayed {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    50% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Medium devices (tablets, 768px and up) */
+  @media (min-width: 768px) {
+    .heroSection {
+      padding: 0 2rem;
+    }
+    
+    .heading {
+      font-size: 4rem;
+    }
+    
+    .heroContent {
+      flex-direction: row;
+    }
+    
+    .heroImageContainer {
+      width: 40%;
+      margin-bottom: 0;
+    }
+    
+    .heroText {
+      width: 60%;
+      margin-left: 2rem;
+    }
+  }
+  
+  /* Large devices (desktops, 1024px and up) */
+  @media (min-width: 1024px) {
+    .heroSection {
+      padding: 0 6.25rem; /* 100px */
+    }
+    
+    .heading {
+      font-size: 5rem;
+    }
+    
+    .heroText {
+      margin-left: 6.25rem; /* 100px */
+    }
+  }
+  
+  /* Extra large devices (large desktops, 1200px and up) */
+  @media (min-width: 1200px) {
+    .heroText {
+      width: 50rem;
+    }
+  }
+
+  @media (max-width: 500px){
+    .heroImageContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .heroImage {
+        width: 50%;
+    }
+    .heroSection {
+        height: 30%;
+    }
+    .heading {
+        font-size: 10rem;
+        padding-left: 3rem;
+        padding-top: 0rem;
+        margin-top: 0rem;
+    }
+    .subtitle {
+        font-size: 3rem;
+    }
+    .secondaryButton {
+        font-size: 4rem;
+        padding: 2rem;
+        margin: 1rem;
+    }
+  }
+
+
+  
+
+  

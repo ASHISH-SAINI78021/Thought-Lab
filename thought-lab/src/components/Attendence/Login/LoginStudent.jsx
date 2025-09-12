@@ -159,8 +159,8 @@ const LoginStudent = () => {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Facial Recognition Login</h1>
-        <p className={styles.subtitle}>Secure and contactless authentication</p>
+        <h1 className={styles.title}>Mark Attendance</h1>
+        <p className={styles.subtitle}>Secure and contactless marking</p>
       </header>
 
       {/* Steps */}
