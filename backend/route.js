@@ -45,7 +45,7 @@ router.get("/counsellor/all-appointments", isLogin, isAdmin, CounsellorControlle
 
 
 // Attendance Route
-router.get("/download-attendance", isLogin, isAdmin, attendanceController.downloadAttendance); // admin route
+router.get("/download-attendance", attendanceController.downloadAttendance); // admin route
 
 // Game Route
 router.get('/all-games', GameController.getAllGames);// admin route
