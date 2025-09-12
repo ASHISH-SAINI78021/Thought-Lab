@@ -51,11 +51,11 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/developer" element={<Developer />} />
         <Route path='/almuni' element={<Alumni />} />
       </Routes>
-      <Navbar />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />

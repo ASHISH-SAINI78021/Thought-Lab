@@ -264,15 +264,15 @@
     padding: 22px 18px;
     border-radius: 12px;
   }
+
   
   .container h1 {
     padding-bottom: 12px;
     margin-bottom: 22px;
-    font-size: 2.2rem; /* Explicit size for small screens */
+    font-size: 5rem; /* Explicit size for small screens */
   }
-  
-  .container h1::after {
-    width: 90px;
+  .container p {
+    font-size: 3rem; /* Explicit size for small screens */
   }
   
   .container h2 {

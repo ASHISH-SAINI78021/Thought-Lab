@@ -307,3 +307,43 @@
       /* grid-template-columns: repeat(2, 1fr); */
     }
   }
+
+  @media (max-width: 500px){
+    .heroImage {
+      width: 50%;
+      height: auto;
+    }
+    .heroImageContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .heroText h1 {
+      font-size: 5rem;
+    }
+    .heroTitle {
+      font-size: 2rem;
+    }
+    .heroBio p {
+      font-size: 2rem;
+    }
+    .heroButtons {
+      font-size: 3rem;
+      padding: 1rem;
+    }
+    .sectionTitle {
+      font-size: 3rem;
+    }
+    .skillCard {
+      font-size: 3rem;
+    }
+    .projectContent h3 {
+      font-size: 3rem;
+    }
+    .projectContent p, .projectTech span, .projectLinks{
+      font-size: 3rem;
+    }
+    .contactText, .btn, .footer p {
+      font-size: 2rem;
+    }
+  }

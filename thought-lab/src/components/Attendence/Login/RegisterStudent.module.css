@@ -429,3 +429,40 @@
     width: 100%;
   }
 }
+
+
+@media (max-width:500px){
+  .title {
+    font-size: 7rem;
+  }
+  .subtitle {
+    font-size: 5rem;
+  }
+  .container {
+    max-width: 1000px;
+    margin-top: 20rem;
+    padding: 2rem;
+    background-color: transparent;
+    border-radius: 16px;
+  }
+
+  .button {
+    font-size: 5rem;
+    margin: 1rem;
+  }
+  .cameraSection {
+    gap: 10px;
+  }
+  .stepNumber, .stepLabel, .inputLabel, .textInput, .sectionTitle, .detailLabel, .detailValue {
+    font-size: 3rem;
+  }
+  .stepTitle {
+    font-size: 3rem;
+  }
+  .instruction {
+    font-size: 3rem;
+  }
+  .formTitle, .label, .input, .linkText {
+    font-size: 3rem;
+  }
+}

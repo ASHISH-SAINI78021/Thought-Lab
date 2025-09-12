@@ -61,6 +61,12 @@ const Home = () => {
                 >
                   Meditation Tracker
                 </Link>
+                <Link
+                  to="/attendance"
+                  className={styles.secondaryButton}
+                >
+                  Facial Registeration
+                </Link>
               </div>
             </div>
           </div>
