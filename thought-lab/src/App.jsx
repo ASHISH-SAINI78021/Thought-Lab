@@ -38,6 +38,8 @@ import Alumni from "./components/Alumni/Almuni";
 import StudentProfile from "./components/StudentProfile/StudentProfile";
 import MeditationTracker from "./components/MeditationTracker/MeditationTracker";
 import AttendanceSuccess from "./components/Attendence/AttendanceSuccess/AttendanceSuccess";
+import TaskAssigner from "./components/Admin/TaskAssigner/TaskAssigner";
+import TaskDashboard from "./components/TaskDashboard/TaskDashboard";
 
 const App = () => {
   useEffect(() => {
@@ -69,6 +71,8 @@ const App = () => {
         <Route path="/all-events" element={<GameList />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/quick-response-team" element={<QRTInfoPage />} />
+        <Route path="/task-manager" element={<TaskAssigner />} /> {/*admin route*/}
+        <Route path="/task-dashboard" element={<TaskDashboard />} /> {/*admin route*/}
         
 
         {/* Authenticated Student Routes */}

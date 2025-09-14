@@ -2,6 +2,8 @@
     width: 100%;
     overflow: hidden;
     z-index: 1000;
+    margin-top: -30vh;
+    background-color: #faf2eb;
   }
   
   .heroSection {
@@ -190,6 +192,9 @@
   }
 
   @media (max-width: 500px){
+    .container {
+      margin-top: 5vh;
+    }
     .heroImageContainer {
         display: flex;
         justify-content: center;
