@@ -74,7 +74,6 @@ const App = () => {
         <Route path="/quick-response-team" element={<QRTInfoPage />} />
         <Route path="/task-manager" element={<TaskAssigner />} /> {/*admin route*/}
         <Route path="/task-dashboard" element={<TaskDashboard />} /> {/*admin route*/}
-        <Route path="/meditation-timer" element={<MeditationTimer />} /> {/*admin route*/}
         
 
         {/* Authenticated Student Routes */}
@@ -125,6 +124,11 @@ const App = () => {
            </PrivateRoute>
           }
         />
+        <Route path="/meditation-timer" element={
+          <PrivateRoute>
+            <MeditationTimer />
+          </PrivateRoute>
+        } /> 
         <Route
           path="/blog/:id"
           element={
