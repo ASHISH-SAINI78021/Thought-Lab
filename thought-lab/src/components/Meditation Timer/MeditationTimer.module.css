@@ -1,0 +1,255 @@
+/* MeditationTimer.module.css */
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  .background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    z-index: -1;
+  }
+  
+  .timerCard {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.2);
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+  }
+  
+  .header {
+    margin-bottom: 40px;
+  }
+  
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2D3748;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+  }
+  
+  .header p {
+    color: #718096;
+    font-size: 16px;
+    margin: 0;
+    font-weight: 500;
+  }
+  
+  .timerContainer {
+    margin-bottom: 40px;
+  }
+  
+  .circularProgress {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    margin: 0 auto 30px;
+  }
+  
+  .progressSvg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+  
+  .progressBackground {
+    fill: none;
+    stroke: #EDF2F7;
+    stroke-width: 6;
+  }
+  
+  .progressCircle {
+    fill: none;
+    stroke: #667eea;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease;
+  }
+  
+  .timeDisplay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .time {
+    font-size: 48px;
+    font-weight: 700;
+    color: #2D3748;
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -1px;
+  }
+  
+  .timeLabel {
+    font-size: 14px;
+    color: #718096;
+    font-weight: 500;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+  
+  .controlBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  }
+  
+  .controlBtn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
+  }
+  
+  .playBtn {
+    background: #48BB78;
+    color: white;
+  }
+  
+  .playBtn:hover {
+    background: #38A169;
+  }
+  
+  .pauseBtn {
+    background: #ED8936;
+    color: white;
+  }
+  
+  .pauseBtn:hover {
+    background: #DD6B20;
+  }
+  
+  .resetBtn {
+    background: #E2E8F0;
+    color: #4A5568;
+  }
+  
+  .resetBtn:hover {
+    background: #CBD5E0;
+  }
+  
+  .status {
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .instruction {
+    color: #718096;
+    font-size: 16px;
+    font-style: italic;
+    margin: 0;
+  }
+  
+  .loading, .completed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .loading p, .completed p {
+    margin: 0;
+    font-weight: 500;
+  }
+  
+  .loading p {
+    color: #4A5568;
+  }
+  
+  .completed p {
+    color: #48BB78;
+  }
+  
+  .spinner {
+    font-size: 24px;
+    color: #667eea;
+    animation: spin 1s linear infinite;
+  }
+  
+  .checkIcon {
+    font-size: 32px;
+    color: #48BB78;
+  }
+  
+  .footer {
+    border-top: 1px solid #E2E8F0;
+    padding-top: 20px;
+  }
+  
+  .footer p {
+    color: #718096;
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .timerCard {
+      padding: 30px 20px;
+    }
+    
+    .circularProgress {
+      width: 220px;
+      height: 220px;
+    }
+    
+    .time {
+      font-size: 40px;
+    }
+    
+    .controls {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .controlBtn {
+      width: 140px;
+    }
+    .p {
+        color: #718096;
+        font-size: 3rem;
+        font-style: italic;
+        margin: 0;
+      }
+  }

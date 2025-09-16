@@ -40,6 +40,7 @@ import MeditationTracker from "./components/MeditationTracker/MeditationTracker"
 import AttendanceSuccess from "./components/Attendence/AttendanceSuccess/AttendanceSuccess";
 import TaskAssigner from "./components/Admin/TaskAssigner/TaskAssigner";
 import TaskDashboard from "./components/TaskDashboard/TaskDashboard";
+import MeditationTimer from "./components/Meditation Timer/MeditationTimer";
 
 const App = () => {
   useEffect(() => {
@@ -73,6 +74,7 @@ const App = () => {
         <Route path="/quick-response-team" element={<QRTInfoPage />} />
         <Route path="/task-manager" element={<TaskAssigner />} /> {/*admin route*/}
         <Route path="/task-dashboard" element={<TaskDashboard />} /> {/*admin route*/}
+        <Route path="/meditation-timer" element={<MeditationTimer />} /> {/*admin route*/}
         
 
         {/* Authenticated Student Routes */}

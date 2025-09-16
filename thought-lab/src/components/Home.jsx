@@ -67,6 +67,12 @@ const Home = () => {
                 >
                   Facial Registeration
                 </Link>
+                <Link
+                  to="/meditation-timer"
+                  className={styles.secondaryButton}
+                >
+                  Meditation Timer
+                </Link>
               </div>
             </div>
           </div>
