@@ -151,10 +151,10 @@ const RegisterStudent = () => {
 
       const data = await response.json();
 
-      if (data.success) {
-        setAuth({ ...auth, token: data.token });
+      if (data?.success) {
+        // setAuth({ ...auth, token: data.token });
         toast.success("Registration successful!");
-        navigate('/');
+        navigate('/face-recognition-success');
       } else {
         throw new Error(data.message || "Registration failed");
       }

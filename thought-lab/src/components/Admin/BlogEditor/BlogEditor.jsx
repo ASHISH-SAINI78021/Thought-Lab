@@ -1,290 +1,171 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import QuillEditor from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import styles from "./BlogEditor.module.css";
-import {
-  FullscreenOutlined,
-  FullscreenExitOutlined,
-  InboxOutlined,
-} from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import { Upload } from "antd";
-import { useBlog } from "../../../Context/blog";
-import { url } from "../../../url";
-import { message } from "antd";
-import { useAuth } from "../../../Context/auth";
+import React, { useState } from 'react';
+import { 
+  TextField, 
+  Button, 
+  Box, 
+  Typography, 
+  Paper,
+  Snackbar,
+  Alert,
+  CircularProgress,
+  Stack,
+  InputAdornment
+} from '@mui/material';
 
-const { Dragger } = Upload;
+// Importing icons for a richer UI
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import UpgradeIcon from '@mui/icons-material/Upgrade';
+import { useAuth } from '../../../Context/auth';
+import { promoteToAdmin } from '../../../http'; // Import the axios function
 
-const BlogEditor = ({ check }) => {
-  const [blog, setBlog] = useBlog();
-  const [previewMode, setPreviewMode] = useState(false);
-  const [thumbnailPreviewUrl, setThumbnailPreviewUrl] = useState("");
-  const navigate = useNavigate();
-  const quill = useRef();
+const PromoteUserForm = () => {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
   const [auth, setAuth] = useAuth();
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
 
-  // Handle thumbnail changes and create preview URL
-  useEffect(() => {
-    if (blog.thumbnail && blog.thumbnail instanceof File) {
-      const objectUrl = URL.createObjectURL(blog.thumbnail);
-      setThumbnailPreviewUrl(objectUrl);
-      
-      // Clean up the object URL when component unmounts or thumbnail changes
-      return () => {
-        URL.revokeObjectURL(objectUrl);
-      };
-    } else if (typeof blog.thumbnail === "string") {
-      // If thumbnail is already a URL string (e.g., when editing an existing blog)
-      setThumbnailPreviewUrl(blog.thumbnail);
-    } else {
-      setThumbnailPreviewUrl("");
-    }
-  }, [blog.thumbnail]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-  const handleChange = (field, value) => {
-    const updatedBlog = { ...blog, [field]: value };
-    setBlog(updatedBlog);
-    localStorage.setItem("blog", JSON.stringify(updatedBlog));
-  };
-
-  const props = {
-    name: "file",
-    multiple: false,
-    beforeUpload: (file) => {
-      // Validate that the file is an image
-      if (!file.type.startsWith('image/')) {
-        message.error('You can only upload image files!');
-        return false;
-      }
-      handleChange("thumbnail", file);
-      return false;
-    },
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
-    },
-  };
-
-  const imageHandler = useCallback(() => {
-    const input = document.createElement("input");
-    input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/*");
-    input.click();
-  
-    input.onchange = () => {
-      const file = input.files[0];
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        message.error('You can only upload image files!');
+    // Guard clause: Ensure user is authenticated before sending request
+    if (!auth?.token) {
+        setSnackbar({ open: true, message: 'Authentication error: No token found. Please log in.', severity: 'error' });
+        setLoading(false);
         return;
-      }
-      
-      const reader = new FileReader();
-  
-      reader.onload = () => {
-        const imageUrl = reader.result;
-        const quillEditor = quill.current.getEditor();
-        const range = quillEditor.getSelection(true);
-        quillEditor.insertEmbed(range.index, "image", imageUrl, "user");
-  
-        // Delay required for the image to be rendered
-        setTimeout(() => {
-          const img = quillEditor.container.querySelector(`img[src="${imageUrl}"]`);
-          if (img) {
-            img.style.maxWidth = "200px";
-            img.style.height = "auto";
-            img.style.display = "block";
-            img.style.margin = "10px auto";
-          }
-        }, 100);
-      };
-  
-      reader.readAsDataURL(file);
-    };
-  }, []);
-  
-
-  const modules = useMemo(
-    () => ({
-      toolbar: {
-        container: [
-          [{ font: [] }],
-          [{ size: ["small", false, "large", "huge"] }],
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          ["bold", "italic", "underline", "strike", "blockquote", "code-block"],
-          [{ color: [] }, { background: [] }],
-          [{ script: "sub" }, { script: "super" }],
-          [{ list: "ordered" }, { list: "bullet" }],
-          [{ indent: "-1" }, { indent: "+1" }],
-          [{ align: [] }],
-          ["link", "image", "video"],
-          ["clean"],
-        ],
-        handlers: {
-          image: imageHandler,
-        },
-      },
-      clipboard: {
-        matchVisual: true,
-      },
-    }),
-    [imageHandler]
-  );
-
-  const formats = [
-    "header",
-    "font",
-    "size",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "code-block",
-    "color",
-    "background",
-    "script",
-    "list",
-    "bullet",
-    "indent",
-    "align",
-    "link",
-    "image",
-    "video",
-    "clean",
-  ];
-
-  const handleSubmit = async () => {
-    // Validate required fields
-    if (!blog.title || !blog.value) {
-      message.error("Title and content are required!");
-      return;
     }
-    
-    const formData = new FormData();
-    formData.append("title", blog.title);
-    formData.append("tags", blog.tags);
-    
-    // Only append thumbnail if it's a File object
-    if (blog.thumbnail instanceof File) {
-      formData.append("thumbnail", blog.thumbnail);
-    }
-    
-    formData.append("content", blog.value);
-  
+
     try {
-      message.loading({ content: "Publishing blog...", key: "updatable" });
-  
-      let response = await fetch(`${url}/add-blog`, {
-        method: "POST",
-        headers : {
-          Authorization : auth?.token
-        },
-        body: formData,
+      // Use axios instead of fetch
+      const response = await promoteToAdmin({ email });
+
+      setSnackbar({
+        open: true,
+        message: response.data.message || 'User successfully promoted to Admin!',
+        severity: 'success'
       });
-  
-      if (response.ok) {
-        response = await response.json();
-        if (response.success) {
-          message.success({ content: "Blog published successfully!", key: "updatable", duration: 2 });
-          // setTimeout(() => navigate("/your-blog-list-or-home"), 2000); // optional redirect
-        } else {
-          message.error({ content: "Failed to publish blog.", key: "updatable", duration: 2 });
-        }
-      } else {
-        message.error({ content: "Server error. Please try again later.", key: "updatable", duration: 2 });
-      }
+      setEmail('');
+
     } catch (error) {
-      console.error("Submit error:", error);
-      message.error({ content: "An error occurred.", key: "updatable", duration: 2 });
+      setSnackbar({
+        open: true,
+        message: error.response?.data?.message || 'Failed to promote user.',
+        severity: 'error'
+      });
+    } finally {
+      setLoading(false);
     }
   };
-  
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   return (
-    <div className={styles.wrapper}>
-      {check === "true" ? (
-        <button onClick={() => navigate("/create-blog/full-screen")}>
-          <FullscreenOutlined style={{ fontSize: "1.5rem" }} />{" "}
-          <span className={styles.span}>Full Screen</span>
-        </button>
-      ) : (
-        <button onClick={() => navigate("/admin/create-blog/full-screen")}>
-          <FullscreenExitOutlined style={{ fontSize: "1.5rem" }} />{" "}
-          <span className={styles.span}>Exit Full Screen</span>
-        </button>
-      )}
+    <Paper 
+      elevation={4} 
+      sx={{ 
+        p: 4, 
+        maxWidth: 500, 
+        margin: 'auto', 
+        mt: 5,
+        borderRadius: '12px',
+        background: 'linear-gradient(to top right, #ffffff, #f4f6f8)'
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+        <AdminPanelSettingsIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />
+        <Box>
+          <Typography variant="h5" component="h1" fontWeight="600">
+            Admin Promotion
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Grant administrative privileges to a user.
+          </Typography>
+        </Box>
+      </Box>
 
-      <input
-        className={styles.input}
-        type="text"
-        placeholder="Blog Title"
-        value={blog.title}
-        onChange={(e) => handleChange("title", e.target.value)}
-      />
-
-      <input
-        className={styles.input}
-        type="text"
-        placeholder="Tags (comma separated)"
-        value={blog.tags}
-        onChange={(e) => handleChange("tags", e.target.value)}
-      />
-
-      <Dragger {...props}>
-        <p className="ant-upload-drag-icon">
-          <InboxOutlined />
-        </p>
-        <p className="ant-upload-text">
-          Click or drag file to this area to upload
-        </p>
-        <p className="ant-upload-hint">
-          Support for a single image. It won’t be uploaded now, just previewed.
-        </p>
-      </Dragger>
-
-      {thumbnailPreviewUrl && (
-        <div className={styles.thumbnailPreview}>
-          <img src={thumbnailPreviewUrl} alt="Thumbnail preview" />
-        </div>
-      )}
-
-      {!previewMode ? (
-        <>
-          <label className={styles.label}>Editor Content</label>
-          <QuillEditor
-            ref={(el) => (quill.current = el)}
-            className={styles.editor}
-            theme="snow"
-            value={blog.value}
-            formats={formats}
-            modules={modules}
-            onChange={(val) => handleChange("value", val)}
+      <Box component="form" onSubmit={handleSubmit} noValidate>
+        <Stack spacing={2.5}>
+          <TextField
+            label="User Email Address"
+            variant="outlined"
+            fullWidth
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            disabled={loading}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AlternateEmailIcon color="action" />
+                </InputAdornment>
+              ),
+            }}
           />
-        </>
-      ) : (
-        <div
-          className={styles.preview}
-          dangerouslySetInnerHTML={{ __html: blog.value }}
-        />
-      )}
+          <Box sx={{ position: 'relative' }}>
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              startIcon={<UpgradeIcon />}
+              disabled={loading || !email}
+              fullWidth
+              sx={{
+                py: 1.5,
+                fontWeight: 'bold',
+                transition: 'all 0.3s ease',
+                background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+                boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .3)',
+                '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 6px 10px 4px rgba(33, 203, 243, .3)',
+                }
+              }}
+            >
+              {loading ? 'Processing...' : 'Promote User'}
+            </Button>
+            {loading && (
+              <CircularProgress
+                size={28}
+                sx={{
+                  color: 'white',
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-14px',
+                  marginLeft: '-14px',
+                }}
+              />
+            )}
+          </Box>
+        </Stack>
+      </Box>
 
-      <div className={styles.btnGroup}>
-        <button
-          onClick={() => setPreviewMode(!previewMode)}
-          className="animate-button ml-[18px] text-[1.2em] rounded-full border-secondary text-secondary border-[1px] px-[2rem] py-[1vh] hover:border-primary hover:text-black cursor-pointer"
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          elevation={6}
+          variant="filled"
+          sx={{ width: '100%' }}
         >
-          {previewMode ? "Back to Edit" : "Preview"}
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="animate-button ml-[18px] text-[1.2em] rounded-full border-secondary text-secondary border-[1px] px-[2rem] py-[1vh] hover:border-primary hover:text-black cursor-pointer"
-        >
-          Publish Blog
-        </button>
-      </div>
-    </div>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </Paper>
   );
 };
 
-export default BlogEditor;
+export default PromoteUserForm;

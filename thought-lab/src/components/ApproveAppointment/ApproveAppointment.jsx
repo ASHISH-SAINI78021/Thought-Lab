@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './ApproveAppointment.module.css';
-import { url } from "../../url";
 import { useAuth } from '../../Context/auth';
+import { getAllAppointments, approveAppointment, rejectAppointment } from '../../http'; // Import axios functions
 
 const ApproveAppointment = () => {
   const [appointments, setAppointments] = useState([]);
@@ -14,17 +14,11 @@ const ApproveAppointment = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(`${url}/counsellor/all-appointments?status=${filter}`, {
-          headers : {
-            "Content-Type" : 'application/json',
-            Authorization : auth?.token
-          }
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.message || 'Failed to fetch appointments');
-        setAppointments(data.appointments || []);
+        // Use axios instead of fetch
+        const response = await getAllAppointments(filter);
+        setAppointments(response.data.appointments || []);
       } catch (err) {
-        setError(err.message);
+        setError(err.response?.data?.message || 'Failed to fetch appointments');
       } finally {
         setLoading(false);
       }
@@ -35,14 +29,12 @@ const ApproveAppointment = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const endpoint = newStatus === 'approved' 
-        ? `${url}/counsellor/${id}/approve` 
-        : `${url}/counsellor/${id}/reject`;
-      
-      const response = await fetch(endpoint, { method: 'PATCH' });
-      const data = await response.json();
-      
-      if (!response.ok) throw new Error(data.message || 'Action failed');
+      // Use axios functions based on status
+      if (newStatus === 'approved') {
+        await approveAppointment(id);
+      } else {
+        await rejectAppointment(id);
+      }
       
       setAppointments(prev => prev.map(appt => 
         appt._id === id ? { ...appt, status: newStatus } : appt
@@ -50,7 +42,7 @@ const ApproveAppointment = () => {
       
       setSelectedAppointment(null);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || 'Action failed');
     }
   };
 
@@ -96,7 +88,10 @@ const ApproveAppointment = () => {
           <span className={styles.stats}>
             {appointments.filter(a => a.status === 'Pending').length} pending
           </span>
-          <button className={styles.refreshButton}>
+          <button 
+            onClick={() => window.location.reload()} 
+            className={styles.refreshButton}
+          >
             ↻ Refresh
           </button>
         </div>

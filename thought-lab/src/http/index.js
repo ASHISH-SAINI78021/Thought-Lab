@@ -3,22 +3,91 @@ import {url} from '../url';
 
 const api = axios.create({
     baseURL : url , 
-    withCredentials : true , // this is for cookie
+    withCredentials : true , 
     headers : {
-        'Content-Type' : 'application/json' ,
         Accept : 'application/json'
     }
 });
 
+api.interceptors.request.use(
+    (config)=> {
+        const data = localStorage.getItem('auth');
+        let token;
+        if (data){
+            const d = JSON.parse(data);
+            if (d && d?.token) token = d.token; 
+        }
+
+        if (token){
+            config.headers.Authorization = token;
+        }
+
+        if (config.data instanceof FormData){
+            delete config.headers['Content-Type'];
+        }
+
+        return config;
+    }
+    ,(error)=>{
+        return Promise.reject(error);
+    }
+);
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response?.status === 401) {
+        localStorage.removeItem('auth');
+        window.location.href = '/login';
+      }
+      return Promise.reject(error);
+    }
+);
+
 
 // list of all end points
-export const sendOtp = (data)=> api.post('/api/send-otp' , {phone : data});
-export const verifyOtp = (data)=> api.post('/api/verify-otp' , data);
-export const activate = (data)=> api.post('/api/activate' , data);
-export const logout = ()=> api.post('/api/logout');
-
-
-
+export const sendOtp = (data) => api.post('/api/send-otp', {phone: data});
+export const verifyOtp = (data) => api.post('/api/verify-otp', data);
+export const activate = (data) => api.post('/api/activate', data);
+export const logout = () => api.post('/api/logout');
+export const addBlog = (data) => api.post('/add-blog', data, {
+    headers: {
+        'Content-Type': 'multipart/form-data'
+    }
+});
+export const studentAttendanceLogin = (data) => api.post('/api/attendance-login', data, {
+    headers : {
+        'Content-Type' : 'multipart/form-data' 
+    }
+});
+export const studentAttendanceRegister = (data) => api.post('/api/attendance-register', data, {
+    headers : {
+        'Content-Type' : 'multipart/form-data' 
+    }
+});
+export const studentRegister = (formData) => api.post('/register', formData, {
+    headers : {
+        'Content-Type' : 'multipart/form-data' 
+    }
+});
+export const promoteToAdmin = (data) => api.put('/promote-to-admin', data);
+export const createAppointment = (data) => api.post('/counsellor/create-appointment', data);
+export const getAllAppointments = (status) => api.get(`/counsellor/all-appointments?status=${status}`);
+export const approveAppointment = (id) => api.patch(`/counsellor/${id}/approve`);
+export const rejectAppointment = (id) => api.patch(`/counsellor/${id}/reject`);
+export const getAllGames = () => api.get('/all-games');
+export const createGame = (gameData) => api.post('/create-game', gameData);
+export const updateGame = (gameId, gameData) => api.put(`/update-game/${gameId}`, gameData);
+export const deleteGame = (gameId) => api.delete(`/delete-game/${gameId}`);
+export const userLogin = (credentials) => api.post('/login', credentials);
+export const getAllBlogs = () => api.get('/all-blogs');
+export const getBlogById = (blogId) => api.get(`/all-blogs/${blogId}`);
+export const reactToBlog = (blogId, type) => api.post(`/blog/${blogId}/react`, { type });
+export const getBlogReactions = (blogId) => api.get(`/blog/${blogId}/reactions`);
+export const addComment = (blogId, content) => api.post(`/blog/${blogId}/comment`, { content });
+export const saveMeditationSession = (userId, sessionData)=> api.post(`/meditation-session/${userId}`, sessionData);
+export const getMeditationHistory = () => api.get('/meditation-history');
+export const getStudentProfile = (id) => api.get(`/user/${id}`);
 
 
 export default api;

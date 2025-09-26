@@ -7,24 +7,20 @@ import styles from './CertificateGenerator.module.css';
 import NIT_Logo from '../../../assets/NIT-logo.png';
 
 const CertificateGenerator = () => {
-  // State for form data, with default values for a better initial view
   const [formData, setFormData] = useState({
     eventName: 'Thought Lab Workshop',
     participant: { name: 'John Doe', position: 'Active Participant' },
-    date: new Date().toISOString().split('T')[0], // Default to today
+    date: new Date().toISOString().split('T')[0],
     design: 'classic'
   });
 
-  // State to handle the loading spinner on the button
+
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // A ref to get direct access to the certificate preview DOM element
   const certificateRef = useRef(null);
 
-  // Handles changes for all form inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Special handling for nested participant object
     if (name.includes('participant.')) {
       const field = name.split('.')[1];
       setFormData(prev => ({
@@ -36,7 +32,6 @@ const CertificateGenerator = () => {
     }
   };
 
-  // The main function to generate the PDF
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsGenerating(true);
@@ -48,22 +43,20 @@ const CertificateGenerator = () => {
         return;
     }
 
-    // Use html2canvas to take a high-quality "screenshot" of the preview div
+    
     html2canvas(certificateElement, { 
-        scale: 3, // Higher scale results in a higher resolution image
-        useCORS: true // Needed to render external images like logos
+        scale: 3, 
+        useCORS: true 
     }).then(canvas => {
-      // Convert the canvas (our screenshot) to a PNG image
       const imgData = canvas.toDataURL('image/png');
       
-      // Create a new PDF document with dimensions matching our captured image
       const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'px',
         format: [canvas.width, canvas.height]
       });
 
-      // Add the image to the PDF and save it
+
       pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
       pdf.save(`certificate-${formData.participant.name.replace(/ /g, '_')}.pdf`);
 

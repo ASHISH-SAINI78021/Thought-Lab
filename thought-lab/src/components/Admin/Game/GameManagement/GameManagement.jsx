@@ -8,8 +8,14 @@ import {
 import { useNavigate } from 'react-router-dom';
 import styles from './GameManagement.module.css';
 import GameForm from '../GameForm/GameForm';
-import { url } from "../../../../url";
-import {useAuth} from "../../../../Context/auth";
+import { message } from 'antd';
+import { useAuth } from "../../../../Context/auth";
+import { 
+  getAllGames, 
+  createGame, 
+  updateGame, 
+  deleteGame 
+} from "../../../../http"; // Import your API functions
 
 const GameManagement = () => {
   const [games, setGames] = useState([]);
@@ -17,7 +23,6 @@ const GameManagement = () => {
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  // --- FIX: 1. Add state for a unique key ---
   const [formKey, setFormKey] = useState(0);
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
@@ -28,15 +33,16 @@ const GameManagement = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(`${url}/all-games`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setGames(data?.data);
+        const response = await getAllGames();
+        setGames(response.data?.data || []);
       } catch (error) {
         console.error('Error fetching games:', error);
-        setError(error.message);
+        
+        // 401 errors are automatically handled by interceptor
+        if (error.response?.status !== 401) {
+          setError(error.response?.data?.message || 'Failed to fetch games');
+          message.error('Failed to load games');
+        }
       } finally {
         setIsLoading(false);
       }
@@ -47,55 +53,49 @@ const GameManagement = () => {
   // Create a new game
   const handleCreate = async (gameData) => {
     try {
-      const response = await fetch(`${url}/create-game`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json' ,
-          Authorization : auth?.token
-        },
-        body: JSON.stringify(gameData)
-      });
+      setIsLoading(true);
+      const response = await createGame(gameData);
       
-      if (!response.ok) {
-        throw new Error('Failed to create game');
-      }
-      
-      const newGame = await response.json();
-      setGames(prevGames => [...prevGames, newGame?.data]);
+      setGames(prevGames => [...prevGames, response.data?.data]);
       setShowForm(false);
+      message.success('Game created successfully!');
     } catch (error) {
       console.error('Error creating game:', error);
-      setError(error.message);
+      
+      // 401 errors are automatically handled by interceptor
+      if (error.response?.status !== 401) {
+        setError(error.response?.data?.message || 'Failed to create game');
+        message.error(error.response?.data?.message || 'Failed to create game');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // Update an existing game
   const handleUpdate = async (gameData) => {
     try {
-      const response = await fetch(`${url}/update-game/${editingGame._id}`, {
-        method: 'PUT',
-        headers: { 
-          'Content-Type': 'application/json' ,
-          Authorization : auth?.token
-        },
-        body: JSON.stringify(gameData)
-      });
+      setIsLoading(true);
+      const response = await updateGame(editingGame._id, gameData);
       
-      if (!response.ok) {
-        throw new Error('Failed to update game');
-      }
-      
-      const updatedGame = await response.json();
       setGames(prevGames => 
         prevGames.map(game => 
-          game._id === updatedGame._id ? updatedGame : game
+          game._id === editingGame._id ? response.data?.data : game
         )
       );
       setEditingGame(null);
       setShowForm(false);
+      message.success('Game updated successfully!');
     } catch (error) {
       console.error('Error updating game:', error);
-      setError(error.message);
+      
+      // 401 errors are automatically handled by interceptor
+      if (error.response?.status !== 401) {
+        setError(error.response?.data?.message || 'Failed to update game');
+        message.error(error.response?.data?.message || 'Failed to update game');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -106,26 +106,30 @@ const GameManagement = () => {
     }
     
     try {
-      const response = await fetch(`${url}/delete-game/${gameId}`, { 
-        method: 'DELETE',
-        headers : {
-          Authorization : auth?.token
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to delete game');
-      }
+      await deleteGame(gameId);
       
       setGames(prevGames => prevGames.filter(game => game._id !== gameId));
+      message.success('Game deleted successfully!');
     } catch (error) {
       console.error('Error deleting game:', error);
-      setError(error.message);
+      
+      // 401 errors are automatically handled by interceptor
+      if (error.response?.status !== 401) {
+        message.error(error.response?.data?.message || 'Failed to delete game');
+      }
     }
   };
 
+  // Handle form submission
+  const handleSubmit = (gameData) => {
+    if (editingGame) {
+      handleUpdate(gameData);
+    } else {
+      handleCreate(gameData);
+    }
+  };
 
-  // // redirecting to certificate
+  // Redirect to certificate (commented out as in original)
   // const handleGame = (game)=> {
   //   navigate(`/admin/certificate/${game._id}`, {
   //     state: {
@@ -140,11 +144,11 @@ const GameManagement = () => {
   //   });
   // }
 
-  if (isLoading) {
+  if (isLoading && games.length === 0) {
     return <div className={styles.loading}>Loading games...</div>;
   }
 
-  if (error) {
+  if (error && games.length === 0) {
     return <div className={styles.error}>Error: {error}</div>;
   }
 
@@ -158,29 +162,35 @@ const GameManagement = () => {
             onClick={() => {
               setEditingGame(null);
               setShowForm(true);
-              // --- FIX: 2. Update the key every time we want to show the form ---
               setFormKey(prevKey => prevKey + 1);
             }}
+            disabled={isLoading}
           >
             <FullscreenOutlined className={styles.icon} />
-            <span style={{cursor : "pointer"}}> Create New Game</span>
+            <span style={{cursor: "pointer"}}> Create New Game</span>
           </button>
           <button 
             className={styles.actionButton}
             onClick={() => window.location.reload()}
+            disabled={isLoading}
           >
             <FullscreenExitOutlined className={styles.icon} />
-            <span style={{cursor : "pointer"}}> Refresh Games</span>
+            <span style={{cursor: "pointer"}}> Refresh Games</span>
           </button>
         </div>
       </div>
 
       {showForm && (
         <GameForm 
-          // --- FIX: 3. Apply the unique key to the component ---
           key={formKey}
-          onSubmit={editingGame ? handleUpdate : handleCreate}
+          onSubmit={handleSubmit}
           initialData={editingGame || {}}
+          isEditing={!!editingGame}
+          loading={isLoading}
+          onCancel={() => {
+            setShowForm(false);
+            setEditingGame(null);
+          }}
         />
       )}
 
@@ -191,26 +201,31 @@ const GameManagement = () => {
           </div>
         ) : (
           games?.map(game => (
-            <div key={game._id} className={styles.gameCard} onClick={()=> handleGame(game)}>
+            <div key={game._id} className={styles.gameCard}>
               <div className={styles.gameHeader}>
                 <h3>{game.name}</h3>
                 <div className={styles.gameActions}>
                   <button 
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card click event
                       setEditingGame(game);
                       setShowForm(true);
-                      // --- FIX: 4. Also update the key on edit ---
                       setFormKey(prevKey => prevKey + 1);
                     }}
                     className={styles.editButton}
                     aria-label="Edit game"
+                    disabled={isLoading}
                   >
                     <EditOutlined />
                   </button>
                   <button 
-                    onClick={() => handleDelete(game._id)}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card click event
+                      handleDelete(game._id);
+                    }}
                     className={styles.deleteButton}
                     aria-label="Delete game"
+                    disabled={isLoading}
                   >
                     <DeleteOutlined />
                   </button>
@@ -229,6 +244,7 @@ const GameManagement = () => {
                     target="_blank" 
                     rel="noopener noreferrer"
                     className={styles.formLink}
+                    onClick={(e) => e.stopPropagation()} // Prevent card click event
                   >
                     Open Form
                   </a>

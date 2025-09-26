@@ -64,4 +64,10 @@ router.get('/all-events-count', isLogin, isAdmin, GameController.totalEvents);
 router.get('/meditation-history', MeditationController.meditationHistory);
 router.post('/meditation-session/:id', isLogin,  MeditationController.meditationSession);
 
+router.get('/auth-status', isLogin, (req, res)=>{
+    return res.json({
+        success : true
+    });
+});
+
 module.exports = router;

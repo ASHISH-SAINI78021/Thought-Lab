@@ -2,291 +2,298 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../Context/auth";
 import { toast } from "react-hot-toast";
-import { url } from "../../../url";
+// Assuming the API call function is imported from an http utility file
+import { studentAttendanceLogin } from "../../../http"; 
 import styles from "./LoginStudent.module.css";
 import { FiArrowRight, FiSkipForward, FiCamera } from "react-icons/fi";
 
 const LoginStudent = () => {
-  // refs
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const streamRef = useRef(null); // authoritative stream ref
+  // refs
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const streamRef = useRef(null); // authoritative stream ref
 
-  // state
-  const [auth, setAuth] = useAuth();
-  const [capturedImage, setCapturedImage] = useState(null);
-  const [step, setStep] = useState(1);
-  const [rollNumber, setRollNumber] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isStreaming, setIsStreaming] = useState(false);
+  // state
+  const [auth, setAuth] = useAuth();
+  const [capturedImage, setCapturedImage] = useState(null);
+  const [step, setStep] = useState(1);
+  const [rollNumber, setRollNumber] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
 
-  const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // helper to stop stream and clear video element
-  const stopStream = (s) => {
-    try {
-      const active = s || streamRef.current || videoRef.current?.srcObject;
-      if (active && typeof active.getTracks === "function") {
-        active.getTracks().forEach((track) => {
-          try {
-            track.stop();
-          } catch (e) {
-            /* ignore */
-          }
-        });
-      }
-    } catch (err) {
-      console.warn("stopStream error", err);
-    } finally {
-      if (videoRef.current) {
-        try {
-          videoRef.current.srcObject = null;
-        } catch (e) {
-          /* ignore */
-        }
-      }
-      streamRef.current = null;
-      setIsStreaming(false);
-    }
-  };
+  // helper to stop stream and clear video element
+  const stopStream = (s) => {
+    try {
+      const active = s || streamRef.current || videoRef.current?.srcObject;
+      if (active && typeof active.getTracks === "function") {
+        active.getTracks().forEach((track) => {
+          try {
+            track.stop();
+          } catch (e) {
+            /* ignore */
+          }
+        });
+      }
+    } catch (err) {
+      console.warn("stopStream error", err);
+    } finally {
+      if (videoRef.current) {
+        try {
+          videoRef.current.srcObject = null;
+        } catch (e) {
+          /* ignore */
+        }
+      }
+      streamRef.current = null;
+      setIsStreaming(false);
+    }
+  };
 
-  // initialize webcam
-  const initWebcam = async () => {
-    try {
-      const s = await navigator.mediaDevices.getUserMedia({
-        video: { width: 1280, height: 720 },
-        audio: false,
-      });
-      streamRef.current = s;
-      if (videoRef.current) {
-        videoRef.current.srcObject = s;
-      }
-      setIsStreaming(true);
-    } catch (error) {
-      console.error("Camera access error:", error);
-      toast.error("Camera access required for facial login");
-      setIsStreaming(false);
-    }
-  };
+  // initialize webcam
+  const initWebcam = async () => {
+    try {
+      const s = await navigator.mediaDevices.getUserMedia({
+        video: { width: 1280, height: 720 },
+        audio: false,
+      });
+      streamRef.current = s;
+      if (videoRef.current) {
+        videoRef.current.srcObject = s;
+      }
+      setIsStreaming(true);
+    } catch (error) {
+      console.error("Camera access error:", error);
+      toast.error("Camera access required for facial login");
+      setIsStreaming(false);
+    }
+  };
 
-  // start camera on mount (or when returning to step 1)
-  useEffect(() => {
-    if (step === 1) {
-      stopStream();
-      setCapturedImage(null);
-      initWebcam();
-    } else {
-      // ensure stopped when leaving capture step
-      stopStream();
-    }
+  // start camera on mount (or when returning to step 1)
+  useEffect(() => {
+    if (step === 1) {
+      stopStream();
+      setCapturedImage(null);
+      initWebcam();
+    } else {
+      // ensure stopped when leaving capture step
+      stopStream();
+    }
 
-    return () => {
-      stopStream();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [step]);
+    return () => {
+      stopStream();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
 
-  // capture image manually
-  const captureImage = () => {
-    const canvas = canvasRef.current;
-    const video = videoRef.current;
-    if (!video) {
-      toast.error("Camera not available");
-      return;
-    }
+  // capture image manually
+  const captureImage = () => {
+    const canvas = canvasRef.current;
+    const video = videoRef.current;
+    if (!video) {
+      toast.error("Camera not available");
+      return;
+    }
 
-    const width = video.videoWidth || 1280;
-    const height = video.videoHeight || 720;
-    canvas.width = width;
-    canvas.height = height;
+    const width = video.videoWidth || 1280;
+    const height = video.videoHeight || 720;
+    canvas.width = width;
+    canvas.height = height;
 
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
-    setCapturedImage(dataUrl);
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+    setCapturedImage(dataUrl);
 
-    // stop camera immediately after capture
-    stopStream();
+    // stop camera immediately after capture
+    stopStream();
 
-    // move to verification step
-    setStep(2);
-  };
+    // move to verification step
+    setStep(2);
+  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    if (!rollNumber.trim()) {
-      toast.error("Roll number required");
-      return;
-    }
+    if (!rollNumber.trim()) {
+      toast.error("Roll number required");
+      return;
+    }
 
-    setIsProcessing(true);
+    setIsProcessing(true);
 
-    try {
-      const formData = new FormData();
-      formData.append("rollNumber", rollNumber.trim());
+    try {
+      const formData = new FormData();
+      formData.append("rollNumber", rollNumber.trim());
 
-      if (capturedImage) {
-        const blob = await fetch(capturedImage).then((res) => res.blob());
-        formData.append("image", blob, "face.jpg");
-      }
+      if (capturedImage) {
+        // Convert Data URL to Blob, then append to FormData
+        const blob = await fetch(capturedImage).then((res) => res.blob());
+        formData.append("image", blob, "face.jpg");
+      }
+      
+      // --- AXIOS INTEGRATION ---
+      // The token is automatically attached by the Axios interceptor
+      // The Content-Type for FormData is also handled by the interceptor
+      const response = await studentAttendanceLogin(formData);
+      const data = response.data; // Axios wraps response in 'data'
 
-      const response = await fetch(`${url}/api/attendance-login`, {
-        method: "POST",
-        headers: {
-          Authorization: auth?.token || "",
-        },
-        body: formData,
-      });
+      if (data?.success) {
+        // Assuming you might want to set a new token/auth state if the server returns one
+        // if (data?.token) {
+        //   setAuth({ ...auth, token: data?.token });
+        // }
+        toast.success("Attendance successfully marked");
+        navigate("/attendance-success");
+      } else {
+        toast.error(data.message || "Face not matched");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      // Axios error handling
+      const errorMessage = error.response?.data?.message || "Network error. Try again.";
+      toast.error(errorMessage);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
-      const data = await response.json();
+  return (
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Mark Attendance</h1>
+        <p className={styles.subtitle}>Secure and contactless marking</p>
+      </header>
 
-      if (data?.success) {
-        setAuth({ ...auth, token: data?.token });
-        toast.success("Attendance successfully marked");
-        navigate("/attendance-success");
-      } else {
-        toast.error(data.message || "Face not matched");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("Network error. Try again.");
-    } finally {
-      setIsProcessing(false);
-    }
-  };
+      {/* Steps */}
+      <div className={styles.steps}>
+        <div className={`${styles.step} ${step >= 1 ? styles.stepActive : ""}`}>
+          <div className={styles.stepNumber}>1</div>
+          <div className={styles.stepTitle}>Face Capture</div>
+        </div>
+        <div className={`${styles.step} ${step >= 2 ? styles.stepActive : ""}`}>
+          <div className={styles.stepNumber}>2</div>
+          <div className={styles.stepTitle}>Verify</div>
+        </div>
+      </div>
 
-  return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Mark Attendance</h1>
-        <p className={styles.subtitle}>Secure and contactless marking</p>
-      </header>
+      {/* Step 1: Manual Capture */}
+      {step === 1 && (
+        <div className={styles.cameraSection}>
+          <div className={styles.cameraContainer}>
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className={styles.cameraFeed}
+            />
+            <div className={styles.overlay}>
+              <p className={styles.instruction}>Position your face in the center and click Capture</p>
+            </div>
+          </div>
 
-      {/* Steps */}
-      <div className={styles.steps}>
-        <div className={`${styles.step} ${step >= 1 ? styles.stepActive : ""}`}>
-          <div className={styles.stepNumber}>1</div>
-          <div className={styles.stepTitle}>Face Capture</div>
-        </div>
-        <div className={`${styles.step} ${step >= 2 ? styles.stepActive : ""}`}>
-          <div className={styles.stepNumber}>2</div>
-          <div className={styles.stepTitle}>Verify</div>
-        </div>
-      </div>
+          <canvas ref={canvasRef} style={{ display: "none" }} />
 
-      {/* Step 1: Manual Capture */}
-      {step === 1 && (
-        <div className={styles.cameraSection}>
-          <div className={styles.cameraContainer}>
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              muted
-              className={styles.cameraFeed}
-            />
-            <div className={styles.overlay}>
-              <p className={styles.instruction}>Position your face in the center and click Capture</p>
-            </div>
-          </div>
+          <div className={styles.actionsInline}>
+            <button
+              type="button"
+              className={`${styles.button} ${styles.buttonPrimary}`}
+              onClick={captureImage}
+              disabled={isProcessing}
+            >
+              <FiCamera /> Capture Now
+            </button>
 
-          <canvas ref={canvasRef} style={{ display: "none" }} />
+            <button
+              type="button"
+              className={`${styles.button} ${styles.buttonSecondary}`}
+              onClick={() => {
+                stopStream();
+                navigate("/");
+              }}
+              disabled={isProcessing}
+            >
+              <FiSkipForward /> Cancel
+            </button>
+          </div>
+        </div>
+      )}
 
-          <div className={styles.actionsInline}>
-            <button
-              type="button"
-              className={`${styles.button} ${styles.buttonPrimary}`}
-              onClick={captureImage}
-            >
-              <FiCamera /> Capture Now
-            </button>
+      {/* Step 2: Verify */}
+      {step === 2 && (
+        <div className={styles.loginForm}>
+          <h2 className={styles.formTitle}>Verify Your Identity</h2>
 
-            <button
-              type="button"
-              className={`${styles.button} ${styles.buttonSecondary}`}
-              onClick={() => {
-                stopStream();
-                navigate("/");
-              }}
-            >
-              <FiSkipForward /> Cancel
-            </button>
-          </div>
-        </div>
-      )}
+          {capturedImage && (
+            <img
+              src={capturedImage}
+              alt="Captured Face"
+              className={styles.facePreview}
+            />
+          )}
 
-      {/* Step 2: Verify */}
-      {step === 2 && (
-        <div className={styles.loginForm}>
-          <h2 className={styles.formTitle}>Verify Your Identity</h2>
+          <form onSubmit={handleSubmit}>
+            <div className={styles.formGroup}>
+              <label htmlFor="rollNumber" className={styles.label}>
+                Roll Number
+              </label>
+              <input
+                type="text"
+                id="rollNumber"
+                value={rollNumber}
+                onChange={(e) => setRollNumber(e.target.value)}
+                className={styles.input}
+                placeholder="Enter university roll number"
+                autoFocus
+                required
+                disabled={isProcessing}
+              />
+            </div>
 
-          {capturedImage && (
-            <img
-              src={capturedImage}
-              alt="Captured Face"
-              className={styles.facePreview}
-            />
-          )}
+            <div className={styles.actions}>
+              <button
+                type="submit"
+                className={`${styles.button} ${styles.buttonPrimary}`}
+                disabled={isProcessing || !rollNumber}
+              >
+                {isProcessing ? (
+                  <>
+                    <span className={styles.spinner}></span> Processing...
+                  </>
+                ) : (
+                  <>
+                    <FiArrowRight /> Confirm Login
+                  </>
+                )}
+              </button>
 
-          <form onSubmit={handleSubmit}>
-            <div className={styles.formGroup}>
-              <label htmlFor="rollNumber" className={styles.label}>
-                Roll Number
-              </label>
-              <input
-                type="text"
-                id="rollNumber"
-                value={rollNumber}
-                onChange={(e) => setRollNumber(e.target.value)}
-                className={styles.input}
-                placeholder="Enter university roll number"
-                autoFocus
-                required
-              />
-            </div>
+              <button
+                type="button"
+                className={`${styles.button} ${styles.buttonSecondary}`}
+                onClick={() => {
+                  // go back to capture to retake: reopen camera and clear image
+                  setCapturedImage(null);
+                  setStep(1);
+                }}
+                disabled={isProcessing}
+              >
+                Back to Capture
+              </button>
+            </div>
+          </form>
 
-            <div className={styles.actions}>
-              <button
-                type="submit"
-                className={`${styles.button} ${styles.buttonPrimary}`}
-                disabled={isProcessing}
-              >
-                {isProcessing ? (
-                  <>
-                    <span className={styles.spinner}></span> Processing...
-                  </>
-                ) : (
-                  <>
-                    <FiArrowRight /> Confirm Login
-                  </>
-                )}
-              </button>
-
-              <button
-                type="button"
-                className={`${styles.button} ${styles.buttonSecondary}`}
-                onClick={() => {
-                  // go back to capture to retake: reopen camera and clear image
-                  setCapturedImage(null);
-                  setStep(1);
-                }}
-              >
-                Back to Capture
-              </button>
-            </div>
-          </form>
-
-          <p className={styles.linkText}>
-            Not registered?{" "}
-            <Link to="/register" className={styles.link}>
-              Create account
-            </Link>
-          </p>
-        </div>
-      )}
-    </div>
-  );
+          <p className={styles.linkText}>
+            Not registered?{" "}
+            <Link to="/register" className={styles.link}>
+              Create account
+            </Link>
+          </p>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default LoginStudent;

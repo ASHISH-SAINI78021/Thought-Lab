@@ -1,9 +1,8 @@
 // AppointmentForm.jsx
 import { useState } from 'react';
 import styles from './AppointmentForm.module.css';
-import {url} from '../../url';
 import { useAuth } from '../../Context/auth';
-
+import { createAppointment } from '../../http'; 
 const AppointmentForm = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -12,7 +11,7 @@ const AppointmentForm = () => {
     preferredDate: '',
     preferredTime: '',
     concerns: '',
-    sessionType: 'General Counselling' // Added session type
+    sessionType: 'General Counselling'
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -39,26 +38,15 @@ const AppointmentForm = () => {
 
       console.log('Submitting:', payload); // Debug log
 
-      const response = await fetch(`${url}/counsellor/create-appointment`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization : auth?.token
-        },
-        body: JSON.stringify(payload),
-      });
+      // Use axios instead of fetch
+      const response = await createAppointment(payload);
 
-      const data = await response.json();
-      console.log('Response:', response.status, data); // Debug log
-
-      if (!response.ok) {
-        throw new Error(data.message || `Request failed with status ${response.status}`);
-      }
+      console.log('Response:', response.status, response.data); // Debug log
 
       setSubmitted(true);
     } catch (error) {
       console.error('Submission error:', error);
-      setError(error.message || 'Failed to submit appointment. Please try again later.');
+      setError(error.response?.data?.message || 'Failed to submit appointment. Please try again later.');
     } finally {
       setIsLoading(false);
     }

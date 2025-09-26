@@ -1,10 +1,10 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./components/Home";
 import AboutMe from "./components/AboutMe";
 import Lenis from "lenis";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import UtterYourThoughts from "./components/UtterYourThoughts";
 import AdminLayout from "./components/Admin/AdminLayout/AdminLayout";
 import AdminPanel from "./components/Admin/AdminPanel/AdminPanel";
@@ -41,8 +41,9 @@ import AttendanceSuccess from "./components/Attendence/AttendanceSuccess/Attenda
 import TaskAssigner from "./components/Admin/TaskAssigner/TaskAssigner";
 import TaskDashboard from "./components/TaskDashboard/TaskDashboard";
 import MeditationTimer from "./components/Meditation Timer/MeditationTimer";
+import FaceRecognitionSuccess from "./components/Attendence/FacialRecognitionSuccess/FacialRecognitionSuccess";
 
-const App = () => {
+const AppContent = () => {
   useEffect(() => {
     const lenis = new Lenis({ duration: 1.9 });
     function raf(time) {
@@ -53,7 +54,7 @@ const App = () => {
   }, []);
 
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
       <Routes>
         <Route path="/developer" element={<Developer />} />
@@ -72,8 +73,8 @@ const App = () => {
         <Route path="/all-events" element={<GameList />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/quick-response-team" element={<QRTInfoPage />} />
-        <Route path="/task-manager" element={<TaskAssigner />} /> {/*admin route*/}
-        <Route path="/task-dashboard" element={<TaskDashboard />} /> {/*admin route*/}
+        <Route path="/task-manager" element={<TaskAssigner />} />
+        <Route path="/task-dashboard" element={<TaskDashboard />} />
         
 
         {/* Authenticated Student Routes */}
@@ -143,10 +144,17 @@ const App = () => {
             <MeditationTracker />
           </PrivateRoute>
         } />
-        <Route path="/attendance-success" element={
-            <AttendanceSuccess />
-        } />
+        <Route path="/attendance-success" element={<AttendanceSuccess />} />
+        <Route path="/face-recognition-success" element={<FaceRecognitionSuccess/>} />
       </Routes>
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 };

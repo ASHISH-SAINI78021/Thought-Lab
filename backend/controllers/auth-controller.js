@@ -91,7 +91,7 @@ class AuthController {
       const token = jwt.sign(
         { id: user._id, role: user.role || "user" },
         process.env.JWT_SECRET,
-        { expiresIn: "7d" }
+        { expiresIn: "15d" }
       );
 
       res.status(200).json({
