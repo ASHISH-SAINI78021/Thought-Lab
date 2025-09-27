@@ -44,8 +44,42 @@ api.interceptors.response.use(
     }
 );
 
+// Course API functions - Add missing exports
+export const getCourse = (courseId) => {
+    if (!courseId) {
+        return Promise.reject(new Error('Course ID is required'));
+    }
+    return api.get(`/courses/${courseId}`); 
+};
 
-// list of all end points
+export const saveCourse = (courseData, courseId = null) => {
+    if (courseId) {
+        return api.put(`/courses/${courseId}`, courseData);
+    } else {
+        return api.post(`/courses`, courseData);
+    }
+};
+
+// Add these missing exports
+export const updateCourse = (courseId, courseData) => {
+    return api.put(`/courses/${courseId}`, courseData);
+};
+
+export const updateCourseStatus = (courseId, status) => {
+    return api.patch(`/courses/${courseId}/status`, { status });
+};
+
+export const addVideoToCourse = (courseId, videoData) => {
+    return api.post(`/courses/${courseId}/videos`, videoData);
+};
+
+export const removeVideoFromCourse = (courseId, videoId) => {
+    return api.delete(`/courses/${courseId}/videos/${videoId}`);
+};
+
+export const getAllCourses = () => api.get('/courses');
+
+// Existing endpoints (keep these)
 export const sendOtp = (data) => api.post('/api/send-otp', {phone: data});
 export const verifyOtp = (data) => api.post('/api/verify-otp', data);
 export const activate = (data) => api.post('/api/activate', data);
@@ -88,6 +122,5 @@ export const addComment = (blogId, content) => api.post(`/blog/${blogId}/comment
 export const saveMeditationSession = (userId, sessionData)=> api.post(`/meditation-session/${userId}`, sessionData);
 export const getMeditationHistory = () => api.get('/meditation-history');
 export const getStudentProfile = (id) => api.get(`/user/${id}`);
-
 
 export default api;

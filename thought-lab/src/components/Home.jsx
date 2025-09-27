@@ -73,6 +73,12 @@ const Home = () => {
                 >
                   Meditation Timer
                 </Link>
+                <Link
+                  to="/courses"
+                  className={styles.secondaryButton}
+                >
+                  Courses
+                </Link>
               </div>
             </div>
           </div>

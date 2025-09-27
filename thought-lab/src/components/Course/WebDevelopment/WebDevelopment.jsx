@@ -15,7 +15,7 @@ import { addBlog } from "../../../http";
 
 const { Dragger } = Upload;
 
-const BlogEditor = ({ check }) => {
+const WebDevelopment = ({ check }) => {
   const [blog, setBlog] = useBlog();
   const [previewMode, setPreviewMode] = useState(false);
   const [thumbnailPreviewUrl, setThumbnailPreviewUrl] = useState("");
@@ -24,18 +24,15 @@ const BlogEditor = ({ check }) => {
   const quill = useRef();
   const [auth, setAuth] = useAuth();
 
-  // Handle thumbnail changes and create preview URL
   useEffect(() => {
     if (blog.thumbnail && blog.thumbnail instanceof File) {
       const objectUrl = URL.createObjectURL(blog.thumbnail);
       setThumbnailPreviewUrl(objectUrl);
       
-      // Clean up the object URL when component unmounts or thumbnail changes
       return () => {
         URL.revokeObjectURL(objectUrl);
       };
     } else if (typeof blog.thumbnail === "string") {
-      // If thumbnail is already a URL string (e.g., when editing an existing blog)
       setThumbnailPreviewUrl(blog.thumbnail);
     } else {
       setThumbnailPreviewUrl("");
@@ -73,7 +70,6 @@ const BlogEditor = ({ check }) => {
   
     input.onchange = () => {
       const file = input.files[0];
-      // Validate file type
       if (!file.type.startsWith('image/')) {
         message.error('You can only upload image files!');
         return;
@@ -87,7 +83,6 @@ const BlogEditor = ({ check }) => {
         const range = quillEditor.getSelection(true);
         quillEditor.insertEmbed(range.index, "image", imageUrl, "user");
   
-        // Delay required for the image to be rendered
         setTimeout(() => {
           const img = quillEditor.container.querySelector(`img[src="${imageUrl}"]`);
           if (img) {
@@ -155,7 +150,6 @@ const BlogEditor = ({ check }) => {
   ];
 
   const handleSubmit = async () => {
-    // Validate required fields
     if (!blog.title || !blog.value) {
       message.error("Title and content are required!");
       return;
@@ -165,7 +159,7 @@ const BlogEditor = ({ check }) => {
     formData.append("title", blog.title);
     formData.append("tags", blog.tags);
     
-    // Only append thumbnail if it's a File object
+    
     if (blog.thumbnail instanceof File) {
       formData.append("thumbnail", blog.thumbnail);
     }
@@ -176,7 +170,6 @@ const BlogEditor = ({ check }) => {
       setLoading(true);
       message.loading({ content: "Publishing blog...", key: "updatable" });
 
-      // Use the API function with axios - token is automatically handled by interceptor
       const response = await addBlog(formData);
       
       if (response.success) {
@@ -186,7 +179,6 @@ const BlogEditor = ({ check }) => {
           duration: 2 
         });
         
-        // Clear the form after successful submission
         setBlog({
           title: "",
           tags: "",
@@ -194,9 +186,6 @@ const BlogEditor = ({ check }) => {
           value: ""
         });
         localStorage.removeItem("blog");
-        
-        // Optional: Redirect after success
-        // setTimeout(() => navigate("/blogs"), 2000);
       } else {
         message.error({ 
           content: response.message || "Failed to publish blog.", 
@@ -206,9 +195,6 @@ const BlogEditor = ({ check }) => {
       }
     } catch (error) {
       console.error("Submit error:", error);
-      
-      // 401 errors are automatically handled by the interceptor
-      // Only show message for other errors
       if (error.response?.status !== 401) {
         message.error({ 
           content: error.response?.data?.message || "An error occurred while publishing the blog.", 
@@ -328,4 +314,4 @@ const BlogEditor = ({ check }) => {
   );
 };
 
-export default BlogEditor;
+export default WebDevelopment;

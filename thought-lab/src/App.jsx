@@ -42,6 +42,10 @@ import TaskAssigner from "./components/Admin/TaskAssigner/TaskAssigner";
 import TaskDashboard from "./components/TaskDashboard/TaskDashboard";
 import MeditationTimer from "./components/Meditation Timer/MeditationTimer";
 import FaceRecognitionSuccess from "./components/Attendence/FacialRecognitionSuccess/FacialRecognitionSuccess";
+import CourseCreator from "./components/Admin/Course/CourseCreater";
+import CourseList from "./components/CourseList/CourseList";
+import CoursePlayer from "./components/CoursePlayer/CoursePlayer";
+import CourseVideoManager from "./components/Admin/CourseVideoManager/CourseVideoManager";
 
 const AppContent = () => {
   useEffect(() => {
@@ -75,6 +79,9 @@ const AppContent = () => {
         <Route path="/quick-response-team" element={<QRTInfoPage />} />
         <Route path="/task-manager" element={<TaskAssigner />} />
         <Route path="/task-dashboard" element={<TaskDashboard />} />
+        <Route path="/courses" element={<CourseList />} />
+        <Route path="/courses/:courseId" element={<CoursePlayer />} />
+        <Route path="/courses/:courseId/videos" element={<CourseVideoManager />} />
         
 
         {/* Authenticated Student Routes */}
@@ -114,6 +121,7 @@ const AppContent = () => {
           <Route path="all-games" element={<GameManagement />} />
           <Route path="promote-admin" element={<RegisterAdmin />} />
           <Route path="create-certificates" element={<CertificateGenerator />} />
+          <Route path="create-course" element={<CourseCreator />} />
         </Route>
 
         {/* Blog Routes (Admin Protected) */}

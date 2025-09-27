@@ -8,66 +8,74 @@ const BlogController = require('./controllers/blog-controller.js');
 const CounsellorController = require('./controllers/counsellor-controller.js');
 const GameController = require('./controllers/game-controller.js');
 const MeditationController = require('./controllers/meditation-controller.js');
+const CourseController = require("./controllers/course-controller.js");
 const { isLogin } = require('./middlewares/auth-middleware.js');
 const { isAdmin } = require('./middlewares/admin-middleware.js');
 const { isSuperAdmin } = require('./middlewares/superAdmin-middleware.js');
 
+// authentication routes
 router.post('/register', upload.single('profilePicture'), AuthController.registerStudent);
 router.post('/login', AuthController.loginStudent);
-router.put('/api/increment-year' , UserController.incrementYear); // middleware
-router.post('/api/attendance-register', upload.single("image"), isLogin , attendanceController.register);
-router.post('/api/attendance-login', upload.single("image"), isLogin , attendanceController.login);
+router.get('/auth-status', isLogin, (req, res) => {
+    return res.json({ success: true });
+});
 
-
-
+// user routes 
 router.get('/user/:id', AuthController.getUser);
-// router.put('/:id/like' , BlogController.likeBlog);
-// router.get('/:id' , BlogController.comment);
+router.put('/api/increment-year', UserController.incrementYear); // middleware
 
+// attendance routes
+router.post('/api/attendance-register', upload.single("image"), isLogin, attendanceController.register);
+router.post('/api/attendance-login', upload.single("image"), isLogin, attendanceController.login);
+router.get("/download-attendance", attendanceController.downloadAttendance); // admin route
 
-// admin route
-
+// blog routes
+router.get('/all-blogs', BlogController.allBlogs);
+router.get('/all-blogs/:id', BlogController.blog);
+router.post("/add-blog", upload.single("thumbnail"), isLogin, isAdmin, BlogController.addBlog);
+router.put("/blog/:id", isLogin, isAdmin, BlogController.updateBlog);
 router.post('/blog/:id/react', isLogin, BlogController.reactToBlog);
 router.get('/blog/:id/reactions', isLogin, BlogController.getReactions);
 router.post('/blog/:blogId/comment', isLogin, BlogController.comment);
 
-router.get('/all-blogs' , BlogController.allBlogs);
-router.get('/all-blogs/:id' , BlogController.blog);
-router.post("/add-blog", upload.single("thumbnail"), isLogin, isAdmin, BlogController.addBlog);
-router.put("/blog/:id", isLogin, isAdmin, BlogController.updateBlog);
-
-
-// counsellor route
+// counsellor routes
 router.post("/counsellor/create-appointment", isLogin, CounsellorController.createAppointment);
-router.patch("/counsellor/:id/approve" ,isLogin, isAdmin, CounsellorController.approveAppointment); // admin route
-router.patch("/counsellor/:id/reject" ,isLogin, isAdmin, CounsellorController.rejectAppointment); // admin route
+router.patch("/counsellor/:id/approve", isLogin, isAdmin, CounsellorController.approveAppointment); // admin route
+router.patch("/counsellor/:id/reject", isLogin, isAdmin, CounsellorController.rejectAppointment); // admin route
 router.get("/counsellor/all-appointments", isLogin, isAdmin, CounsellorController.getAppointments);
 
-
-// Attendance Route
-router.get("/download-attendance", attendanceController.downloadAttendance); // admin route
-
-// Game Route
-router.get('/all-games', GameController.getAllGames);// admin route
-router.post('/create-game', isLogin, isAdmin, GameController.createGame);// admin route
+// game routes
+router.get('/all-games', GameController.getAllGames);
+router.post('/create-game', isLogin, isAdmin, GameController.createGame); // admin route
 router.put('/update-game/:id', isLogin, isAdmin, GameController.updateGame); // admin route
 router.delete('/delete-game/:id', isLogin, isAdmin, GameController.deleteGame); // admin route
 
-// register admin
-router.put('/promote-to-admin', isLogin, isSuperAdmin, AuthController.promotion);
+// meditation routes
+router.get('/meditation-history', MeditationController.meditationHistory);
+router.post('/meditation-session/:id', isLogin, MeditationController.meditationSession);
 
-// admin dashboard
+// courses routes
+router.get('/courses', CourseController.getAllCourses);
+router.get('/courses/search', CourseController.searchCourses);
+router.get('/courses/:id', CourseController.getCourseById);
+router.get('/courses/status/:status', CourseController.getCoursesByStatus);
+
+
+router.post('/courses', isLogin, CourseController.createCourse);
+router.post('/courses/:id/videos', isLogin, CourseController.addVideoToCourse);
+
+// Admin-only routes
+router.put('/courses/:id', isLogin, isAdmin, CourseController.updateCourse);
+router.patch('/courses/:id/status', isLogin, isAdmin, CourseController.updateCourseStatus);
+router.delete('/courses/:id', isLogin, isAdmin, CourseController.deleteCourse);
+router.delete('/courses/:courseId/videos/:videoId', isLogin, isAdmin, CourseController.removeVideoFromCourse);
+
+
+router.get('/courses-stats', isLogin, isAdmin, CourseController.getCourseStats);
+
 router.get('/all-users-count', isLogin, isAdmin, AuthController.countAllUsers);
 router.get('/all-events-count', isLogin, isAdmin, GameController.totalEvents);
 
-// meditation session routes
-router.get('/meditation-history', MeditationController.meditationHistory);
-router.post('/meditation-session/:id', isLogin,  MeditationController.meditationSession);
-
-router.get('/auth-status', isLogin, (req, res)=>{
-    return res.json({
-        success : true
-    });
-});
+router.put('/promote-to-admin', isLogin, isSuperAdmin, AuthController.promotion);
 
 module.exports = router;

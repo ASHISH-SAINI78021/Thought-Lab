@@ -11,13 +11,13 @@ import {
   Stack,
   InputAdornment
 } from '@mui/material';
-import { url } from "../../../url";
 
 // Importing icons for a richer UI
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
 import { useAuth } from '../../../Context/auth';
+import { promoteToAdmin } from '../../../http'; // Import the axios function
 
 const PromoteUserForm = () => {
   const [email, setEmail] = useState('');
@@ -41,26 +41,12 @@ const PromoteUserForm = () => {
     }
 
     try {
-      const response = await fetch(`${url}/promote-to-admin`, {
-        method: 'PUT',
-        // --- CORRECTED HEADERS OBJECT ---
-        // The headers should be a single, flat object.
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': auth.token // The token is sent directly under the 'Authorization' key
-        },
-        body: JSON.stringify({ email }),
-      });
+      // Use axios instead of fetch
+      const response = await promoteToAdmin({ email });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'An HTTP error occurred');
-      }
-
-      const successData = await response.json();
       setSnackbar({
         open: true,
-        message: successData.message || 'User successfully promoted to Admin!',
+        message: response.data.message || 'User successfully promoted to Admin!',
         severity: 'success'
       });
       setEmail('');
@@ -68,7 +54,7 @@ const PromoteUserForm = () => {
     } catch (error) {
       setSnackbar({
         open: true,
-        message: error.message || 'Failed to promote user.',
+        message: error.response?.data?.message || 'Failed to promote user.',
         severity: 'error'
       });
     } finally {
