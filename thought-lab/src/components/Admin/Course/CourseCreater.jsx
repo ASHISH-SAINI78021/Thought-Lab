@@ -77,8 +77,7 @@ const CourseCreater = () => {
     const [saveLoading, setSaveLoading] = useState(false);
 
     const categories = [
-        'Web Development', 'Data Science', 'Mobile Development', 'AI & Machine Learning',
-        'Design', 'Business', 'Marketing'
+        'Web Development', 'Graphic Designing', 'Video Editing', 'Spritual'
     ];
     const levels = [
         { value: 'beginner', label: 'Beginner', color: '#10b981' },
