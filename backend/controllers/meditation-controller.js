@@ -4,7 +4,7 @@ const Leaderboard = require('../Models/leaderboard-modal.js');
 class MeditationController {
     async meditationHistory(req, res){
         try {
-            const sessions = await meditationService.meditationHistory().limit(10);
+            const sessions = await meditationService.meditationHistory();
             if (!sessions.length){
                 console.log("NO sessions");
                 return res.json({

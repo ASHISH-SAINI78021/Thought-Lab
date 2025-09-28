@@ -2,7 +2,7 @@ const Meditation = require('../Models/meditation-model.js');
 
 class meditationService {
     async meditationHistory(){
-        const sessions = await Meditation.find().sort({date: -1});
+        const sessions = await Meditation.find().sort({date: -1}).limit(10);
         return sessions;
     }
 
