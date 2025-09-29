@@ -61,7 +61,7 @@ const Login = () => {
 
           localStorage.setItem("auth", JSON.stringify(data));
 
-          navigate("/");
+          window.location.href = '/';
         } else {
           setErrorMsg(data?.message || "Login failed");
         }

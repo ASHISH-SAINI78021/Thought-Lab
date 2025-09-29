@@ -140,10 +140,6 @@ const LoginStudent = () => {
       const data = response.data; // Axios wraps response in 'data'
 
       if (data?.success) {
-        // Assuming you might want to set a new token/auth state if the server returns one
-        // if (data?.token) {
-        //   setAuth({ ...auth, token: data?.token });
-        // }
         toast.success("Attendance successfully marked");
         navigate("/attendance-success");
       } else {
