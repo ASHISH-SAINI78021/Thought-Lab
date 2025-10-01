@@ -253,3 +253,81 @@
         margin: 0;
       }
   }
+
+  /* Add to your existing styles */
+
+.musicBtn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white;
+}
+
+.musicBtn.muted {
+  background: linear-gradient(135deg, #868686 0%, #5a5a5a 100%) !important;
+}
+
+.musicBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.musicInfo {
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: #667eea;
+  font-weight: 500;
+}
+
+/* Ensure controls layout can accommodate the new button */
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.controlBtn {
+  /* Your existing button styles */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  justify-content: center;
+}
+
+/* Add to MeditationTimer.module.css */
+
+.musicInfo {
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: #667eea;
+  font-weight: 500;
+}
+
+.musicInfoMuted {
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: #868686;
+  font-weight: 500;
+}
+
+.musicBtn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white;
+}
+
+.musicBtn.muted {
+  background: linear-gradient(135deg, #868686 0%, #5a5a5a 100%) !important;
+}
+
+.musicBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}

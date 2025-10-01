@@ -71,7 +71,7 @@ const Home = () => {
                   to="/meditation-timer"
                   className={styles.secondaryButton}
                 >
-                  Meditation Timer
+                  Sadhna
                 </Link>
                 <Link
                   to="/courses"
