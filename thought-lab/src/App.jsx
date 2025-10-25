@@ -46,6 +46,8 @@ import CourseCreator from "./components/Admin/Course/CourseCreater";
 import CourseList from "./components/CourseList/CourseList";
 import CoursePlayer from "./components/CoursePlayer/CoursePlayer";
 import CourseVideoManager from "./components/Admin/CourseVideoManager/CourseVideoManager";
+import Events from "./components/Events/events.jsx";
+import EventItem from "./components/Events/EventItem/EventItem.jsx";
 
 const AppContent = () => {
   useEffect(() => {
@@ -82,6 +84,10 @@ const AppContent = () => {
         <Route path="/courses" element={<CourseList />} />
         <Route path="/courses/:courseId" element={<CoursePlayer />} />
         <Route path="/courses/:courseId/videos" element={<CourseVideoManager />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/events/:id" element={<EventItem />} />
+
+
         
 
         {/* Authenticated Student Routes */}

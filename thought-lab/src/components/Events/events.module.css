@@ -1,0 +1,149 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* 🌌 Main container */
+.eventsContainer {
+  position: relative;
+  width: 100%;
+  background-color: var(--dark-1);
+  overflow: hidden;
+}
+
+/* 🔮 Spline background — fixed and responsive */
+.splineBackground {
+  position: fixed;
+  
+  left: 0;
+  width: 100%;
+  height: 100dvh; /* dynamic viewport height for mobile */
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none; /* So it doesn’t block clicks */
+   cursor: none !important;
+}
+
+.splineBackground canvas,
+.splineBackground > div,
+.splineBackground > * {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  display: block;
+}
+
+/*  Foreground content */
+.eventsContent {
+  position: relative;
+  z-index: 2;
+  padding: 4rem 1.5rem;
+  background-color: var(--background);
+  color: var(--light);
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  margin-top: 100dvh; /* moves content below background on desktop */
+}
+
+/* 📱 On mobile, reduce the top margin */
+@media (max-width: 768px) {
+  .eventsContent {
+    margin-top: 100dvh; /* Less offset so users see events sooner */
+    padding: 3rem 1rem;
+  }
+}
+
+/* ✅ Event cards */
+.eventList {
+  max-width: 900px;
+  margin: auto;
+  padding: 2rem 1rem;
+}
+
+.eventCard {
+  display: flex;
+  gap: 1rem;
+  background: linear-gradient(145deg, #0f0f0f, #1a1a1a, #2c2c2c);
+  align-items: center;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.eventCard:hover {
+  transform: scale(1.02);
+}
+
+/* 🖼️ Banner images */
+.bannerImage {
+  width: 300px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #222;
+  flex-shrink: 0;
+}
+
+/* 📱 Responsive layout */
+@media (max-width: 768px) {
+  .eventCard {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .bannerImage {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+}
+
+/* ✨ Text styles */
+.details h2 {
+  font-size: 1.4rem;
+  font-family: "BBH Sans Bartle", sans-serif;
+  font-weight: 700;
+  background: rgb(229, 9, 20);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.details p {
+  color: whitesmoke;
+}
+
+.description {
+  font-size: 0.95rem;
+  color: whitesmoke;
+}
+
+h4 {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 2rem 0;
+  background: linear-gradient(90deg, #ffffff, #dddddd, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowPulse 2s infinite;
+}
+
+@keyframes glowPulse {
+  0% {
+    text-shadow: 0 0 0px rgba(255, 255, 255, 0);
+  }
+  50% {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+  }
+  100% {
+    text-shadow: 0 0 0px rgba(255, 255, 255, 0);
+  }
+}
+
+.registerLink a {
+  color: #b38600;
+  animation: glowPulse 1.5s ease-in-out infinite;
+}
