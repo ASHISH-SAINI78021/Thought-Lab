@@ -1,0 +1,333 @@
+.pageWrapper {
+  min-height: 100vh;
+  background: #faf2eb;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 950px;
+  margin: 0 auto;
+  background: #141E30;
+  background: -webkit-linear-gradient(to right, #243B55, #141E30);
+  background: linear-gradient(to right, #243B55, #141E30);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+}
+
+.bannerWrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%; /* 1:1 aspect ratio for Instagram poster */
+  overflow: hidden;
+  background-color: #1a2332;
+}
+
+.banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.container:hover .banner {
+  transform: scale(1.05);
+}
+
+.bannerOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+}
+
+.contentWrapper {
+  padding: 3rem;
+}
+
+.header {
+  
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.dateBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 0.6rem 1.3rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
+}
+
+.dateIcon {
+  font-size: 1rem;
+}
+
+.dateText {
+  letter-spacing: 0.02em;
+}
+
+.title {
+ font-family: Display, sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  background: linear-gradient(to right, var(--primary-light-dark), var(--accent-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+
+.content {
+  margin-bottom: 3rem;
+}
+
+.descriptionLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.labelIcon {
+  font-size: 1.3rem;
+}
+
+.description {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #e2e8f0;
+  margin: 0;
+  text-align: justify;
+    white-space: pre-wrap;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.registerBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 0.9rem 2.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+}
+
+.registerBtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.registerBtn:hover::before {
+  left: 100%;
+}
+
+.registerBtn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.registerBtn:active {
+  transform: translateY(0);
+}
+
+.btnIcon {
+  font-size: 1.2rem;
+}
+
+.btnText {
+  letter-spacing: 0.05em;
+}
+
+.btnArrow {
+  font-size: 1.3rem;
+  transition: transform 0.3s ease;
+}
+
+.registerBtn:hover .btnArrow {
+  transform: translateX(5px);
+}
+
+/* Loading states */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.loadingSpinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid #e2e8f0;
+  border-top: 5px solid #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loadingText {
+  font-size: 1.1rem;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error states */
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 2rem;
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.errorIcon {
+  font-size: 4rem;
+}
+
+.errorMessage {
+  font-size: 1.2rem;
+  color: #e53e3e;
+  max-width: 500px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.retryButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.retryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+}
+
+/* Empty state */
+.emptyContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 1.5rem;
+  font-size: 1.3rem;
+  color: #4a5568;
+  font-weight: 500;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.emptyIcon {
+  font-size: 4rem;
+}
+
+@media (max-width: 768px) {
+  .pageWrapper {
+    padding: 1rem 0.5rem;
+  }
+
+  .container {
+    border-radius: 16px;
+  }
+
+  .bannerWrapper {
+    padding-bottom: 100%; /* Keep 1:1 ratio on mobile */
+  }
+
+  .contentWrapper {
+    padding: 2rem 1.5rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .registerBtn {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dateBadge {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+}
