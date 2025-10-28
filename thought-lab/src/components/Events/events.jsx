@@ -53,7 +53,7 @@ const Events = () => {
                 <p className={styles.description}>
                   {event.description?.slice(0, 200)}...
                 </p>
-                <p>{new Date(event.date).toLocaleDateString()}</p>
+                <p className={styles.date}>{new Date(event.date).toLocaleDateString()}</p>
                 <p className={styles.registerLink}>
                   <Link to={`/events/${event._id}`}>Click Here to register!</Link>
                 </p>
