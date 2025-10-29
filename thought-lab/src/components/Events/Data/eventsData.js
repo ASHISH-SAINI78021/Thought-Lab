@@ -115,6 +115,38 @@ Imp Note-Make sure you must make changes in the thought-lab folder(you will see 
     banner: "/banners/codeClash.jpg",
     registrationLink: "https://forms.gle/Ntz6F1tsLLhK6meS6"
   },
+    {
+    _id: "4",
+    name: "VR Experience",
+    description: `🌐 VR Experience – Beyond Reality 🌐
+Organized by Thought Lab | Confluence ’25, NIT Kurukshetra
+
+Ever wondered what it feels like to step inside another world — one where your heartbeat races, your senses blur, and reality bends?
+VR Experience is here to make that happen. Strap in and witness the future of technology — up close, personal, and unforgettable.
+
+🎮 What Awaits You:
+
+✨ Hands-on Demo Sessions – Try out cutting-edge VR setups that react to your every move.
+
+🎢 Adrenaline Rush – Hold tight for the mind-twisting VR Roller Coaster Ride that’ll make you scream and laugh at once.
+
+👻 Face Your Fears – Dare to enter our Horror Game Simulation, where your courage will be tested in eerie, hyper-real environments.
+
+💡 Discover the Future – Learn how Virtual Reality is revolutionizing entertainment, design, and education.
+
+📅 Date: 31st October 2025
+🕙 Time: 2:30 PM
+📍 Venue: Wisdom Hall
+
+🎓 Open For: Students of All Years and Branches
+
+✨ Step beyond the screen — scream, explore, and experience a whole new dimension of reality.
+Because this time, the world you enter… feels too real to be virtual. 👀
+`,
+    date: "2025-10-31",
+    banner: "/banners/VRfinal.jpg",
+    registrationLink: "https://forms.gle/9yurqKSW7UDqUok28"
+  },
 ];
 
 export default eventsData;
