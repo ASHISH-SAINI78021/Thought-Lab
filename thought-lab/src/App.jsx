@@ -48,6 +48,8 @@ import CoursePlayer from "./components/CoursePlayer/CoursePlayer";
 import CourseVideoManager from "./components/Admin/CourseVideoManager/CourseVideoManager";
 import Events from "./components/Events/events.jsx";
 import EventItem from "./components/Events/EventItem/EventItem.jsx";
+import UploadWinner from "./components/Winner/AdminAddWinner/AddWinner.jsx";
+import Winners from "./components/Winner/winners.jsx";
 
 const AppContent = () => {
   useEffect(() => {
@@ -86,6 +88,8 @@ const AppContent = () => {
         <Route path="/courses/:courseId/videos" element={<CourseVideoManager />} />
         <Route path="/events" element={<Events />} />
         <Route path="/events/:id" element={<EventItem />} />
+         <Route path="/upload-winner" element={<UploadWinner />} />
+        <Route path="/winners" element={<Winners />} />
 
 
         
