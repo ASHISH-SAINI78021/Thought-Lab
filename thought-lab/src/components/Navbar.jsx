@@ -13,11 +13,11 @@ function Navbar() {
 
   const Links = [
     { name: "Home", link: "/" },
-    { name: "Utter Your Thoughts", link: "/utter-your-thoughts" },
+    // { name: "Utter Your Thoughts", link: "/utter-your-thoughts" },
     { name: "Blogs", link: "/blogs" },
     { name: "Events", link: "/events" },
     { name: "Leaderboard", link: "/leaderboard" },
-    { name: "Counsellor Support", link: "/appointment-form" },
+    // { name: "Counsellor Support", link: "/appointment-form" },
     { name: "Attendance", link: "/mark-attendance" },
     { name: "Tasks", link: "/task-dashboard" },
   ];
