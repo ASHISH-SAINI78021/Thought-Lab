@@ -36,7 +36,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (error.response?.status === 401) {
+      // Only logout on 401 if it's NOT from attendance or notification endpoints
+      // Attendance endpoints use 401 for face recognition failures, not auth failures
+      const isAttendanceEndpoint = error.config?.url?.includes('/attendance-');
+      const isNotificationEndpoint = error.config?.url?.includes('/notifications');
+      
+      if (error.response?.status === 401 && !isAttendanceEndpoint && !isNotificationEndpoint) {
         localStorage.removeItem('auth');
         window.location.href = '/login';
       }
@@ -122,5 +127,19 @@ export const addComment = (blogId, content) => api.post(`/blog/${blogId}/comment
 export const saveMeditationSession = (userId, sessionData)=> api.post(`/meditation-session/${userId}`, sessionData);
 export const getMeditationHistory = () => api.get('/meditation-history');
 export const getStudentProfile = (id) => api.get(`/user/${id}`);
+export const getAllUsers = () => api.get('/users'); // New API for Admin
+
+// Task API
+export const createTask = (data) => api.post('/tasks', data);
+export const getAllTasks = (status) => api.get(`/tasks?status=${status || ''}`);
+export const bidOnTask = (taskId) => api.post(`/tasks/${taskId}/bid`);
+export const assignTask = (taskId, payload) => api.post(`/tasks/${taskId}/assign`, payload);
+export const completeTask = (taskId) => api.post(`/tasks/${taskId}/complete`);
+export const failTask = (taskId) => api.post(`/tasks/${taskId}/fail`);
+export const deleteTask = (taskId) => api.delete(`/tasks/${taskId}`);
+
+// Notification API
+export const getNotifications = () => api.get('/notifications');
+export const markNotificationAsRead = (notificationId) => api.post('/notifications/read', { notificationId });
 
 export default api;

@@ -4,10 +4,11 @@ import { Avatar, Tooltip } from 'antd';
 import "./Navbar.css";
 import { useAuth } from "../Context/auth";
 import { useState } from "react";
+import NotificationBell from './NotificationBell/NotificationBell';
 
 function Navbar() {
   const location = useLocation();
-  const [auth, setAuth] = useAuth();
+  const [auth, setAuth, logout] = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const Links = [
@@ -17,10 +18,17 @@ function Navbar() {
     { name: "Leaderboard", link: "/leaderboard" },
     { name: "Counsellor Support", link: "/appointment-form" },
     { name: "Attendance", link: "/mark-attendance" },
+    { name: "Tasks", link: "/task-dashboard" },
   ];
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to logout?")) {
+      logout();
+    }
   };
 
   return (
@@ -64,17 +72,27 @@ function Navbar() {
           </ul>
         </div>
 
-        {/* User Avatar */}
+        {/* User Avatar & Logout */}
         <div className="navbar-user">
           {auth?.user && (
-            <Tooltip title={auth.user.name} placement="bottom">
-              <Avatar src={auth.user.profilePicture} className="user-avatar" />
-            </Tooltip>
+            <>
+              <NotificationBell />
+              <Tooltip title={auth.user.name} placement="bottom">
+                <Avatar src={auth.user.profilePicture} className="user-avatar" />
+              </Tooltip>
+              <button onClick={handleLogout} className="logout-btn" title="Logout">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+              </button>
+            </>
           )}
         </div>
 
         {/* Mobile Menu Button */}
-        <button 
+        <button
           className={`mobile-menu-toggle ${isMobileMenuOpen ? 'active' : ''}`}
           onClick={toggleMobileMenu}
           aria-label="Toggle menu"
@@ -83,7 +101,7 @@ function Navbar() {
           <span></span>
           <span></span>
         </button>
-        
+
       </div>
 
       {/* Mobile Navigation */}
@@ -121,6 +139,14 @@ function Navbar() {
                 <p className="user-name">{auth?.user?.name}</p>
                 <p className="user-role">{auth?.user?.role}</p>
               </div>
+              <button onClick={handleLogout} className="mobile-logout-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Logout
+              </button>
             </div>
           )}
         </div>

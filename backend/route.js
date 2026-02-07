@@ -9,6 +9,7 @@ const CounsellorController = require('./controllers/counsellor-controller.js');
 const GameController = require('./controllers/game-controller.js');
 const MeditationController = require('./controllers/meditation-controller.js');
 const CourseController = require("./controllers/course-controller.js");
+const TaskController = require('./controllers/task-controller.js');
 const { isLogin } = require('./middlewares/auth-middleware.js');
 const { isAdmin } = require('./middlewares/admin-middleware.js');
 const { isSuperAdmin } = require('./middlewares/superAdmin-middleware.js');
@@ -16,6 +17,7 @@ const { isSuperAdmin } = require('./middlewares/superAdmin-middleware.js');
 // authentication routes
 router.post('/register', upload.single('profilePicture'), AuthController.registerStudent);
 router.post('/login', AuthController.loginStudent);
+router.post('/logout', isLogin, AuthController.logout);
 router.get('/auth-status', isLogin, (req, res) => {
     return res.json({ success: true });
 });
@@ -23,6 +25,7 @@ router.get('/auth-status', isLogin, (req, res) => {
 // user routes 
 router.get('/user/:id', AuthController.getUser);
 router.put('/api/increment-year', UserController.incrementYear); // middleware
+router.get('/users', isLogin, isAdmin, UserController.getAllUsers); // Get all users for admin
 
 // attendance routes
 router.post('/api/attendance-register', upload.single("image"), isLogin, attendanceController.register);
@@ -77,5 +80,20 @@ router.get('/all-users-count', isLogin, isAdmin, AuthController.countAllUsers);
 router.get('/all-events-count', isLogin, isAdmin, GameController.totalEvents);
 
 router.put('/promote-to-admin', isLogin, isSuperAdmin, AuthController.promotion);
+
+const NotificationController = require('./controllers/notification-controller.js');
+
+// Task Routes
+router.post('/tasks', isLogin, isAdmin, TaskController.createTask);
+router.get('/tasks', isLogin, TaskController.getAllTasks);
+router.post('/tasks/:taskId/bid', isLogin, TaskController.bidOnTask);
+router.post('/tasks/:taskId/assign', isLogin, isAdmin, TaskController.assignTask);
+router.post('/tasks/:taskId/complete', isLogin, isAdmin, TaskController.completeTask);
+router.post('/tasks/:taskId/fail', isLogin, isAdmin, TaskController.failTask);
+router.delete('/tasks/:taskId', isLogin, isAdmin, TaskController.deleteTask);
+
+// Notification Routes
+router.get('/notifications', isLogin, NotificationController.getNotifications);
+router.post('/notifications/read', isLogin, NotificationController.markAsRead);
 
 module.exports = router;

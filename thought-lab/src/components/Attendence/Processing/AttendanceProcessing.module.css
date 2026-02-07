@@ -1,0 +1,448 @@
+/* Base Styles */
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Background Accents */
+.container::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.container::after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    right: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+/* Glassmorphism Card */
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 650px;
+    width: 100%;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    position: relative;
+    z-index: 10;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 12px 0;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: #718096;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Steps Container */
+.stepsContainer {
+    margin-bottom: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+}
+
+.stepPending {
+    background: rgba(247, 250, 252, 0.8);
+    opacity: 0.7;
+}
+
+.stepActive {
+    background: #fff;
+    border-color: rgba(79, 70, 229, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transform: translateX(8px);
+}
+
+.stepComplete {
+    background: rgba(236, 253, 245, 0.6);
+    border-color: rgba(16, 185, 129, 0.1);
+}
+
+.stepIcon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 20px;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.stepActive .stepIcon {
+    background: #4f46e5;
+    color: white;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+.stepComplete .stepIcon {
+    background: #10b981;
+    color: white;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.checkIcon {
+    color: white;
+    font-size: 20px;
+}
+
+.spinnerIcon {
+    color: white;
+    font-size: 20px;
+    animation: spin 1s linear infinite;
+}
+
+.emoji {
+    font-size: 20px;
+}
+
+.stepContent {
+    flex: 1;
+}
+
+.stepLabel {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0 0 6px 0;
+    transition: color 0.3s ease;
+}
+
+.stepActive .stepLabel {
+    color: #4f46e5;
+}
+
+.stepComplete .stepLabel {
+    color: #059669;
+}
+
+.progressBar {
+    height: 6px;
+    background: #edf2f7;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #4f46e5, #818cf8);
+    border-radius: 3px;
+    animation: progress 1.5s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(79, 70, 229, 0.3);
+}
+
+/* Completion Messages */
+.completionMessage {
+    margin-bottom: 35px;
+    animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.emailNotice {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.3);
+    align-items: center;
+}
+
+.errorNotice {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.3);
+    align-items: center;
+}
+
+.mailIcon,
+.errorMailIcon {
+    font-size: 36px;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.2);
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.completionMessage h3 {
+    margin: 0 0 6px 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.completionMessage p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0.95;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.button {
+    flex: 1;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(255, 255, 255, 0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.button:hover::after {
+    opacity: 1;
+}
+
+.buttonPrimary {
+    background: linear-gradient(135deg, #4f46e5, #4338ca);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1), 0 2px 4px -1px rgba(79, 70, 229, 0.06);
+}
+
+.buttonPrimary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.25);
+}
+
+.buttonPrimary:disabled {
+    background: #cbd5e0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.buttonSecondary {
+    background: white;
+    color: #4a5568;
+    border: 2px solid #e2e8f0;
+}
+
+.buttonSecondary:hover {
+    border-color: #cbd5e0;
+    background: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.buttonSuccess {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.1);
+}
+
+.buttonSuccess:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.25);
+}
+
+.buttonSpinner {
+    animation: spin 1s linear infinite;
+}
+
+/* Info Box */
+.infoBox {
+    background: #fffbef;
+    border: 1px solid #fef3c7;
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.infoBox p {
+    margin: 0;
+    font-size: 14px;
+    color: #92400e;
+    line-height: 1.6;
+}
+
+/* Animations */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes progress {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    50% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card {
+        padding: 30px 24px;
+        border-radius: 20px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .actions {
+        flex-direction: column-reverse;
+    }
+
+    .button {
+        width: 100%;
+        padding: 14px;
+    }
+
+    .emailNotice,
+    .errorNotice {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .mailIcon,
+    .errorMailIcon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 12px;
+    }
+
+    .card {
+        padding: 24px 16px;
+    }
+
+    .step {
+        padding: 12px;
+    }
+
+    .stepIcon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+}

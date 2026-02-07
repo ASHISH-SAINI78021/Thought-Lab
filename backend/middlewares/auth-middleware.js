@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
-export const isLogin = (req, res, next) => {
+const isLogin = (req, res, next) => {
   try {
     // In Express, header keys are automatically converted to lowercase.
     // So 'Authorization' from the frontend becomes 'authorization' on the backend.
@@ -17,6 +17,11 @@ export const isLogin = (req, res, next) => {
     // Attach the decoded payload (which should contain user id, role, etc.) to the request object
     req.user = decoded; 
     
+    // Compatibility: Alias id to _id if needed
+    if (req.user.id && !req.user._id) {
+        req.user._id = req.user.id;
+    }
+    
     next(); // Token is valid, proceed to the next middleware or route handler
 
   } catch (err) {
@@ -30,3 +35,5 @@ export const isLogin = (req, res, next) => {
     return res.status(401).json({ message: "Unauthorized: Invalid token." });
   }
 };
+
+module.exports = { isLogin };

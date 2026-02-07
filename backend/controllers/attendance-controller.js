@@ -6,7 +6,8 @@ faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
 const ExcelJS = require("exceljs");
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
-const Leaderboard = require("../Models/leaderboard-modal.js")
+const Leaderboard = require("../Models/leaderboard-modal.js");
+const emailService = require("../services/email-service.js");
 
 const userService = require("../services/user-service.js");
 const User = require("../Models/user-model.js");
@@ -104,6 +105,22 @@ class Attendance {
             });
           }
       
+          // Find user first to get email for notifications
+          const user = await User.findOne({ rollNumber });
+          if (!user || !user.faceId) {
+            // Send failure email
+            if (user && user.email) {
+              await emailService.sendAttendanceFailureEmail(
+                user,
+                "User not found or no face registered. Please register your face first."
+              );
+            }
+            return res.status(404).json({
+              success: false,
+              message: "User not found or no face registered"
+            });
+          }
+
           // Process uploaded image
           const img = await loadImage(req.file.path);
           const canvas = createCanvas(img.width, img.height);
@@ -116,18 +133,14 @@ class Attendance {
             .withFaceDescriptor();
       
           if (!detection) {
+            // Send failure email
+            await emailService.sendAttendanceFailureEmail(
+              user,
+              "No face detected in the image. Please ensure your face is clearly visible and well-lit."
+            );
             return res.status(400).json({
               success: false,
               message: "No face detected"
-            });
-          }
-      
-          // Find user and compare faces
-          const user = await User.findOne({ rollNumber });
-          if (!user || !user.faceId) {
-            return res.status(404).json({
-              success: false,
-              message: "User not found or no face registered"
             });
           }
       
@@ -139,6 +152,11 @@ class Attendance {
           const bestMatch = faceMatcher.findBestMatch(detection.descriptor);
       
           if (bestMatch.label === "unknown" || bestMatch.distance > 0.3) {
+            // Send failure email
+            await emailService.sendAttendanceFailureEmail(
+              user,
+              "Face recognition failed. The captured face doesn't match your registered face. Please try again with better lighting and positioning."
+            );
             return res.status(401).json({
               success: false,
               message: "Face recognition failed"
@@ -150,6 +168,11 @@ class Attendance {
           const today = now.toISOString().split('T')[0];
           const alreadyMarked = (user.attendance || []).some(a => a.date === today);
           if (alreadyMarked) {
+            // Send failure email
+            await emailService.sendAttendanceFailureEmail(
+              user,
+              "Attendance already marked for today. You can only mark attendance once per day."
+            );
             return res.status(400).json({
               success: false,
               message: "Attendance already marked for today"
@@ -180,7 +203,6 @@ class Attendance {
             },
             { upsert: true, new: true, setDefaultsOnInsert: true }
           ).populate('user', 'name rollNumber branch year');
-          // console.log("leaderboardEntry : ", leaderboardEntry);
       
           // Emit updated full leaderboard to connected clients (populated & sorted)
           const io = req.app.get('io');
@@ -190,8 +212,19 @@ class Attendance {
               .sort({ score: -1 });
             io.emit('leaderboard-update', fullLeaderboard);
           }
+
+          // Send success email
+          await emailService.sendAttendanceSuccessEmail(user, {
+            date: new Date(today).toLocaleDateString('en-US', { 
+              weekday: 'long', 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            }),
+            time: attendanceRecord.time
+          });
       
-          // Return success (no leaderboard data or rank)
+          // Return success
           return res.status(200).json({
             success: true,
             message: "Login successful",

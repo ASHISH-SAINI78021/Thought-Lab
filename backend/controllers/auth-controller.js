@@ -212,6 +212,25 @@ class AuthController {
       });
     }
   }
+
+  async logout(req, res) {
+    try {
+      // Since we're using JWT tokens stored in localStorage (stateless),
+      // the actual logout is handled on the frontend by clearing localStorage
+      // This endpoint serves as a confirmation and can be extended for token blacklisting
+      return res.status(200).json({
+        success: true,
+        message: "Logged out successfully"
+      });
+    } catch (error) {
+      console.error("Logout Error:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        error: error.message
+      });
+    }
+  }
 }
 
 module.exports = new AuthController();

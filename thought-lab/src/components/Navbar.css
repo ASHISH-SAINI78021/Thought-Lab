@@ -9,7 +9,8 @@
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(47, 61, 97, 0.1);
   padding: 0.5rem 0;
-  height: 70px; /* Fixed height for mobile */
+  height: 70px;
+  /* Fixed height for mobile */
 }
 
 .navbar-container {
@@ -18,7 +19,8 @@
   justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem; /* Reduced padding for mobile first */
+  padding: 0 1rem;
+  /* Reduced padding for mobile first */
   height: 100%;
 }
 
@@ -37,18 +39,21 @@
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Reduced gap for mobile */
+  gap: 0.5rem;
+  /* Reduced gap for mobile */
 }
 
 .logo-icon {
-  width: 45px; /* Slightly smaller for mobile */
+  width: 45px;
+  /* Slightly smaller for mobile */
   height: 45px;
   border-radius: 50%;
   background: #FFC3A0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.4rem; /* Reduced padding */
+  padding: 0.4rem;
+  /* Reduced padding */
   box-shadow: 0 4px 12px rgba(255, 195, 160, 0.3);
   transition: all 0.3s ease;
 }
@@ -65,7 +70,8 @@
 
 .logo-text {
   font-family: 'Display', sans-serif;
-  font-size: 1.3rem; /* Smaller for mobile */
+  font-size: 1.3rem;
+  /* Smaller for mobile */
   font-weight: 800;
   line-height: 1.1;
   color: #2f3d61;
@@ -115,13 +121,15 @@
 .navbar-user {
   display: flex;
   align-items: center;
+  gap: 1rem;
 }
 
 .user-avatar {
   transition: all 0.3s ease;
   border: 2px solid transparent;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 45px; /* Slightly smaller for mobile */
+  width: 45px;
+  /* Slightly smaller for mobile */
   height: 45px;
 }
 
@@ -129,6 +137,37 @@
   transform: scale(1.1);
   border-color: #FFC3A0;
   box-shadow: 0 4px 12px rgba(255, 195, 160, 0.3);
+}
+
+/* Logout Button - Desktop */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  background: #FFC3A0;
+  color: #2f3d61;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 195, 160, 0.3);
+}
+
+.logout-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+.logout-btn:hover {
+  background: #ff9a6c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 195, 160, 0.5);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
 }
 
 /* Mobile Menu Toggle */
@@ -180,7 +219,8 @@
   transition: transform 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
-  padding-top: 70px; /* Account for navbar height */
+  padding-top: 70px;
+  /* Account for navbar height */
   box-sizing: border-box;
 }
 
@@ -247,7 +287,8 @@
   transition: all 0.3s ease;
   margin-bottom: 0.8rem;
   text-align: center;
-  min-height: 60px; /* Minimum touch target size */
+  min-height: 60px;
+  /* Minimum touch target size */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -273,7 +314,8 @@
   align-items: center;
   gap: 1.5rem;
   padding: 2rem 1.5rem;
-  margin-top: auto; /* Push to bottom */
+  margin-top: auto;
+  /* Push to bottom */
   border-top: 1px solid rgba(47, 61, 97, 0.1);
 }
 
@@ -298,25 +340,61 @@
   text-transform: capitalize;
 }
 
+/* Mobile Logout Button */
+.mobile-logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 300px;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  border: none;
+  background: #FFC3A0;
+  color: #2f3d61;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 195, 160, 0.3);
+  min-height: 55px;
+}
+
+.mobile-logout-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.mobile-logout-btn:hover {
+  background: #ff9a6c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 195, 160, 0.5);
+}
+
+.mobile-logout-btn:active {
+  transform: translateY(0);
+}
+
 /* Responsive Design - Mobile First Approach */
 @media (max-width: 768px) {
   .navbar-container {
     padding: 0 1rem;
   }
-  
+
   .navbar-menu,
   .navbar-user {
     display: none;
   }
-  
+
   .mobile-menu-toggle {
     display: flex;
   }
-  
+
   .logo-text {
     font-size: 1.4rem;
   }
-  
+
   .logo-icon {
     width: 45px;
     height: 45px;
@@ -334,13 +412,33 @@
     transform: translateY(20px);
   }
 
-  .mobile-nav-link:nth-child(1) { animation-delay: 0.1s; }
-  .mobile-nav-link:nth-child(2) { animation-delay: 0.15s; }
-  .mobile-nav-link:nth-child(3) { animation-delay: 0.2s; }
-  .mobile-nav-link:nth-child(4) { animation-delay: 0.25s; }
-  .mobile-nav-link:nth-child(5) { animation-delay: 0.3s; }
-  .mobile-nav-link:nth-child(6) { animation-delay: 0.35s; }
-  .mobile-nav-link:nth-child(7) { animation-delay: 0.4s; }
+  .mobile-nav-link:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .mobile-nav-link:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .mobile-nav-link:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  .mobile-nav-link:nth-child(4) {
+    animation-delay: 0.25s;
+  }
+
+  .mobile-nav-link:nth-child(5) {
+    animation-delay: 0.3s;
+  }
+
+  .mobile-nav-link:nth-child(6) {
+    animation-delay: 0.35s;
+  }
+
+  .mobile-nav-link:nth-child(7) {
+    animation-delay: 0.4s;
+  }
 }
 
 /* Medium devices (tablets, 769px and up) */
@@ -348,16 +446,16 @@
   .navbar-container {
     padding: 0 2rem;
   }
-  
+
   .logo-text {
     font-size: 1.5rem;
   }
-  
+
   .logo-icon {
     width: 50px;
     height: 50px;
   }
-  
+
   .mobile-menu {
     display: none;
   }
@@ -399,31 +497,38 @@ body.mobile-menu-open {
   .navbar {
     background: #fff;
     border-bottom: 2px solid #2f3d61;
-    
+
   }
-  
-  .nav-link, .mobile-nav-link {
+
+  .nav-link,
+  .mobile-nav-link {
     border: 1px solid #2f3d61;
     font-size: 5rem;
   }
 }
 
-@media (max-width : 500px){
+@media (max-width : 500px) {
   .mobile-nav-link {
     font-size: 5rem;
   }
-  .user-name, .user-role {
+
+  .user-name,
+  .user-role {
     font-size: 3rem;
   }
-  .nav-links{
+
+  .nav-links {
     font-size: 5rem;
   }
+
   .nav-link {
     font-size: 5rem;
   }
+
   li {
     font-size: 5rem;
   }
+
   .logo-text {
     font-size: 5rem;
   }

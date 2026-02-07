@@ -46,6 +46,7 @@ import CourseCreator from "./components/Admin/Course/CourseCreater";
 import CourseList from "./components/CourseList/CourseList";
 import CoursePlayer from "./components/CoursePlayer/CoursePlayer";
 import CourseVideoManager from "./components/Admin/CourseVideoManager/CourseVideoManager";
+import AttendanceProcessing from "./components/Attendence/Processing/AttendanceProcessing";
 
 const AppContent = () => {
   useEffect(() => {
@@ -82,7 +83,7 @@ const AppContent = () => {
         <Route path="/courses" element={<CourseList />} />
         <Route path="/courses/:courseId" element={<CoursePlayer />} />
         <Route path="/courses/:courseId/videos" element={<CourseVideoManager />} />
-        
+
 
         {/* Authenticated Student Routes */}
         <Route
@@ -101,14 +102,22 @@ const AppContent = () => {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/attendance-processing"
+          element={
+            <PrivateRoute>
+              <AttendanceProcessing />
+            </PrivateRoute>
+          }
+        />
 
         {/* Admin Routes */}
         <Route
           path="/admin/*"
           element={
-           <AdminRoute>
+            <AdminRoute>
               <AdminLayout />
-           </AdminRoute>
+            </AdminRoute>
           }
         >
           <Route index element={<AdminPanel />} />
@@ -130,14 +139,14 @@ const AppContent = () => {
           element={
             <PrivateRoute>
               <Blog />
-           </PrivateRoute>
+            </PrivateRoute>
           }
         />
         <Route path="/meditation-timer" element={
           <PrivateRoute>
             <MeditationTimer />
           </PrivateRoute>
-        } /> 
+        } />
         <Route
           path="/blog/:id"
           element={
@@ -153,7 +162,7 @@ const AppContent = () => {
           </PrivateRoute>
         } />
         <Route path="/attendance-success" element={<AttendanceSuccess />} />
-        <Route path="/face-recognition-success" element={<FaceRecognitionSuccess/>} />
+        <Route path="/face-recognition-success" element={<FaceRecognitionSuccess />} />
       </Routes>
     </>
   );

@@ -279,6 +279,322 @@ class EmailService {
       throw new Error('Failed to send admin promotion email');
     }
   }
+
+  /**
+   * Sends an email to a user notifying them of successful attendance marking.
+   * @param {object} user - The user object containing name, email, and attendance details.
+   */
+  async sendAttendanceSuccessEmail(user, attendanceDetails) {
+    const mailOptions = {
+      from: 'Thought Lab <thoughtlab@example.com>',
+      to: user.email,
+      subject: '✅ Attendance Marked Successfully',
+      html: `
+        <div style="
+          font-family: 'Helvetica Neue', Arial, sans-serif;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 0;
+          background: #f9f9f9;
+          border-radius: 8px;
+          overflow: hidden;
+        ">
+          <!-- Email Header -->
+          <div style="
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            padding: 30px;
+            text-align: center;
+            color: white;
+          ">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white" style="margin-bottom: 15px;">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+            </svg>
+            <h1 style="margin: 0; font-size: 24px;">Attendance Marked Successfully!</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">Your presence has been recorded</p>
+          </div>
+  
+          <!-- Email Body -->
+          <div style="padding: 30px; color: #333; line-height: 1.6;">
+            <p style="margin: 0 0 20px; font-size: 16px;">
+              Hello ${user.name},
+            </p>
+  
+            <p style="margin: 0 0 20px; font-size: 16px;">
+              Great news! Your attendance has been successfully marked for today.
+            </p>
+  
+            <div style="
+              background: white;
+              border-radius: 6px;
+              padding: 20px;
+              margin-bottom: 25px;
+              box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            ">
+              <div style="display: flex; margin-bottom: 12px; align-items: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#11998e" style="margin-right: 10px;">
+                  <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
+                </svg>
+                <span style="font-weight: 500;">Date: ${attendanceDetails.date}</span>
+              </div>
+  
+              <div style="display: flex; margin-bottom: 12px; align-items: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#11998e" style="margin-right: 10px;">
+                  <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                </svg>
+                <span style="font-weight: 500;">Time: ${attendanceDetails.time}</span>
+              </div>
+
+              <div style="display: flex; align-items: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#11998e" style="margin-right: 10px;">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span style="font-weight: 500;">Status: Present</span>
+              </div>
+            </div>
+
+            <div style="
+              background: #e8f5e9;
+              border-left: 3px solid #11998e;
+              padding: 15px;
+              margin: 25px 0;
+              border-radius: 0 4px 4px 0;
+            ">
+              <p style="margin: 0; font-weight: 500; color: #2c3e50;">🎉 Bonus Points Awarded!</p>
+              <p style="margin: 8px 0 0; color: #2c3e50;">
+                You've earned <strong>10 points</strong> for marking your attendance today. Keep up the great work!
+              </p>
+            </div>
+  
+            <p style="margin: 0 0 20px; font-size: 16px;">
+              Thank you for your punctuality and dedication.
+            </p>
+          </div>
+  
+          <!-- Email Footer -->
+          <div style="
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+          ">
+            <p style="margin: 0;">Keep learning and growing,</p>
+            <p style="margin: 10px 0 0; font-weight: 500;">The Thought Lab Team</p>
+          </div>
+        </div>
+      `
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`Attendance success email sent to ${user.email}`);
+    } catch (error) {
+      console.error('Error sending attendance success email:', error);
+      // Don't throw error - email is not critical
+    }
+  }
+
+  /**
+   * Sends an email to a user notifying them of failed attendance marking.
+   * @param {object} user - The user object containing name and email.
+   * @param {string} reason - The reason for failure.
+   */
+  async sendAttendanceFailureEmail(user, reason) {
+    const mailOptions = {
+      from: 'Thought Lab <thoughtlab@example.com>',
+      to: user.email,
+      subject: '❌ Attendance Marking Failed',
+      html: `
+        <div style="
+          font-family: 'Helvetica Neue', Arial, sans-serif;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 0;
+          background: #f9f9f9;
+          border-radius: 8px;
+          overflow: hidden;
+        ">
+          <!-- Email Header -->
+          <div style="
+            background: linear-gradient(135deg, #ff4757, #ff6348);
+            padding: 30px;
+            text-align: center;
+            color: white;
+          ">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="white" style="margin-bottom: 15px;">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+            <h1 style="margin: 0; font-size: 24px;">Attendance Marking Failed</h1>
+            <p style="margin: 10px 0 0; opacity: 0.9;">We couldn't process your attendance</p>
+          </div>
+  
+          <!-- Email Body -->
+          <div style="padding: 30px; color: #333; line-height: 1.6;">
+            <p style="margin: 0 0 20px; font-size: 16px;">
+              Hello ${user.name},
+            </p>
+  
+            <p style="margin: 0 0 20px; font-size: 16px;">
+              We were unable to mark your attendance. Here's what happened:
+            </p>
+  
+            <div style="
+              background: #fff5f5;
+              border-left: 3px solid #ff4757;
+              padding: 15px;
+              margin: 25px 0;
+              border-radius: 0 4px 4px 0;
+            ">
+              <p style="margin: 0; font-weight: 500; color: #2c3e50;">Reason:</p>
+              <p style="margin: 8px 0 0; color: #2c3e50;">
+                ${reason}
+              </p>
+            </div>
+
+            <div style="
+              background: white;
+              border-radius: 6px;
+              padding: 20px;
+              margin-bottom: 25px;
+              box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            ">
+              <p style="margin: 0 0 15px; font-weight: 600; color: #2c3e50;">💡 Tips for Next Time:</p>
+              <ul style="margin: 0; padding-left: 20px; color: #555;">
+                <li style="margin-bottom: 8px;">Ensure good lighting on your face</li>
+                <li style="margin-bottom: 8px;">Position your face clearly in the center</li>
+                <li style="margin-bottom: 8px;">Remove any obstructions (glasses, masks if possible)</li>
+                <li style="margin-bottom: 8px;">Make sure your camera is working properly</li>
+                <li>Try again during a stable internet connection</li>
+              </ul>
+            </div>
+  
+            <p style="margin: 0 0 20px; font-size: 16px;">
+              Please try marking your attendance again. If the problem persists, contact support.
+            </p>
+
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="https://thought-labv2.netlify.app/mark-attendance" style="
+                display: inline-block;
+                background: #ff4757;
+                color: white;
+                padding: 12px 30px;
+                text-decoration: none;
+                border-radius: 50px;
+                font-weight: 600;
+              ">Try Again</a>
+            </div>
+          </div>
+  
+          <!-- Email Footer -->
+          <div style="
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+          ">
+            <p style="margin: 0;">Need help? Contact us anytime,</p>
+            <p style="margin: 10px 0 0; font-weight: 500;">The Thought Lab Team</p>
+          </div>
+        </div>
+      `
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`Attendance failure email sent to ${user.email}`);
+    } catch (error) {
+      console.error('Error sending attendance failure email:', error);
+      // Don't throw error - email is not critical
+    }
+  }
+
+  async sendTaskAssignmentEmail(user, task) {
+    const mailOptions = {
+        from: 'Thought Lab <thoughtlab@example.com>',
+        to: user.email,
+        subject: `New Task Assigned: ${task.title}`,
+        html: `
+            <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; border-radius: 8px; overflow: hidden;">
+                <div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 30px; text-align: center; color: white;">
+                    <h1 style="margin: 0; font-size: 24px;">New Task Assigned</h1>
+                </div>
+                <div style="padding: 30px; color: #333; line-height: 1.6;">
+                    <p>Hello ${user.name},</p>
+                    <p>You have been assigned a new task: <strong>${task.title}</strong></p>
+                    <p>${task.description}</p>
+                    <div style="background: white; padding: 20px; border-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin: 20px 0;">
+                        <p><strong>Reward:</strong> ${task.scoreReward} points</p>
+                        <p><strong>Penalty:</strong> ${task.scorePenalty} points</p>
+                        <p><strong>Deadline:</strong> ${new Date(task.deadline).toLocaleDateString()}</p>
+                    </div>
+                    <a href="https://thought-labv2.netlify.app/task-dashboard" style="display: inline-block; background: #667eea; color: white; padding: 12px 30px; text-decoration: none; border-radius: 50px; font-weight: 600;">View Task</a>
+                </div>
+            </div>
+        `
+    };
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log(`Task assignment email sent to ${user.email}`);
+    } catch (error) {
+        console.error('Error sending task assignment email:', error);
+    }
+  }
+
+  async sendTaskCompletionEmail(user, task) {
+     const mailOptions = {
+        from: 'Thought Lab <thoughtlab@example.com>',
+        to: user.email,
+        subject: `Task Completed: ${task.title}`,
+        html: `
+            <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; border-radius: 8px; overflow: hidden;">
+                <div style="background: linear-gradient(135deg, #11998e, #38ef7d); padding: 30px; text-align: center; color: white;">
+                    <h1 style="margin: 0; font-size: 24px;">Task Completed!</h1>
+                </div>
+                <div style="padding: 30px; color: #333; line-height: 1.6;">
+                    <p>Hello ${user.name},</p>
+                    <p>Congratulations! You have successfully completed the task: <strong>${task.title}</strong></p>
+                    <div style="background: #e8f5e9; border-left: 4px solid #11998e; padding: 15px; margin: 20px 0;">
+                        <p style="margin: 0; font-weight: bold; color: #2e7d32;">+${task.scoreReward} Points Added</p>
+                    </div>
+                    <p>Keep up the great work!</p>
+                </div>
+            </div>
+        `
+    };
+    try {
+        await transporter.sendMail(mailOptions);
+    } catch (error) {
+        console.error('Error sending task completion email:', error);
+    }
+  }
+
+  async sendTaskFailureEmail(user, task) {
+     const mailOptions = {
+        from: 'Thought Lab <thoughtlab@example.com>',
+        to: user.email,
+        subject: `Task Failed: ${task.title}`,
+        html: `
+            <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; border-radius: 8px; overflow: hidden;">
+                <div style="background: linear-gradient(135deg, #ff4757, #ff6348); padding: 30px; text-align: center; color: white;">
+                    <h1 style="margin: 0; font-size: 24px;">Task Failed</h1>
+                </div>
+                <div style="padding: 30px; color: #333; line-height: 1.6;">
+                    <p>Hello ${user.name},</p>
+                    <p>The task <strong>${task.title}</strong> was marked as failed.</p>
+                    <div style="background: #ffebee; border-left: 4px solid #ff4757; padding: 15px; margin: 20px 0;">
+                        <p style="margin: 0; font-weight: bold; color: #c62828;">-${task.scorePenalty} Points Deducted</p>
+                    </div>
+                </div>
+            </div>
+        `
+    };
+    try {
+        await transporter.sendMail(mailOptions);
+    } catch (error) {
+        console.error('Error sending task failure email:', error);
+  }
+  }
 }
 
 module.exports = new EmailService();

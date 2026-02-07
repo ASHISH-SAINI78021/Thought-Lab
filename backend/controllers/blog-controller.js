@@ -37,6 +37,14 @@ class BlogController {
                 });
             }
 
+            // Broadcast new blog notification
+            const NotificationController = require('./notification-controller');
+            await NotificationController.broadcastNotification(
+                `New Blog Posted: ${req.body.title}`,
+                'NEW_BLOG',
+                `/blogs/${blog._id}`
+            );
+
             return res.status(201).json({
                 success: true,
                 message: 'Blog created successfully',

@@ -1,4 +1,4 @@
-export const isSuperAdmin = (req, res, next) => {
+const isSuperAdmin = (req, res, next) => {
     try {
       // 1. Check if an authenticated user exists on the request object.
       // This relies on a preceding authentication middleware (e.g., JWT verification)
@@ -30,3 +30,5 @@ export const isSuperAdmin = (req, res, next) => {
       });
     }
   };
+
+module.exports = { isSuperAdmin };

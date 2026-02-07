@@ -12,4 +12,4 @@ const LeaderboardSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Leaderboard", LeaderboardSchema);
+module.exports = mongoose.models.Leaderboard || mongoose.model("Leaderboard", LeaderboardSchema);

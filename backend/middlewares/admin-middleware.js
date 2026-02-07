@@ -1,4 +1,4 @@
-export const isAdmin = (req, res, next) => {
+const isAdmin = (req, res, next) => {
     try {
       // The authentication middleware should have already set req.user
       if (!req.user) {
@@ -18,3 +18,5 @@ export const isAdmin = (req, res, next) => {
       res.status(500).json({ message: "Server error in admin middleware" });
     }
 };  
+
+module.exports = { isAdmin };  
