@@ -1,0 +1,178 @@
+/* ✅ Base body reset */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* 🌌 Main container with spline background */
+.eventsContainer {
+   position: relative;
+  width: 100%;
+  background-color: var(--dark-1);
+  overflow: hidden;
+}
+
+/* 🔮 Fixed spline background (kept same as your second version) */
+.splineBackground {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  cursor: none !important;
+}
+
+.splineBackground canvas,
+.splineBackground > div,
+.splineBackground > * {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  display: block;
+}
+
+/* 🔼 Foreground content stays on top */
+.eventsContent {
+  position: relative;
+  z-index: 2;
+  padding: 4rem 1.5rem;
+  background-color: var(--background);
+  color: var(--light);
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  margin-top: 100dvh;
+}
+
+/* ✅ Event List (centered layout, matches first design) */
+.eventList {
+  max-width: 900px;
+  margin: auto;
+  padding: 2rem;
+}
+
+/* ✅ Event Card — styled like the first version */
+.eventCard {
+  display: flex;
+  gap: 1rem;
+  background: linear-gradient(145deg, #0f0f0f, #1a1a1a, #2c2c2c);
+  align-items: center;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.eventCard:hover {
+  transform: scale(1.02);
+}
+
+/* ✅ Image styling (matches first version) */
+.bannerImage {
+  width: 300px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 5px;
+  background-color: #eee;
+  flex-shrink: 0;
+}
+
+/* ✅ Card details */
+.details h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-family: "BBH Sans Bartle", sans-serif;
+  font-weight:700;
+  background: rgb(229, 9, 20);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.details p {
+  margin: 0.2rem 0;
+  color: whitesmoke;
+}
+
+.description {
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  color: whitesmoke;
+}
+
+/* ✅ Register link animation (same as first version) */
+.registerLink a {
+  color: #b38600;
+  animation: glowPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0% {
+    color: #b38600;
+    text-shadow: 0 0 0px rgba(255, 215, 0, 0);
+  }
+  50% {
+    color: #ffd700;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+  }
+  100% {
+    color: #b38600;
+    text-shadow: 0 0 0px rgba(255, 215, 0, 0);
+  }
+}
+
+/* ✅ Responsive behavior (matches first version’s responsiveness) */
+@media (max-width: 768px) {
+  .eventsContent {
+    margin-top: 100dvh;
+    padding: 3rem 1rem;
+   
+  }
+
+  .eventCard {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 90%;       /* ✅ slightly less than full width */
+    max-width: 500px; /* optional: prevent super wide cards on tablets */
+    margin: 1em auto; /* center the card with some vertical spacing */
+    
+    
+  }
+
+  .bannerImage {
+    width: 95%;
+    height: auto;
+    max-width: none;
+    border-radius: 10px;
+  }
+
+  .details {
+    width: 80%;
+    padding-top: 1rem;
+    font-size: 1rem;
+  }
+
+  .details h2 {
+    font-size: 5rem;
+  }
+
+  .description {
+    font-size: 3.5rem;
+  }
+
+  .registerLink a {
+    font-size: 4rem;
+  }
+
+  .eventList {
+    padding: 1rem;
+  }
+  .date{
+    font-size: 3.5rem;
+  }
+
+  
+}
+

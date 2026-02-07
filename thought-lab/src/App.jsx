@@ -46,7 +46,14 @@ import CourseCreator from "./components/Admin/Course/CourseCreater";
 import CourseList from "./components/CourseList/CourseList";
 import CoursePlayer from "./components/CoursePlayer/CoursePlayer";
 import CourseVideoManager from "./components/Admin/CourseVideoManager/CourseVideoManager";
+<<<<<<< HEAD
 import AttendanceProcessing from "./components/Attendence/Processing/AttendanceProcessing";
+=======
+import Events from "./components/Events/events.jsx";
+import EventItem from "./components/Events/EventItem/EventItem.jsx";
+import UploadWinner from "./components/Winner/AdminAddWinner/AddWinner.jsx";
+import Winners from "./components/Winner/winners.jsx";
+>>>>>>> be7c22751ec08d02280f735e28483afcda19ce6a
 
 const AppContent = () => {
   useEffect(() => {
@@ -83,7 +90,17 @@ const AppContent = () => {
         <Route path="/courses" element={<CourseList />} />
         <Route path="/courses/:courseId" element={<CoursePlayer />} />
         <Route path="/courses/:courseId/videos" element={<CourseVideoManager />} />
+<<<<<<< HEAD
 
+=======
+        <Route path="/events" element={<Events />} />
+        <Route path="/events/:id" element={<EventItem />} />
+         <Route path="/upload-winner" element={<UploadWinner />} />
+        <Route path="/winners" element={<Winners />} />
+
+
+        
+>>>>>>> be7c22751ec08d02280f735e28483afcda19ce6a
 
         {/* Authenticated Student Routes */}
         <Route
