@@ -2,13 +2,19 @@ const nodemailer = require('nodemailer');
 
 // Email Transporter Setup
 const transporter = nodemailer.createTransport({
-    service: process.env.EMAIL_SERVICE,
-    port : process.env.EMAIL_PORT,
-    secure : false,
+    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+    port: process.env.EMAIL_PORT || 587,
+    secure: process.env.EMAIL_PORT == 465, // true for 465, false for 587
     auth: {
       user: process.env.EMAIL,
       pass: process.env.EMAIL_PASSWORD,
     },
+    tls: {
+        rejectUnauthorized: false // Often required for cloud environments
+    },
+    connectionTimeout: 15000, // 15 seconds
+    greetingTimeout: 15000,
+    socketTimeout: 20000
 });
 
 class EmailService {
