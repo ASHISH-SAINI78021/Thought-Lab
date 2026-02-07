@@ -1,38 +1,34 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-// Email Transporter Setup
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // Use SSL/TLS
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-    logger: true,
-    debug: true,
-    connectionTimeout: 60000, // 60s
-    greetingTimeout: 30000,
-    socketTimeout: 60000
-});
-
-// Verify connection configuration on startup
-console.log('--- SMTP DEBUG INFO ---');
-console.log(`EMAIL loaded: ${process.env.EMAIL ? 'YES (' + process.env.EMAIL.slice(0, 3) + '...)' : 'NO'}`);
-console.log(`PASSWORD loaded: ${process.env.EMAIL_PASSWORD ? 'YES (' + process.env.EMAIL_PASSWORD.slice(0, 2) + '...)' : 'NO'}`);
-console.log('Attempting connection to smtp.gmail.com:465...');
-
-transporter.verify(function (error, success) {
-  if (error) {
-    console.error('❌ SMTP Connection Error Detail:');
-    console.error(error);
-    console.log('TIP: ETIMEDOUT on port 465 usually means Render is blocking outgoing SSL/TLS Traffic.');
-  } else {
-    console.log('✅ SMTP Server is ready to take our messages');
-  }
-});
+// Initialize Resend with API Key
+const resend = new Resend(process.env.RESEND_API_KEY || 're_VibEX8u1_FJoJGxGVS9C2KJCQjjFGhMd7');
 
 class EmailService {
+    constructor() {
+        this.fromEmail = 'Thought Lab <onboarding@resend.dev>';
+    }
+
+    async sendEmail({ to, subject, html }) {
+        try {
+            const { data, error } = await resend.emails.send({
+                from: this.fromEmail,
+                to,
+                subject,
+                html,
+            });
+
+            if (error) {
+                console.error(`❌ Resend Error [to: ${to}]:`, error);
+                return { success: false, error };
+            }
+
+            console.log(`✅ Email sent successfully to ${to}. ID: ${data.id}`);
+            return { success: true, id: data.id };
+        } catch (error) {
+            console.error(`❌ Unexpected Email Error [to: ${to}]:`, error);
+            return { success: false, error };
+        }
+    }
   async sendApprovalEmail(appointment) {
     const mailOptions = {
       from: 'Thought Lab <thoughtlab@example.com>',
@@ -142,8 +138,7 @@ class EmailService {
     };
   
     try {
-      await transporter.sendMail(mailOptions);
-      console.log(`Approval email sent to ${appointment.email}`);
+      await this.sendEmail(mailOptions);
     } catch (error) {
       console.error('Error sending approval email:', error);
       throw new Error('Failed to send approval email');
@@ -208,8 +203,7 @@ class EmailService {
     };
   
     try {
-      await transporter.sendMail(mailOptions);
-      console.log(`Rejection email sent to ${appointment.email}`);
+      await this.sendEmail(mailOptions);
     } catch (error) {
       console.error('Error sending rejection email:', error);
       throw new Error('Failed to send rejection email');
@@ -293,8 +287,7 @@ class EmailService {
     };
 
     try {
-      await transporter.sendMail(mailOptions);
-      console.log(`Admin promotion email sent to ${user.email}`);
+      await this.sendEmail(mailOptions);
     } catch (error) {
       console.error('Error sending admin promotion email:', error);
       throw new Error('Failed to send admin promotion email');
@@ -407,8 +400,7 @@ class EmailService {
     };
 
     try {
-      await transporter.sendMail(mailOptions);
-      console.log(`Attendance success email sent to ${user.email}`);
+      await this.sendEmail(mailOptions);
     } catch (error) {
       console.error('Error sending attendance success email:', error);
       // Don't throw error - email is not critical
@@ -522,8 +514,7 @@ class EmailService {
     };
 
     try {
-      await transporter.sendMail(mailOptions);
-      console.log(`Attendance failure email sent to ${user.email}`);
+      await this.sendEmail(mailOptions);
     } catch (error) {
       console.error('Error sending attendance failure email:', error);
       // Don't throw error - email is not critical
@@ -555,8 +546,7 @@ class EmailService {
         `
     };
     try {
-        await transporter.sendMail(mailOptions);
-        console.log(`Task assignment email sent to ${user.email}`);
+        await this.sendEmail(mailOptions);
     } catch (error) {
         console.error('Error sending task assignment email:', error);
     }
@@ -584,7 +574,7 @@ class EmailService {
         `
     };
     try {
-        await transporter.sendMail(mailOptions);
+        await this.sendEmail(mailOptions);
     } catch (error) {
         console.error('Error sending task completion email:', error);
     }
@@ -611,10 +601,10 @@ class EmailService {
         `
     };
     try {
-        await transporter.sendMail(mailOptions);
+        await this.sendEmail(mailOptions);
     } catch (error) {
         console.error('Error sending task failure email:', error);
-  }
+    }
   }
 }
 

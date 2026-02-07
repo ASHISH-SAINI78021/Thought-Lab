@@ -29,6 +29,7 @@
     "multer-storage-cloudinary": "^4.0.0",
     "nodemailer": "^7.0.3",
     "path": "^0.12.7",
+    "resend": "^6.9.1",
     "socket.io": "^4.8.1",
     "streamifier": "^0.1.1",
     "twilio": "^5.4.1"
