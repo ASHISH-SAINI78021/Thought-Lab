@@ -1,5 +1,5 @@
-const Notification = require('../models/notification-model');
-const User = require('../models/user-model'); // Import User model
+const Notification = require('../Models/notification-model');
+const User = require('../Models/user-model'); // Import User model
 
 class NotificationController {
     async getNotifications(req, res) {

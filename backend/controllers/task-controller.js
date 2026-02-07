@@ -1,6 +1,6 @@
-const Task = require('../models/task-model');
-const User = require('../models/user-model');
-const Leaderboard = require('../models/leaderboard-modal');
+const Task = require('../Models/task-model');
+const User = require('../Models/user-model');
+const Leaderboard = require('../Models/leaderboard-modal');
 const emailService = require('../services/email-service');
 
 class TaskController {
