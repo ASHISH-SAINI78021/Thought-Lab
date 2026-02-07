@@ -7,17 +7,29 @@ const transporter = nodemailer.createTransport({
       user: process.env.EMAIL,
       pass: process.env.EMAIL_PASSWORD,
     },
-    pool: true, // Use pooled connections
+    pool: true,
     maxConnections: 5,
     maxMessages: 100,
     rateDelta: 1000,
     rateLimit: 5,
+    // Add logging and debugging
+    logger: true,
+    debug: true,
+    connectionTimeout: 30000, // 30 seconds for cloud environments
+    greetingTimeout: 30000,
+    socketTimeout: 30000
 });
 
 // Verify connection configuration on startup
+console.log(`Starting SMTP verification for: ${process.env.EMAIL}`);
+console.log(`Configured Email Service: ${process.env.EMAIL_SERVICE || 'gmail (default)'}`);
+console.log(`Configured Port: ${process.env.EMAIL_PORT || 'default'}`);
+
 transporter.verify(function (error, success) {
   if (error) {
-    console.error('❌ SMTP Connection Error:', error);
+    console.error('❌ SMTP Connection Error Detail:');
+    console.error(JSON.stringify(error, null, 2));
+    console.log('TIP: If you get ETIMEDOUT on Render, port 465/587 might be throttled. Try checking if "Less Secure Apps" or a fresh "App Password" is required.');
   } else {
     console.log('✅ SMTP Server is ready to take our messages');
   }
