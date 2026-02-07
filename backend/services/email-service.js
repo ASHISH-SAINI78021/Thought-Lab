@@ -2,19 +2,25 @@ const nodemailer = require('nodemailer');
 
 // Email Transporter Setup
 const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-    port: process.env.EMAIL_PORT || 465, // Switched to 465 as default
-    secure: (process.env.EMAIL_PORT || 465) == 465, // true for 465
+    service: 'gmail',
     auth: {
       user: process.env.EMAIL,
       pass: process.env.EMAIL_PASSWORD,
     },
-    tls: {
-        rejectUnauthorized: false
-    },
-    connectionTimeout: 20000, // Increased to 20 seconds
-    greetingTimeout: 20000,
-    socketTimeout: 30000
+    pool: true, // Use pooled connections
+    maxConnections: 5,
+    maxMessages: 100,
+    rateDelta: 1000,
+    rateLimit: 5,
+});
+
+// Verify connection configuration on startup
+transporter.verify(function (error, success) {
+  if (error) {
+    console.error('❌ SMTP Connection Error:', error);
+  } else {
+    console.log('✅ SMTP Server is ready to take our messages');
+  }
 });
 
 class EmailService {
