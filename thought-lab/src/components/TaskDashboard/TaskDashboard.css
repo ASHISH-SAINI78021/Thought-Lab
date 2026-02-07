@@ -180,3 +180,76 @@
   color: #a0aec0;
   font-size: 18px;
 }
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .task-dashboard-container {
+    padding: 15px;
+  }
+
+  .dashboard-header {
+    margin-bottom: 30px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 26px;
+  }
+
+  .dashboard-header p {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  .dashboard-tabs {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+
+  .tab-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+    flex: 1 1 calc(50% - 10px);
+    text-align: center;
+  }
+
+  .tasks-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .task-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .task-header h3 {
+    font-size: 16px;
+  }
+
+  .reward-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  .task-description {
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+}
+
+/* Very small devices */
+@media (max-width: 480px) {
+  .dashboard-tabs {
+    flex-direction: column;
+  }
+
+  .tab-btn {
+    width: 100%;
+    flex: none;
+  }
+
+  .dashboard-header h1 {
+    font-size: 22px;
+  }
+}
