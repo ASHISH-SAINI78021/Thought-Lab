@@ -2,34 +2,31 @@ const nodemailer = require('nodemailer');
 
 // Email Transporter Setup
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // Use SSL/TLS
     auth: {
       user: process.env.EMAIL,
       pass: process.env.EMAIL_PASSWORD,
     },
-    pool: true,
-    maxConnections: 5,
-    maxMessages: 100,
-    rateDelta: 1000,
-    rateLimit: 5,
-    // Add logging and debugging
     logger: true,
     debug: true,
-    connectionTimeout: 30000, // 30 seconds for cloud environments
+    connectionTimeout: 60000, // 60s
     greetingTimeout: 30000,
-    socketTimeout: 30000
+    socketTimeout: 60000
 });
 
 // Verify connection configuration on startup
-console.log(`Starting SMTP verification for: ${process.env.EMAIL}`);
-console.log(`Configured Email Service: ${process.env.EMAIL_SERVICE || 'gmail (default)'}`);
-console.log(`Configured Port: ${process.env.EMAIL_PORT || 'default'}`);
+console.log('--- SMTP DEBUG INFO ---');
+console.log(`EMAIL loaded: ${process.env.EMAIL ? 'YES (' + process.env.EMAIL.slice(0, 3) + '...)' : 'NO'}`);
+console.log(`PASSWORD loaded: ${process.env.EMAIL_PASSWORD ? 'YES (' + process.env.EMAIL_PASSWORD.slice(0, 2) + '...)' : 'NO'}`);
+console.log('Attempting connection to smtp.gmail.com:465...');
 
 transporter.verify(function (error, success) {
   if (error) {
     console.error('❌ SMTP Connection Error Detail:');
-    console.error(JSON.stringify(error, null, 2));
-    console.log('TIP: If you get ETIMEDOUT on Render, port 465/587 might be throttled. Try checking if "Less Secure Apps" or a fresh "App Password" is required.');
+    console.error(error);
+    console.log('TIP: ETIMEDOUT on port 465 usually means Render is blocking outgoing SSL/TLS Traffic.');
   } else {
     console.log('✅ SMTP Server is ready to take our messages');
   }
