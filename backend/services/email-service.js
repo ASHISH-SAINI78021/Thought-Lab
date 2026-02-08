@@ -1,11 +1,11 @@
 const { Resend } = require('resend');
 
 // Initialize Resend with API Key
-const resend = new Resend(process.env.RESEND_API_KEY || 're_VibEX8u1_FJoJGxGVS9C2KJCQjjFGhMd7');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 class EmailService {
     constructor() {
-        this.fromEmail = 'Thought Lab <onboarding@resend.dev>';
+        this.fromEmail = process.env.RESEND_FROM_EMAIL || 'Thought Lab <onboarding@resend.dev>';
     }
 
     async sendEmail({ to, subject, html }) {
@@ -31,7 +31,7 @@ class EmailService {
     }
   async sendApprovalEmail(appointment) {
     const mailOptions = {
-      from: 'Thought Lab <thoughtlab@example.com>',
+      from: this.fromEmail,
       to: appointment.email,
       subject: 'Your Thought Lab Session Confirmation',
       html: `
@@ -147,7 +147,7 @@ class EmailService {
 
   async sendRejectionEmail(appointment) {
     const mailOptions = {
-      from: 'Thought Lab <thoughtlab@example.com>',
+      from: this.fromEmail,
       to: appointment.email,
       subject: 'Your Appointment Request Status',
       html: `
@@ -218,7 +218,7 @@ class EmailService {
    */
   async sendAdminPromotionEmail(user) {
     const mailOptions = {
-      from: 'Thought Lab <thoughtlab@example.com>',
+      from: this.fromEmail,
       to: user.email,
       subject: 'Your Access Level Has Been Updated',
       html: `
@@ -300,7 +300,7 @@ class EmailService {
    */
   async sendAttendanceSuccessEmail(user, attendanceDetails) {
     const mailOptions = {
-      from: 'Thought Lab <thoughtlab@example.com>',
+      from: this.fromEmail,
       to: user.email,
       subject: '✅ Attendance Marked Successfully',
       html: `
@@ -414,7 +414,7 @@ class EmailService {
    */
   async sendAttendanceFailureEmail(user, reason) {
     const mailOptions = {
-      from: 'Thought Lab <thoughtlab@example.com>',
+      from: this.fromEmail,
       to: user.email,
       subject: '❌ Attendance Marking Failed',
       html: `
@@ -523,7 +523,7 @@ class EmailService {
 
   async sendTaskAssignmentEmail(user, task) {
     const mailOptions = {
-        from: 'Thought Lab <thoughtlab@example.com>',
+        from: this.fromEmail,
         to: user.email,
         subject: `New Task Assigned: ${task.title}`,
         html: `
@@ -554,7 +554,7 @@ class EmailService {
 
   async sendTaskCompletionEmail(user, task) {
      const mailOptions = {
-        from: 'Thought Lab <thoughtlab@example.com>',
+        from: this.fromEmail,
         to: user.email,
         subject: `Task Completed: ${task.title}`,
         html: `
@@ -582,7 +582,7 @@ class EmailService {
 
   async sendTaskFailureEmail(user, task) {
      const mailOptions = {
-        from: 'Thought Lab <thoughtlab@example.com>',
+        from: this.fromEmail,
         to: user.email,
         subject: `Task Failed: ${task.title}`,
         html: `

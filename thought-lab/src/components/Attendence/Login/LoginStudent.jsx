@@ -123,10 +123,7 @@ const LoginStudent = () => {
 
         // Show toast notification
         toast.success("We'll notify you via email once processing is complete!");
-
-        // Prepare form data
-        const formData = new FormData();
-        formData.append("rollNumber", rollNumber.trim());
+        setIsProcessing(true);
 
         if (capturedImage) {
             // Convert Data URL to Blob
@@ -134,10 +131,9 @@ const LoginStudent = () => {
             formData.append("image", blob, "face.jpg");
         }
 
-        // Redirect to processing page with form data
+        // Redirect to processing page with required data for it to rebuild the FormData
         navigate("/attendance-processing", {
             state: {
-                formData: formData,
                 rollNumber: rollNumber.trim(),
                 capturedImage: capturedImage
             }
