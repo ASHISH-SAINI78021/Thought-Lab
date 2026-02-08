@@ -355,52 +355,46 @@
 
 @media (max-width:500px) {
   .title {
-    font-size: 1.8rem;
+    font-size: 7rem;
   }
 
   .subtitle {
-    font-size: 1rem;
+    font-size: 5rem;
   }
 
   .container {
-    max-width: 95%;
-    margin: 1rem auto;
-    padding: 1rem;
+    max-width: 1000px;
+    margin-top: 20rem;
+    padding: 2rem;
     background-color: transparent;
-    border-radius: 12px;
+    border-radius: 16px;
   }
 
   .button {
-    font-size: 1rem;
-    margin: 0.5rem 0;
-    padding: 0.7rem 1.2rem;
+    font-size: 5rem;
+    margin: 1rem;
   }
 
   .cameraSection {
-    gap: 5px;
+    gap: 10px;
   }
 
   .stepNumber {
-    font-size: 1.2rem;
-    width: 32px;
-    height: 32px;
+    font-size: 3rem;
   }
 
   .stepTitle {
-    font-size: 0.8rem;
+    font-size: 3rem;
   }
 
   .instruction {
-    font-size: 0.9rem;
+    font-size: 3rem;
   }
 
-  .formTitle {
-    font-size: 1.4rem;
-  }
-
+  .formTitle,
   .label,
   .input,
   .linkText {
-    font-size: 1rem;
+    font-size: 3rem;
   }
 }

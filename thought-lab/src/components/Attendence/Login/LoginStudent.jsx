@@ -125,12 +125,6 @@ const LoginStudent = () => {
         toast.success("We'll notify you via email once processing is complete!");
         setIsProcessing(true);
 
-        if (capturedImage) {
-            // Convert Data URL to Blob
-            const blob = await fetch(capturedImage).then((res) => res.blob());
-            formData.append("image", blob, "face.jpg");
-        }
-
         // Redirect to processing page with required data for it to rebuild the FormData
         navigate("/attendance-processing", {
             state: {
@@ -245,7 +239,7 @@ const LoginStudent = () => {
                                     </>
                                 ) : (
                                     <>
-                                        <FiArrowRight /> Confirm Login
+                                        <FiArrowRight /> Mark Attendance
                                     </>
                                 )}
                             </button>
