@@ -18,6 +18,10 @@ const app = express();
 const server = http.createServer(app);
 
 // Middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
 app.use(cookieParser());
 app.use(
   cors({
@@ -46,13 +50,19 @@ app.use("/models", express.static(path.join(__dirname, "public", "models")));
 // Routes
 app.use(router);
 
-// DB connection
-DbConnect();
+// DB connection is now strictly handled in startServer()
+// DbConnect(); 
 
 // Root route
 app.get("/", (req, res) => {
-  console.log("App is working fine");
-  res.send("App is working fine");
+  console.log("📡 Root route hit - App is working fine");
+  res.send("Thought Lab Backend is working fine");
+});
+
+// Ping route for health check
+app.get("/ping", (req, res) => {
+  console.log("💓 Ping hit");
+  res.json({ success: true, timestamp: new Date().toISOString() });
 });
 
 // Socket.IO setup
@@ -137,8 +147,33 @@ io.on("connection", async (socket) => {
   });
 });
 
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error("🔥 GLOBAL ERROR:", {
+    message: err.message,
+    stack: err.stack,
+    path: req.path,
+    method: req.method
+  });
+  
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+    error: process.env.NODE_ENV === 'development' ? err : {}
+  });
+});
+
 // Start the server
 const PORT = process.env.PORT || 5500;
-server.listen(PORT, () => {
-  console.log(`✅ Server listening on port ${PORT}`);
-});
+async function startServer() {
+  try {
+    await DbConnect();
+    server.listen(PORT, () => {
+      console.log(`✅ Server listening on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("❌ Failed to start server:", err);
+  }
+}
+
+startServer();

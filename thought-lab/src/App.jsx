@@ -15,10 +15,6 @@ import GameScoreUpdater from "./components/Admin/Game/GameScoreUpdater/GameScore
 import RegisterStudent from "./components/Attendence/Login/RegisterStudent";
 import LoginStudent from "./components/Attendence/Login/LoginStudent";
 import BlogItem from "./components/Blog/BlogItem/BlogItem";
-import StepAvatar from "./components/Authentication/StepAvatar/StepAvatar";
-import StepName from "./components/Authentication/StepName/StepName";
-import StepOtp from "./components/Authentication/StepOtp/StepOtp";
-import StepPhoneEmail from "./components/Authentication/StepPhoneEmail/StepPhoneEmail";
 import AppointmentForm from "./components/AppointmentForm/AppointmentForm";
 import ApproveAppointment from "./components/ApproveAppointment/ApproveAppointment";
 import DownloadAttendance from "./components/Admin/DownloadAttendance/DownloadAttendance";

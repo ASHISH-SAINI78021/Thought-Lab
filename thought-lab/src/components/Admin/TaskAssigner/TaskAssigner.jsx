@@ -77,6 +77,11 @@ function TaskAssigner() {
   };
 
   const handleAssign = async (taskId, userId, email = null) => {
+    if (!taskId || (!userId && !email)) {
+      console.error("Invalid assignment data", { taskId, userId, email });
+      toast.error("Invalid assignment data");
+      return;
+    }
     console.log("handleAssign called:", { taskId, userId, email });
 
     // Optimistic Update
@@ -124,7 +129,7 @@ function TaskAssigner() {
       const { data } = await completeTask(taskId);
       if (data.success) {
         toast.success(data.message);
-        fetchTasks();
+        fetchData();
       }
     } catch (error) {
       console.error('Error completing task:', error);
@@ -138,7 +143,7 @@ function TaskAssigner() {
       const { data } = await failTask(taskId);
       if (data.success) {
         toast.error(data.message);
-        fetchTasks();
+        fetchData();
       }
     } catch (error) {
       console.error('Error failing task:', error);

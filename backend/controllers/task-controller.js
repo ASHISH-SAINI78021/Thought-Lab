@@ -99,11 +99,13 @@ class TaskController {
 
             if (!user) return res.status(404).json({ success: false, message: "User not found" });
 
+            console.log(`🎯 Assigning task ${taskId} to user ${userId || email}`);
             task.assignedTo = user._id;
             task.status = 'ASSIGNED';
             await task.save();
 
             // Send notification
+            console.log(`📤 Triggering assignment email for user: ${user.name} (${user.email || 'NO EMAIL'})`);
             await emailService.sendTaskAssignmentEmail(user, task);
             
             // Create in-app notification
@@ -117,7 +119,11 @@ class TaskController {
 
             return res.json({ success: true, message: "Task assigned successfully", task });
         } catch (error) {
-            console.error("Error assigning task:", error);
+            console.error("Error assigning task:", {
+                message: error.message,
+                status: error.response?.status,
+                data: error.response?.data
+            });
             return res.status(500).json({ success: false, message: "Internal Server Error" });
         }
     }
@@ -137,6 +143,8 @@ class TaskController {
             task.status = 'COMPLETED';
             task.completedAt = new Date();
             await task.save();
+
+            console.log(`✅ Task ${taskId} marked as COMPLETED. Notifying user...`);
 
             // Update Leaderboard Score
             let leaderboardEntry = await Leaderboard.findOne({ user: task.assignedTo });
@@ -184,6 +192,8 @@ class TaskController {
 
             task.status = 'FAILED';
             await task.save();
+
+            console.log(`❌ Task ${taskId} marked as FAILED. Notifying user...`);
 
             // Update Leaderboard Score (Penalty)
             let leaderboardEntry = await Leaderboard.findOne({ user: task.assignedTo });

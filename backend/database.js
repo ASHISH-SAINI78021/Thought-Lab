@@ -6,15 +6,12 @@ async function DbConnect() {
         // Increase global buffering timeout to 30s
         mongoose.set('bufferTimeoutMS', 30000);
 
-        const conn = await mongoose.connect(process.env.DB_URL, {
-            serverSelectionTimeoutMS: 30000, 
-            socketTimeoutMS: 45000,
-            connectTimeoutMS: 30000,
-        });
-        console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+        const conn = await mongoose.connect(process.env.DB_URL);
+        console.log(`✅ MongoDB Connected to: ${conn.connection.name}`);
+        return conn;
     } catch (error) {
         console.error('❌ MongoDB Connection Error:', error);
-        console.error('Please check if your IP is whitelisted in MongoDB Atlas (Access from Anywhere: 0.0.0.0/0)');
+        throw error;
     }
 }
 

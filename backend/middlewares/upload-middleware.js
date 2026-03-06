@@ -3,6 +3,11 @@ const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 // Configure Cloudinary
+console.log("🛠️ Configuring Cloudinary with:");
+console.log(`- Cloud Name: ${process.env.CLOUD_NAME}`);
+console.log(`- API Key: ${process.env.CLOUDINARY_API ? '✅ Present' : '❌ Missing'}`);
+console.log(`- API Secret: ${process.env.CLOUD_SECRET ? '✅ Present' : '❌ Missing'}`);
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API,
@@ -12,18 +17,21 @@ cloudinary.config({
 // Single storage configuration for all uploads
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: (req, file) => {
+  params: async (req, file) => {
+    console.log(`📡 Multer-Cloudinary: Starting upload for ${file.originalname}`);
+    
     // Dynamic folder based on route
     const folder = req.originalUrl.includes('register') 
-      ? 'storage/registrations' 
-      : 'storage/logins';
+      ? 'ThoughtLab/Registrations' 
+      : 'ThoughtLab/Others';
+    
+    console.log(`📁 Target folder: ${folder}`);
     
     return {
       folder: folder,
-      allowed_formats: ['jpg', 'jpeg', 'png'],
-      transformation: [{ width: 800, height: 800, crop: 'limit' }],
-      resource_type: 'auto',
-      public_id: `${Date.now()}-${Math.round(Math.random() * 1E9)}` // Unique filename
+      allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+      // Simplified params avoid signature mismatch issues
+      transformation: [{ width: 500, height: 500, crop: 'fill' }]
     };
   }
 });

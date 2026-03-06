@@ -9,6 +9,7 @@ const Leaderboard = require("../Models/leaderboard-modal.js")
 
 class AuthController {
   async registerStudent(req, res) {
+    console.log("➡️ Path: AuthController.registerStudent - Body size:", Object.keys(req.body).length);
     try {
       const { name, rollNumber, year, branch, programme, email, password, role } = req.body;
 
@@ -22,11 +23,12 @@ class AuthController {
         return res.status(409).json({ success: false, message: "User already registered" });
       }
 
-      // Upload profile picture to Cloudinary if exists
+      // profile picture is handled by upload middleware (multer-storage-cloudinary)
       let profilePictureUrl = "";
       if (req.file) {
-        const result = await cloudinary.uploader.upload(req.file.path);
-        profilePictureUrl = result.secure_url;
+        // req.file.path is the URL provided by CloudinaryStorage
+        profilePictureUrl = req.file.path;
+        console.log("📸 Profile picture uploaded to:", profilePictureUrl);
       }
 
       // Hash the password
@@ -45,11 +47,20 @@ class AuthController {
         role: role || "user", // Default is user
       });
 
-      await Leaderboard.create({user:student._id, score:100});
-      let leaderboard = await Leaderboard.find().populate("user", "name rollNumber branch year").sort({score : -1});
-
-      const io = req.app.get("io");
-      io.emit("leaderboard-update", leaderboard);
+      try {
+        await Leaderboard.create({user:student._id, score:100});
+        console.log("🏆 Leaderboard entry created for user:", student._id);
+        
+        const leaderboard = await Leaderboard.find().populate("user", "name rollNumber branch year").sort({score : -1});
+        const io = req.app.get("io");
+        if (io) {
+          io.emit("leaderboard-update", leaderboard);
+        } else {
+          console.warn("⚠️ Socket.io instance not found on req.app");
+        }
+      } catch (leaderboardError) {
+        console.error("❌ Error during leaderboard/socket sync:", leaderboardError);
+      }
 
       // Generate token
       const token = jwt.sign(
