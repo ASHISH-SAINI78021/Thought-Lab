@@ -6,7 +6,11 @@ async function DbConnect() {
         // Increase global buffering timeout to 30s
         mongoose.set('bufferTimeoutMS', 30000);
 
-        const conn = await mongoose.connect(process.env.DB_URL);
+        const conn = await mongoose.connect(process.env.DB_URL, {
+            maxPoolSize: 50, // Limit concurrent connections to avoid overloading Atlas Free Tier
+            serverSelectionTimeoutMS: 5000, 
+            socketTimeoutMS: 45000,
+        });
         console.log(`✅ MongoDB Connected to: ${conn.connection.name}`);
         return conn;
     } catch (error) {

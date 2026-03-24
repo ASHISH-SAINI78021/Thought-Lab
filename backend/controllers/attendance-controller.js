@@ -110,10 +110,10 @@ class Attendance {
           if (!user || !user.faceId) {
             // Send failure email
             if (user && user.email) {
-              await emailService.sendAttendanceFailureEmail(
+              emailService.sendAttendanceFailureEmail(
                 user,
                 "User not found or no face registered. Please register your face first."
-              );
+              ).catch(err => console.error("Attendance failure email error:", err));
             }
             return res.status(404).json({
               success: false,
@@ -134,10 +134,10 @@ class Attendance {
       
           if (!detection) {
             // Send failure email
-            await emailService.sendAttendanceFailureEmail(
+            emailService.sendAttendanceFailureEmail(
               user,
               "No face detected in the image. Please ensure your face is clearly visible and well-lit."
-            );
+            ).catch(err => console.error("Attendance failure email error:", err));
             return res.status(400).json({
               success: false,
               message: "No face detected"
@@ -153,10 +153,10 @@ class Attendance {
       
           if (bestMatch.label === "unknown" || bestMatch.distance > 0.3) {
             // Send failure email
-            await emailService.sendAttendanceFailureEmail(
+            emailService.sendAttendanceFailureEmail(
               user,
               "Face recognition failed. The captured face doesn't match your registered face. Please try again with better lighting and positioning."
-            );
+            ).catch(err => console.error("Attendance recognition failure email error:", err));
             return res.status(401).json({
               success: false,
               message: "Face recognition failed"
@@ -169,10 +169,10 @@ class Attendance {
           const alreadyMarked = (user.attendance || []).some(a => a.date === today);
           if (alreadyMarked) {
             // Send failure email
-            await emailService.sendAttendanceFailureEmail(
+            emailService.sendAttendanceFailureEmail(
               user,
               "Attendance already marked for today. You can only mark attendance once per day."
-            );
+            ).catch(err => console.error("Attendance already marked email error:", err));
             return res.status(400).json({
               success: false,
               message: "Attendance already marked for today"
@@ -207,14 +207,19 @@ class Attendance {
           // Emit updated full leaderboard to connected clients (populated & sorted)
           const io = req.app.get('io');
           if (io) {
-            const fullLeaderboard = await Leaderboard.find()
+            // Emit only the specific update to avoid heavy full-list queries during peak times
+            io.emit('leaderboard-entry-update', leaderboardEntry);
+            
+            // Optionally: Background refresh of full leaderboard (non-blocking)
+            Leaderboard.find()
               .populate('user', 'name rollNumber branch year')
-              .sort({ score: -1 });
-            io.emit('leaderboard-update', fullLeaderboard);
+              .sort({ score: -1 })
+              .then(fullList => io.emit('leaderboard-update', fullList))
+              .catch(err => console.error("Full leaderboard broadcast error:", err));
           }
 
           // Send success email
-          await emailService.sendAttendanceSuccessEmail(user, {
+          emailService.sendAttendanceSuccessEmail(user, {
             date: new Date(today).toLocaleDateString('en-US', { 
               weekday: 'long', 
               year: 'numeric', 
@@ -222,7 +227,7 @@ class Attendance {
               day: 'numeric' 
             }),
             time: attendanceRecord.time
-          });
+          }).catch(err => console.error("Attendance success email error:", err));
       
           // Return success
           return res.status(200).json({
