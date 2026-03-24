@@ -400,7 +400,7 @@
     }
 
     .title {
-        font-size: 24px;
+        font-size: 24px !important;
     }
 
     .actions {
@@ -441,8 +441,8 @@
     }
 
     .stepIcon {
-        width: 36px;
-        height: 36px;
-        font-size: 16px;
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 16px !important;
     }
 }

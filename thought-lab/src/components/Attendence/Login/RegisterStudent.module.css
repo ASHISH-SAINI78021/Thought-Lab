@@ -3,8 +3,8 @@
 /* Base Styles */
 .container {
   max-width: 1000px;
-  margin: 2rem auto;
-  padding: 2rem;
+  margin: 32px auto;
+  padding: 32px;
   background: transparent;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -19,8 +19,8 @@
 }
 
 .title {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 40px;
+  margin-bottom: 8px;
   color: #2d3748;
   font-weight: 700;
   background: linear-gradient(90deg, #4f46e5, #10b981);
@@ -31,7 +31,7 @@
 
 .subtitle {
   color: #718096;
-  font-size: 1.1rem;
+  font-size: 18px;
   margin-top: 0;
 }
 
@@ -39,7 +39,7 @@
 .steps {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 3rem;
+  margin-bottom: 48px;
   position: relative;
 }
 
@@ -64,7 +64,7 @@
 .stepNumber {
   width: 44px;
   height: 44px;
-  margin: 0 auto 0.8rem;
+  margin: 0 auto 13px;
   border-radius: 50%;
   background: #edf2f7;
   color: #718096;
@@ -81,7 +81,7 @@
 .stepTitle {
   color: #a0aec0;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 15px;
   transition: all 0.3s ease;
 }
 
@@ -100,7 +100,7 @@
 
 /* Camera Section */
 .cameraSection {
-  margin: 2rem 0;
+  margin: 32px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -138,24 +138,24 @@
 }
 
 .instruction {
-  font-size: 1.2rem;
-  margin-top: 1rem;
+  font-size: 19px;
+  margin-top: 16px;
   text-align: center;
   max-width: 80%;
 }
 
 /* Review / Form Section */
 .loginForm {
-  margin: 2rem auto;
+  margin: 32px auto;
   max-width: 500px;
   animation: fadeIn 0.6s ease-out;
 }
 
 .formTitle {
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 29px;
   color: #2d3748;
-  margin-bottom: 1.5rem;
+  margin-bottom: 24px;
   font-weight: 600;
 }
 
@@ -177,16 +177,16 @@
 }
 
 .formGroup {
-  margin-bottom: 1.5rem;
+  margin-bottom: 24px;
 }
 
 .label {
   display: flex;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
   color: #4a5568;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 15px;
 }
 
 .inputIcon {
@@ -196,10 +196,10 @@
 
 .input {
   width: 100%;
-  padding: 0.8rem 1.2rem;
+  padding: 13px 19px;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 16px;
   transition: all 0.3s ease;
   background: #f8fafc;
 }
@@ -215,10 +215,10 @@
 .summaryCard {
   background: #f8fafc;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 24px;
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 32px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   border: 1px solid #e2e8f0;
 }
@@ -245,7 +245,7 @@
 }
 
 .detailRow {
-  margin-bottom: 0.8rem;
+  margin-bottom: 13px;
   display: flex;
 }
 
@@ -264,29 +264,29 @@
 .actionsInline {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin: 2rem 0;
+  gap: 16px;
+  margin: 32px 0;
 }
 
 /* Actions Flex for Forms */
 .actions {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin: 2rem 0;
+  gap: 16px;
+  margin: 32px 0;
 }
 
 .button {
-  padding: 0.8rem 1.8rem;
+  padding: 13px 29px;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .buttonPrimary {
@@ -346,48 +346,62 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .container {
-    padding: 1.5rem;
-    margin: 1rem;
+    padding: 16px;
+    margin: 8px;
+    border-radius: 12px;
   }
 
   .title {
-    font-size: 2rem;
+    font-size: 26px !important;
+  }
+
+  .subtitle {
+    font-size: 14px !important;
   }
 
   .steps {
-    margin-bottom: 2rem;
+    margin-bottom: 20px;
   }
 
   .stepNumber {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    font-size: 15px !important;
   }
 
   .stepTitle {
-    font-size: 0.8rem;
+    font-size: 11px !important;
+  }
+
+  .cameraSection {
+    margin: 12px 0;
   }
 
   .actions {
     flex-direction: column;
+    gap: 8px;
   }
 
   .actionsInline {
     flex-direction: column;
+    gap: 8px;
   }
 
   .button {
     width: 100%;
+    padding: 11px 16px;
+    font-size: 15px !important;
   }
 
   .summaryCard {
     flex-direction: column;
     text-align: center;
+    padding: 16px;
   }
 
   .faceThumbnail {
     margin-right: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 16px;
   }
 
   .detailRow {
@@ -398,58 +412,109 @@
   .detailLabel {
     min-width: auto;
   }
-}
 
-/* Fix for Huge Mobile Text Issue - Reset sizes to standard responsive values */
-@media (max-width: 500px) {
-  .container {
-    margin-top: 1rem;
-    padding: 1.2rem;
-  }
-
-  .title {
-    font-size: 1.8rem;
-  }
-
-  .subtitle {
-    font-size: 1rem;
-  }
-
-  .button {
-    font-size: 1rem;
-    margin: 0.5rem 0;
-  }
-
-  .cameraSection {
-    gap: 10px;
-  }
-
-  .stepNumber {
-    font-size: 1rem;
-  }
-
-  .stepTitle {
-    font-size: 0.8rem;
-  }
-
-  .instruction {
-    font-size: 1rem;
-  }
-
-  .formTitle,
-  .label,
-  .input,
-  .detailLabel,
-  .detailValue {
-    font-size: 1rem;
-  }
-
-  .facePreviewContainer {
-    margin: 1rem 0;
+  .formTitle {
+    font-size: 22px !important;
   }
 
   .facePreview {
     width: 150px;
     height: 150px;
+  }
+
+  .instruction {
+    font-size: 15px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin: 4px;
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .header {
+    margin-bottom: 16px;
+  }
+
+  .title {
+    font-size: 22px !important;
+  }
+
+  .subtitle {
+    font-size: 13px !important;
+  }
+
+  .steps {
+    margin-bottom: 14px;
+  }
+
+  .stepNumber {
+    width: 30px;
+    height: 30px;
+    font-size: 13px !important;
+    border: 3px solid white;
+  }
+
+  .stepTitle {
+    font-size: 10px !important;
+  }
+
+  .steps::before {
+    top: 15px;
+  }
+
+  .cameraSection {
+    margin: 8px 0;
+  }
+
+  .cameraContainer {
+    border-radius: 8px;
+  }
+
+  .instruction {
+    font-size: 13px !important;
+    max-width: 90%;
+  }
+
+  .button {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px !important;
+  }
+
+  .formTitle {
+    font-size: 18px !important;
+    margin-bottom: 12px;
+  }
+
+  .label,
+  .input,
+  .detailLabel,
+  .detailValue {
+    font-size: 14px !important;
+  }
+
+  .input {
+    padding: 10px 14px;
+  }
+
+  .facePreview {
+    width: 120px;
+    height: 120px;
+  }
+
+  .faceThumbnail {
+    width: 80px;
+    height: 80px;
+  }
+
+  .summaryCard {
+    padding: 12px;
+  }
+
+  .loginForm {
+    margin: 12px auto;
   }
 }
