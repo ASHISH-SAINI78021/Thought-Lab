@@ -110,6 +110,7 @@ export const studentRegister = (formData) => api.post('/register', formData, {
     }
 });
 export const promoteToAdmin = (data) => api.put('/promote-to-admin', data);
+export const changeUserPassword = (data) => api.put('/admin/change-password', data);
 export const createAppointment = (data) => api.post('/counsellor/create-appointment', data);
 export const getAllAppointments = (status) => api.get(`/counsellor/all-appointments?status=${status}`);
 export const approveAppointment = (id) => api.patch(`/counsellor/${id}/approve`);

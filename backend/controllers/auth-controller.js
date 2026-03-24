@@ -172,11 +172,51 @@ class AuthController {
           role: userToPromote.role
         }
       });
-  
     } catch (error) {
       // Catch any unexpected errors (e.g., database connection issues)
       console.error("Server Error during promotion:", error);
       return res.status(500).json({ // 500 Internal Server Error
+        success: false,
+        message: "An unexpected error occurred on the server.",
+        error: error.message
+      });
+    }
+  }
+
+  async changePassword(req, res) {
+    try {
+      const { email, newPassword } = req.body;
+
+      if (!email || !newPassword) {
+        return res.status(400).json({
+          success: false,
+          message: "Email and new password are required."
+        });
+      }
+
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: `User with email ${email} not found.`
+        });
+      }
+
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+      await user.save();
+
+      console.log(`Success: Password for user ${email} has been changed by superAdmin.`);
+      
+      return res.status(200).json({
+        success: true,
+        message: "Password successfully changed."
+      });
+
+    } catch (error) {
+      console.error("Server Error during password change:", error);
+      return res.status(500).json({
         success: false,
         message: "An unexpected error occurred on the server.",
         error: error.message

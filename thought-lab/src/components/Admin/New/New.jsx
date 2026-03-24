@@ -1,14 +1,15 @@
 import React from 'react'
 import styles from './New.module.css';
-import { ClockCircleOutlined, LoginOutlined, LogoutOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
+import { ClockCircleOutlined, LoginOutlined, LogoutOutlined, FullscreenOutlined, FullscreenExitOutlined, KeyOutlined } from '@ant-design/icons';
 import AdminHeader from '../AdminHeader/AdminHeader';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../Context/auth';
 import NIT_Logo from '../../../assets/NIT-logo.png'
 
 
 
 const New = ({ children }) => {
-
+    const [auth] = useAuth();
     const navigate = useNavigate();
     return (
         <div className={styles.container}>
@@ -30,6 +31,12 @@ const New = ({ children }) => {
                         <p className={styles.b}><LogoutOutlined /></p>
                         <p onClick={() => navigate("/admin/promote-admin")}>Register</p>
                     </div>
+                    {(auth?.user?.role === 'superAdmin' || auth?.user?.role === 'admin') && (
+                        <div className={styles.second}>
+                            <p className={styles.b}><KeyOutlined /></p>
+                            <p onClick={() => navigate("/admin/change-password")}>Change Password</p>
+                        </div>
+                    )}
                     <div className={styles.second}>
                         <p className={styles.b}><LoginOutlined /></p>
                         <p onClick={() => navigate("/login")}>Login</p>

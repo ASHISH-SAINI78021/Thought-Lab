@@ -1,5 +1,9 @@
-require('@tensorflow/tfjs-node');
 require("dotenv").config();
+try {
+  require('@tensorflow/tfjs-node');
+} catch (error) {
+  console.warn("⚠️ [TensorFlow] Failed to load native binding (@tensorflow/tfjs-node). Falling back to pure JavaScript backend. Performance may be degraded for face recognition. \nError:", error.message);
+}
 const express = require("express");
 const path = require("path");
 const http = require("http");

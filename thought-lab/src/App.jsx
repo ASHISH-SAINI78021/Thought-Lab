@@ -29,6 +29,7 @@ import GameManagement from "./components/Admin/Game/GameManagement/GameManagemen
 import GameList from "./components/GameList/GameList";
 import CertificateGenerator from "./components/Admin/CertificateGenerator/CertificateGenerator";
 import RegisterAdmin from "./components/Admin/RegisterAdmin/RegisterAdmin";
+import ChangePassword from "./components/Admin/ChangePassword/ChangePassword";
 import QRTInfoPage from "./components/QRT";
 import Developer from "./components/Developer/Developer";
 import Alumni from "./components/Alumni/Almuni";
@@ -163,6 +164,7 @@ const AppContent = () => {
           <Route path="create-game" element={<CreateGame />} />
           <Route path="all-games" element={<GameManagement />} />
           <Route path="promote-admin" element={<RegisterAdmin />} />
+          <Route path="change-password" element={<ChangePassword />} />
           <Route path="create-certificates" element={<CertificateGenerator />} />
           <Route path="create-course" element={<CourseCreator />} />
         </Route>

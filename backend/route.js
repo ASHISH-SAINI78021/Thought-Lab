@@ -80,6 +80,7 @@ router.get('/all-users-count', isLogin, isAdmin, AuthController.countAllUsers);
 router.get('/all-events-count', isLogin, isAdmin, GameController.totalEvents);
 
 router.put('/promote-to-admin', isLogin, isSuperAdmin, AuthController.promotion);
+router.put('/admin/change-password', isLogin, isSuperAdmin, AuthController.changePassword);
 
 const NotificationController = require('./controllers/notification-controller.js');
 
