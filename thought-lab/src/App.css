@@ -5,9 +5,11 @@
     background-color: #faf2eb;
   }
 }
-html{
+
+html {
   font-size: 1vw;
 }
+
 body {
   overflow-x: hidden;
   background-color: #faf2eb;
@@ -15,10 +17,10 @@ body {
 
 .light-theme {
   --primary: #FFC3A0;
-  --light : #fecfb4;
+  --light: #fecfb4;
   --secondary: #2f3d61;
   --accent: #D5E8D4;
   --text: #4A4A4A;
-  --background: #faf2eb ;
-  --black : #000000;
+  --background: #faf2eb;
+  --black: #000000;
 }

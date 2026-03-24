@@ -81,11 +81,41 @@ const io = new Server(server, {
 global.io = io;
 app.set("io", io);
 
-let activeUserCount = 0;
+const activeUsers = new Map(); // socket.id -> userObj (name, rollNumber)
 io.on("connection", async (socket) => {
   console.log(`🟢 Client connected: ${socket.id}`);
-  activeUserCount++;
-  io.emit("active-users-update", activeUserCount);
+  
+  // Initially, we don't know the person's name until they 'join'
+  activeUsers.set(socket.id, { name: "Guest", rollNumber: "N/A" });
+  
+  const broadcastActiveUsers = () => {
+    const usersArray = Array.from(activeUsers.values());
+    console.log(`📡 Broadcasting ${activeUsers.size} active users:`, usersArray.map(u => u.name));
+    io.emit("active-users-update", {
+      count: activeUsers.size,
+      users: usersArray
+    });
+  };
+
+  broadcastActiveUsers();
+
+  // Listen for 'join' event to identify the user
+  socket.on("join", (userData) => {
+    if (userData && userData.name) {
+      activeUsers.set(socket.id, {
+        name: userData.name,
+        rollNumber: userData.rollNumber || "N/A"
+      });
+      console.log(`👤 User identified: ${userData.name} (${socket.id})`);
+      broadcastActiveUsers();
+    }
+  });
+
+  // Send current active user count/list to specifically requesting clients
+  socket.on("get-active-users", () => {
+    broadcastActiveUsers();
+  });
+
   // Send initial leaderboard with user details
   socket.on("get-initial-leaderboard", async () => {
     let data = await Leaderboard.find()
@@ -141,8 +171,8 @@ io.on("connection", async (socket) => {
   });
 
   socket.on("disconnect", () => {
-    activeUserCount--;
-    io.emit("active-users-update", activeUserCount);
+    activeUsers.delete(socket.id);
+    broadcastActiveUsers();
     console.log(`🔴 Client disconnected: ${socket.id}`);
   });
 });

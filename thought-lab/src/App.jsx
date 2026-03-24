@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { useAuth } from "./Context/auth";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./components/Home";
 import AboutMe from "./components/AboutMe";
@@ -48,8 +49,15 @@ import Events from "./components/Events/events.jsx";
 import EventItem from "./components/Events/EventItem/EventItem.jsx";
 import UploadWinner from "./components/Winner/AdminAddWinner/AddWinner.jsx";
 import Winners from "./components/Winner/winners.jsx";
+import io from "socket.io-client";
+import { url } from "./url";
+
+const socket = io(`${url}`);
+export { socket };
 
 const AppContent = () => {
+  const [auth] = useAuth();
+
   useEffect(() => {
     const lenis = new Lenis({ duration: 1.9 });
     function raf(time) {
@@ -58,6 +66,20 @@ const AppContent = () => {
     }
     requestAnimationFrame(raf);
   }, []);
+
+  // Socket Identity Synchronization
+  useEffect(() => {
+    if (auth?.user) {
+      // Small timeout to ensure socket is connected
+      const timeout = setTimeout(() => {
+        socket.emit("join", {
+          name: auth.user.name,
+          rollNumber: auth.user.rollNumber || "N/A"
+        });
+      }, 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [auth]);
 
   return (
     <>

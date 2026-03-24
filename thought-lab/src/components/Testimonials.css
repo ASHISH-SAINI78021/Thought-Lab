@@ -87,29 +87,29 @@
         padding: 0 2rem;
         padding-top: 15vh;
     }
-    
+
     .testimonials-header h2 {
         font-size: 3rem;
     }
-    
+
     .testimonials-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
     }
-    
+
     .test-card {
         min-height: 320px;
         padding: 1.5rem;
     }
-    
+
     .testimonial-text {
         font-size: 1rem;
     }
-    
+
     .author-name {
         font-size: 1rem;
     }
-    
+
     .author-age {
         font-size: 0.9375rem;
     }
@@ -122,11 +122,11 @@
         height: 150vh;
         padding-top: 20vh;
     }
-    
+
     .testimonials-grid {
         display: none;
     }
-    
+
     .testimonials-horizontal {
         display: flex;
         overflow: hidden;
@@ -134,17 +134,17 @@
         padding: 1rem;
         margin-top: 1.875rem;
     }
-    
+
     .test-card {
         min-width: 17vw;
         min-height: 320px;
         padding: 1.5625rem;
     }
-    
+
     .testimonial-text {
         font-size: 1rem;
     }
-    
+
     .author-image {
         width: 3.125rem;
         height: 3.125rem;
@@ -156,23 +156,28 @@
     .testimonials-header h2 {
         font-size: 7rem;
     }
+
     .testimonial-text {
         font-size: 5rem;
     }
+
     .author-image {
         width: 30%;
         height: auto;
     }
-    .author-age, .author-name {
+
+    .author-age,
+    .author-name {
         font-size: 3rem;
     }
+
     .test-card {
         padding: 3rem;
         margin: 3rem;
     }
+
     .testimonials-section {
         margin-top: -30vh;
-        margin-bottom:8vh;
+        margin-bottom: 8vh;
     }
 }
-
