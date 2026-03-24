@@ -355,24 +355,21 @@
 
 @media (max-width:500px) {
   .title {
-    font-size: 7rem;
+    font-size: 1.8rem;
   }
 
   .subtitle {
-    font-size: 5rem;
+    font-size: 1rem;
   }
 
   .container {
-    max-width: 1000px;
-    margin-top: 20rem;
-    padding: 2rem;
-    background-color: transparent;
-    border-radius: 16px;
+    margin-top: 1rem;
+    padding: 1.2rem;
   }
 
   .button {
-    font-size: 5rem;
-    margin: 1rem;
+    font-size: 1rem;
+    margin: 0.5rem 0;
   }
 
   .cameraSection {
@@ -380,21 +377,21 @@
   }
 
   .stepNumber {
-    font-size: 3rem;
+    font-size: 1rem;
   }
 
   .stepTitle {
-    font-size: 3rem;
+    font-size: 0.8rem;
   }
 
   .instruction {
-    font-size: 3rem;
+    font-size: 1rem;
   }
 
   .formTitle,
   .label,
   .input,
   .linkText {
-    font-size: 3rem;
+    font-size: 1rem;
   }
 }

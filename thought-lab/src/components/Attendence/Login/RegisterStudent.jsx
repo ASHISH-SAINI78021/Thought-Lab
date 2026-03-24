@@ -129,41 +129,23 @@ const RegisterStudent = () => {
   // ---------- submit registration ----------
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsProcessing(true);
 
-    try {
-      const formData = new FormData();
-      formData.append('name', name.trim());
-      formData.append('rollNumber', rollNumber.trim());
-
-      if (capturedImage) {
-        const blob = await fetch(capturedImage).then(res => res.blob());
-        formData.append('image', blob, 'registration_face.jpg');
-      }
-
-      const response = await fetch(`${url}/api/attendance-register`, {
-        method: "POST",
-        headers: {
-          Authorization: auth?.token || ''
-        },
-        body: formData
-      });
-
-      const data = await response.json();
-
-      if (data?.success) {
-        // setAuth({ ...auth, token: data.token });
-        toast.success("Registration successful!");
-        navigate('/face-recognition-success');
-      } else {
-        throw new Error(data.message || "Registration failed");
-      }
-    } catch (error) {
-      console.error("Registration error:", error);
-      toast.error(error.message || "Registration failed. Please try again.");
-    } finally {
-      setIsProcessing(false);
+    if (!name.trim() || !rollNumber.trim() || !capturedImage) {
+      toast.error("Missing required registration data");
+      return;
     }
+
+    setIsProcessing(true);
+    toast.success("Starting registration flow...");
+
+    // Redirect to processing page
+    navigate('/registration-processing', {
+      state: {
+        name: name.trim(),
+        rollNumber: rollNumber.trim(),
+        capturedImage
+      }
+    });
   };
 
   // ---------- UI ----------
@@ -174,43 +156,30 @@ const RegisterStudent = () => {
         <p className={styles.subtitle}>Secure your attendance with biometric verification</p>
       </header>
 
-      <div className={styles.progressSteps}>
-        <div className={`${styles.step} ${registrationStep >= 1 ? styles.active : ''}`}>
-          <div className={styles.stepIndicator}>
-            {registrationStep > 1 ? (
-              <div className={styles.stepCompleted}><FiCheck /></div>
-            ) : (
-              <div className={styles.stepNumber}>1</div>
-            )}
+      {/* Steps Component visually matching Mark Attendance */}
+      <div className={styles.steps}>
+        <div className={`${styles.step} ${registrationStep >= 1 ? styles.stepActive : ''}`}>
+          <div className={styles.stepNumber}>
+            {registrationStep > 1 ? <FiCheck /> : "1"}
           </div>
-          <div className={styles.stepLabel}>Face Capture</div>
+          <div className={styles.stepTitle}>Face Capture</div>
         </div>
-
-        <div className={styles.stepConnector}></div>
-
-        <div className={`${styles.step} ${registrationStep >= 2 ? styles.active : ''}`}>
-          <div className={styles.stepIndicator}>
-            {registrationStep > 2 ? (
-              <div className={styles.stepCompleted}><FiCheck /></div>
-            ) : (
-              <div className={styles.stepNumber}>2</div>
-            )}
+        <div className={`${styles.step} ${registrationStep >= 2 ? styles.stepActive : ''}`}>
+          <div className={styles.stepNumber}>
+            {registrationStep > 2 ? <FiCheck /> : "2"}
           </div>
-          <div className={styles.stepLabel}>Details</div>
+          <div className={styles.stepTitle}>Details</div>
         </div>
-
-        <div className={styles.stepConnector}></div>
-
-        <div className={`${styles.step} ${registrationStep >= 3 ? styles.active : ''}`}>
-          <div className={styles.stepIndicator}>
-            <div className={styles.stepNumber}>3</div>
+        <div className={`${styles.step} ${registrationStep >= 3 ? styles.stepActive : ''}`}>
+          <div className={styles.stepNumber}>
+            {registrationStep > 3 ? <FiCheck /> : "3"}
           </div>
-          <div className={styles.stepLabel}>Complete</div>
+          <div className={styles.stepTitle}>Complete</div>
         </div>
       </div>
 
       {registrationStep === 1 && (
-        <div className={styles.captureSection}>
+        <div className={styles.cameraSection}>
           <div className={styles.cameraContainer}>
             <video
               ref={videoRef}
@@ -220,44 +189,54 @@ const RegisterStudent = () => {
               className={styles.cameraFeed}
             />
             <div className={styles.overlay}>
-              <p className={styles.instruction}>Position your face in the circle and click Capture</p>
-              <div className={styles.faceGuide}></div>
+              <p className={styles.instruction}>Position your face in the center and click Capture</p>
             </div>
           </div>
-          <canvas ref={canvasRef} style={{ display: 'none' }} />
 
-          <div className={styles.captureActions}>
+          <canvas ref={canvasRef} style={{ display: "none" }} />
+
+          <div className={styles.actionsInline}>
             <button
               type="button"
-              onClick={() => {
-                stopStream();
-                navigate(-1);
-              }}
-              className={`${styles.button} ${styles.secondaryButton}`}
-            >
-              <FiX /> Cancel
-            </button>
-            <button
-              type="button"
+              className={`${styles.button} ${styles.buttonPrimary}`}
               onClick={captureImage}
-              className={`${styles.button} ${styles.primaryButton}`}
+              disabled={isProcessing}
             >
               <FiCamera /> Capture Now
+            </button>
+
+            <button
+              type="button"
+              className={`${styles.button} ${styles.buttonSecondary}`}
+              onClick={() => {
+                stopStream();
+                navigate("/");
+              }}
+              disabled={isProcessing}
+            >
+              <FiX /> Cancel
             </button>
           </div>
         </div>
       )}
 
       {registrationStep === 2 && (
-        <div className={styles.reviewSection}>
-          <h2 className={styles.sectionTitle}>Review Your Photo</h2>
+        <div className={styles.loginForm}>
+          <h2 className={styles.formTitle}>Add Details</h2>
+
           <div className={styles.facePreviewContainer}>
-            {capturedImage && <img src={capturedImage} alt="Captured face" className={styles.facePreview} />}
+            {capturedImage && (
+              <img
+                src={capturedImage}
+                alt="Captured Face"
+                className={styles.facePreview}
+              />
+            )}
           </div>
 
           <form className={styles.detailsForm}>
             <div className={styles.formGroup}>
-              <label htmlFor="name" className={styles.inputLabel}>
+              <label htmlFor="name" className={styles.label}>
                 <FiUser className={styles.inputIcon} /> Full Name
               </label>
               <input
@@ -265,7 +244,7 @@ const RegisterStudent = () => {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className={styles.textInput}
+                className={styles.input}
                 placeholder="Enter your full name"
                 required
                 autoFocus
@@ -273,7 +252,7 @@ const RegisterStudent = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="rollNumber" className={styles.inputLabel}>
+              <label htmlFor="rollNumber" className={styles.label}>
                 <FiUser className={styles.inputIcon} /> Roll Number
               </label>
               <input
@@ -281,25 +260,16 @@ const RegisterStudent = () => {
                 id="rollNumber"
                 value={rollNumber}
                 onChange={(e) => setRollNumber(e.target.value)}
-                className={styles.textInput}
-                placeholder="Enter your roll number"
+                className={styles.input}
+                placeholder="Enter your university roll number"
                 required
               />
             </div>
 
-            <div className={styles.formActions}>
-              {/* No Retake button per your request.
-                  If user wants to retake, they can click Back to Capture (we'll reopen camera). */}
+            <div className={styles.actions}>
               <button
                 type="button"
-                onClick={() => setRegistrationStep(1)}
-                className={`${styles.button} ${styles.secondaryButton}`}
-              >
-                Back to Capture
-              </button>
-
-              <button
-                type="button"
+                className={`${styles.button} ${styles.buttonPrimary}`}
                 onClick={() => {
                   if (!name.trim() || !rollNumber.trim()) {
                     toast.error("Please enter both name and roll number");
@@ -307,9 +277,16 @@ const RegisterStudent = () => {
                   }
                   setRegistrationStep(3);
                 }}
-                className={`${styles.button} ${styles.primaryButton}`}
               >
                 Continue <FiArrowRight />
+              </button>
+
+              <button
+                type="button"
+                className={`${styles.button} ${styles.buttonSecondary}`}
+                onClick={() => setRegistrationStep(1)}
+              >
+                Back to Capture
               </button>
             </div>
           </form>
@@ -317,10 +294,12 @@ const RegisterStudent = () => {
       )}
 
       {registrationStep === 3 && (
-        <div className={styles.confirmationSection}>
-          <h2 className={styles.sectionTitle}>Confirm Registration</h2>
+        <div className={styles.loginForm}>
+          <h2 className={styles.formTitle}>Confirm Registration</h2>
           <div className={styles.summaryCard}>
-            <div className={styles.faceThumbnail}>{capturedImage && <img src={capturedImage} alt="Your face" />}</div>
+            <div className={styles.faceThumbnail}>
+              {capturedImage && <img src={capturedImage} alt="Your face" />}
+            </div>
             <div className={styles.detailsSummary}>
               <div className={styles.detailRow}>
                 <span className={styles.detailLabel}>Name:</span>
@@ -333,13 +312,31 @@ const RegisterStudent = () => {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className={styles.confirmationForm}>
-            <div className={styles.formActions}>
-              <button type="button" onClick={() => setRegistrationStep(2)} className={`${styles.button} ${styles.secondaryButton}`}>
-                Back to Edit
+          <form onSubmit={handleSubmit}>
+            <div className={styles.actions}>
+              <button
+                type="submit"
+                className={`${styles.button} ${styles.buttonPrimary}`}
+                disabled={isProcessing}
+              >
+                {isProcessing ? (
+                  <>
+                    <span className={styles.spinner}></span> Registering...
+                  </>
+                ) : (
+                  <>
+                    Complete Registration <FiCheck />
+                  </>
+                )}
               </button>
-              <button type="submit" className={`${styles.button} ${styles.primaryButton}`} disabled={isProcessing}>
-                {isProcessing ? (<><span className={styles.spinner}></span> Registering...</>) : 'Complete Registration'}
+
+              <button
+                type="button"
+                onClick={() => setRegistrationStep(2)}
+                className={`${styles.button} ${styles.buttonSecondary}`}
+                disabled={isProcessing}
+              >
+                Back to Edit
               </button>
             </div>
           </form>

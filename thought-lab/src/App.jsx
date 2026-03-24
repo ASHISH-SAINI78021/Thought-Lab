@@ -43,6 +43,7 @@ import CourseList from "./components/CourseList/CourseList";
 import CoursePlayer from "./components/CoursePlayer/CoursePlayer";
 import CourseVideoManager from "./components/Admin/CourseVideoManager/CourseVideoManager";
 import AttendanceProcessing from "./components/Attendence/Processing/AttendanceProcessing";
+import RegistrationProcessing from "./components/Attendence/Processing/RegistrationProcessing";
 import Events from "./components/Events/events.jsx";
 import EventItem from "./components/Events/EventItem/EventItem.jsx";
 import UploadWinner from "./components/Winner/AdminAddWinner/AddWinner.jsx";
@@ -110,6 +111,14 @@ const AppContent = () => {
           element={
             <PrivateRoute>
               <AttendanceProcessing />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/registration-processing"
+          element={
+            <PrivateRoute>
+              <RegistrationProcessing />
             </PrivateRoute>
           }
         />

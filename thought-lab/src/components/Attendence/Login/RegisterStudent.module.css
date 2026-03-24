@@ -1,11 +1,14 @@
+/* RegisterStudent.module.css */
+
 /* Base Styles */
 .container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 2rem auto;
   padding: 2rem;
-  background: white;
+  background: transparent;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  /* Adds premium depth */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   animation: fadeIn 0.5s ease-out;
 }
@@ -16,12 +19,13 @@
 }
 
 .title {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   margin-bottom: 0.5rem;
   color: #2d3748;
   font-weight: 700;
   background: linear-gradient(90deg, #4f46e5, #10b981);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -32,86 +36,70 @@
 }
 
 /* Progress Steps */
-.progressSteps {
+.steps {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: 3rem;
   position: relative;
 }
 
-.step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  z-index: 2;
+.steps::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #edf2f7;
+  z-index: 1;
 }
 
-.stepIndicator {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.5rem;
-  transition: all 0.3s ease;
+.step {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  flex: 1;
 }
 
 .stepNumber {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 0.8rem;
+  border-radius: 50%;
   background: #edf2f7;
   color: #718096;
-  font-weight: 600;
-  font-size: 1rem;
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  border: 3px solid white;
+  font-weight: 600;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  border: 4px solid white;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.stepCompleted {
-  background: #10b981;
-  color: white;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 3px solid white;
-}
-
-.stepLabel {
+.stepTitle {
   color: #a0aec0;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
 }
 
-.stepConnector {
-  flex: 1;
-  height: 3px;
-  background: #edf2f7;
-  margin: 0 -10px;
-}
-
-.step.active .stepNumber {
+.stepActive .stepNumber {
   background: #4f46e5;
   color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+  /* Glow effect for steps */
 }
 
-.step.active .stepLabel {
+.stepActive .stepTitle {
   color: #2d3748;
   font-weight: 600;
 }
 
-/* Capture Section */
-.captureSection {
+/* Camera Section */
+.cameraSection {
   margin: 2rem 0;
   display: flex;
   flex-direction: column;
@@ -141,19 +129,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: white;
-}
-
-.countdown {
-  font-size: 4rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  animation: pulse 1.5s infinite;
 }
 
 .instruction {
@@ -163,26 +144,14 @@
   max-width: 80%;
 }
 
-.faceGuide {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 3px dashed rgba(255, 255, 255, 0.5);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-/* Review Section */
-.reviewSection {
+/* Review / Form Section */
+.loginForm {
   margin: 2rem auto;
-  max-width: 600px;
+  max-width: 500px;
   animation: fadeIn 0.6s ease-out;
 }
 
-.sectionTitle {
+.formTitle {
   text-align: center;
   font-size: 1.8rem;
   color: #2d3748;
@@ -201,19 +170,17 @@
   height: 200px;
   border-radius: 50%;
   object-fit: cover;
+  margin: 0 auto;
+  display: block;
   border: 5px solid white;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-}
-
-.detailsForm {
-  margin-top: 2rem;
 }
 
 .formGroup {
   margin-bottom: 1.5rem;
 }
 
-.inputLabel {
+.label {
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
@@ -227,9 +194,9 @@
   color: #718096;
 }
 
-.textInput {
+.input {
   width: 100%;
-  padding: 0.8rem 1rem 0.8rem 2.5rem;
+  padding: 0.8rem 1.2rem;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
   font-size: 1rem;
@@ -237,20 +204,14 @@
   background: #f8fafc;
 }
 
-.textInput:focus {
+.input:focus {
   outline: none;
   border-color: #4f46e5;
   background: white;
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
 }
 
-/* Confirmation Section */
-.confirmationSection {
-  margin: 2rem auto;
-  max-width: 600px;
-  animation: fadeIn 0.6s ease-out;
-}
-
+/* Summary Card (Step 3) */
 .summaryCard {
   background: #f8fafc;
   border-radius: 12px;
@@ -258,7 +219,8 @@
   display: flex;
   align-items: center;
   margin-bottom: 2rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
 }
 
 .faceThumbnail {
@@ -298,16 +260,24 @@
   font-weight: 600;
 }
 
-/* Buttons */
-.formActions {
+/* Actions Inline for Camera */
+.actionsInline {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-top: 2rem;
+  margin: 2rem 0;
+}
+
+/* Actions Flex for Forms */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
 }
 
 .button {
-  padding: 0.8rem 1.5rem;
+  padding: 0.8rem 1.8rem;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 500;
@@ -319,38 +289,28 @@
   gap: 0.5rem;
 }
 
-.primaryButton {
-  background: #4f46e5;
+.buttonPrimary {
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
   color: white;
   border: none;
-}
-
-.primaryButton:hover {
-  background: #4338ca;
-  transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 
-.secondaryButton {
+.buttonPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+}
+
+.buttonSecondary {
   background: white;
   color: #4f46e5;
   border: 2px solid #e2e8f0;
 }
 
-.secondaryButton:hover {
+.buttonSecondary:hover {
   border-color: #4f46e5;
   transform: translateY(-2px);
-}
-
-/* Spinner */
-.spinner {
-  width: 18px;
-  height: 18px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: white;
-  animation: spin 1s ease-in-out infinite;
-  margin-right: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* Animations */
@@ -359,22 +319,22 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+.spinner {
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.5rem;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
@@ -391,19 +351,33 @@
   }
 
   .title {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
-  .progressSteps {
+  .steps {
     margin-bottom: 2rem;
   }
 
-  .stepLabel {
+  .stepNumber {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .stepTitle {
     font-size: 0.8rem;
   }
 
-  .sectionTitle {
-    font-size: 1.5rem;
+  .actions {
+    flex-direction: column;
+  }
+
+  .actionsInline {
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
   }
 
   .summaryCard {
@@ -421,48 +395,61 @@
     align-items: center;
   }
 
-  .formActions {
-    flex-direction: column;
-  }
-
-  .button {
-    width: 100%;
+  .detailLabel {
+    min-width: auto;
   }
 }
 
-
-@media (max-width:500px){
-  .title {
-    font-size: 7rem;
-  }
-  .subtitle {
-    font-size: 5rem;
-  }
+/* Fix for Huge Mobile Text Issue - Reset sizes to standard responsive values */
+@media (max-width: 500px) {
   .container {
-    max-width: 1000px;
-    margin-top: 20rem;
-    padding: 2rem;
-    background-color: transparent;
-    border-radius: 16px;
+    margin-top: 1rem;
+    padding: 1.2rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
   }
 
   .button {
-    font-size: 5rem;
-    margin: 1rem;
+    font-size: 1rem;
+    margin: 0.5rem 0;
   }
+
   .cameraSection {
     gap: 10px;
   }
-  .stepNumber, .stepLabel, .inputLabel, .textInput, .sectionTitle, .detailLabel, .detailValue {
-    font-size: 3rem;
+
+  .stepNumber {
+    font-size: 1rem;
   }
+
   .stepTitle {
-    font-size: 3rem;
+    font-size: 0.8rem;
   }
+
   .instruction {
-    font-size: 3rem;
+    font-size: 1rem;
   }
-  .formTitle, .label, .input, .linkText {
-    font-size: 3rem;
+
+  .formTitle,
+  .label,
+  .input,
+  .detailLabel,
+  .detailValue {
+    font-size: 1rem;
+  }
+
+  .facePreviewContainer {
+    margin: 1rem 0;
+  }
+
+  .facePreview {
+    width: 150px;
+    height: 150px;
   }
 }
