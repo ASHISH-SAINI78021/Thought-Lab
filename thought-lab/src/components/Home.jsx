@@ -49,12 +49,14 @@ const Home = () => {
                 >
                   QRT
                 </Link>
-                <Link
-                  to="/developer"
+                <a
+                  href="https://ashish-portfoliov1.netlify.app/"
                   className={styles.secondaryButton}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Developer
-                </Link>
+                </a>
                 <Link
                   to="/meditation-tracker"
                   className={styles.secondaryButton}
