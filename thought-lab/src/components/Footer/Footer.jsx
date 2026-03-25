@@ -76,12 +76,12 @@ const Footer = () => {
             <div className="contact-item">
               <i className="icon-email"></i>
               <p>
-                <a href="mailto:12213075@nitkkr.ac.in">12213075@nitkkr.ac.in</a>
+                <a href="mailto:12214078@nitkkr.ac.in">12214078@nitkkr.ac.in</a>
               </p>
             </div>
             <div className="contact-item">
               <i className="icon-phone"></i>
-              <p>+91 9416540289</p>
+              <p>+91 8708645252</p>
             </div>
           </div>
 
