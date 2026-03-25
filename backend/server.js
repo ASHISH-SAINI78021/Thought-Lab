@@ -2,8 +2,22 @@ require("dotenv").config();
 try {
   require('@tensorflow/tfjs-node');
 } catch (error) {
-  console.warn("⚠️ [TensorFlow] Failed to load native binding (@tensorflow/tfjs-node). Falling back to pure JavaScript backend. Performance may be degraded for face recognition. \nError:", error.message);
+  console.warn("⚠️ [TensorFlow] Failed to load native binding (@tensorflow/tfjs-node). Falling back to pure JavaScript backend. Performance may be degraded for face recognition.");
+  try {
+    const tf = require("@tensorflow/tfjs");
+    const tfjsNodePath = require.resolve("@tensorflow/tfjs-node");
+    require.cache[tfjsNodePath] = {
+      id: tfjsNodePath,
+      filename: tfjsNodePath,
+      loaded: true,
+      exports: tf,
+      children: []
+    };
+  } catch (_) {
+    console.warn("Failed to shim tfjs-node with tfjs-core.");
+  }
 }
+const faceapi = require("@vladmandic/face-api");
 const express = require("express");
 const path = require("path");
 const http = require("http");
@@ -212,3 +226,4 @@ async function startServer() {
 }
 
 startServer();
+ 

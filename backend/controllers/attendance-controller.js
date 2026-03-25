@@ -1,4 +1,4 @@
-const faceapi = require("face-api.js");
+const faceapi = require("@vladmandic/face-api");
 const canvas = require("canvas");
 const { createCanvas, loadImage } = require("canvas");
 const { Canvas, Image, ImageData } = canvas;
