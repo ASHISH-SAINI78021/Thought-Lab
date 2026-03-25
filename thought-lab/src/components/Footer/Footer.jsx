@@ -92,7 +92,7 @@ const Footer = () => {
             <p className="social-text">Stay connected with us on social media</p>
             <div className="social-icons">
               <a
-                href="https://github.com/ASHISH-SAINI78021"
+                href="https://github.com/Gurbajsingh1"
                 aria-label="GitHub"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -102,7 +102,7 @@ const Footer = () => {
                 <span>GitHub</span>
               </a>
               <a
-                href="https://ashish-portfoliov1.netlify.app/"
+                href="https://gurbaj-portfolio.netlify.app/"
                 aria-label="Portfolio"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -122,7 +122,7 @@ const Footer = () => {
                 <span>Instagram</span>
               </a>
               <a
-                href="https://www.linkedin.com/in/ashish-saini-a641902b3/"
+                href="https://www.linkedin.com/in/gurbaj-singh-b71b81205"
                 aria-label="LinkedIn"
                 target="_blank"
                 rel="noopener noreferrer"
