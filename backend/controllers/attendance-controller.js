@@ -302,13 +302,55 @@ class Attendance {
           res.end();
         } catch (error) {
           console.error("Excel generation failed:", error);
-          return res.status(500).json({
+          res.status(500).json({
             success: false,
             message: "Failed to generate attendance sheet",
             error: error.message
           });
         }
       }
+
+    async getAllAttendance(req, res) {
+        try {
+            const users = await User.find({}, 'name rollNumber branch year attendance');
+            let allAttendance = [];
+
+            users.forEach(user => {
+                if (user.attendance && user.attendance.length > 0) {
+                    user.attendance.forEach(record => {
+                        allAttendance.push({
+                            name: user.name,
+                            rollNumber: user.rollNumber,
+                            branch: user.branch,
+                            year: user.year,
+                            date: record.date,
+                            time: record.Time || record.time, // Handle both casing
+                            status: record.status,
+                            imageUrl: record.imageUrl
+                        });
+                    });
+                }
+            });
+
+            // Sort by date and time descending
+            allAttendance.sort((a, b) => {
+                const dateA = new Date(`${a.date} ${a.time}`);
+                const dateB = new Date(`${b.date} ${b.time}`);
+                return dateB - dateA;
+            });
+
+            return res.status(200).json({
+                success: true,
+                data: allAttendance
+            });
+        } catch (error) {
+            console.error("Error fetching all attendance:", error);
+            return res.status(500).json({
+                success: false,
+                message: "Failed to fetch attendance records"
+            });
+        }
+    }
 }
 
 module.exports = new Attendance();

@@ -31,6 +31,7 @@ router.get('/users', isLogin, isAdmin, UserController.getAllUsers); // Get all u
 router.post('/api/attendance-register', upload.single("image"), isLogin, attendanceController.register);
 router.post('/api/attendance-login', upload.single("image"), isLogin, attendanceController.login);
 router.get("/download-attendance", attendanceController.downloadAttendance); // admin route
+router.get('/api/all-attendance', isLogin, isAdmin, attendanceController.getAllAttendance);
 
 // blog routes
 router.get('/all-blogs', BlogController.allBlogs);

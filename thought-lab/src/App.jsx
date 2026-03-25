@@ -19,6 +19,7 @@ import BlogItem from "./components/Blog/BlogItem/BlogItem";
 import AppointmentForm from "./components/AppointmentForm/AppointmentForm";
 import ApproveAppointment from "./components/ApproveAppointment/ApproveAppointment";
 import DownloadAttendance from "./components/Admin/DownloadAttendance/DownloadAttendance";
+import AttendanceRecords from "./components/Admin/AttendanceRecords/AttendanceRecords";
 import Register from "./components/Authentication/Register/Register";
 import Login from "./components/Authentication/Login/Login";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
@@ -161,6 +162,7 @@ const AppContent = () => {
           <Route path="game-score-updater" element={<GameScoreUpdater />} />
           <Route path="appointments" element={<ApproveAppointment />} />
           <Route path="download-attendance" element={<DownloadAttendance />} />
+          <Route path="attendance-records" element={<AttendanceRecords />} />
           <Route path="create-game" element={<CreateGame />} />
           <Route path="all-games" element={<GameManagement />} />
           <Route path="promote-admin" element={<RegisterAdmin />} />

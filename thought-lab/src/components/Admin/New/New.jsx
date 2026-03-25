@@ -99,6 +99,10 @@ const New = ({ children }) => {
                         <p className={styles.b}><FullscreenOutlined /></p>
                         <p onClick={() => navigate("/admin/download-attendance")}>Download Attendance</p>
                     </div>
+                    <div className={styles.second}>
+                        <p className={styles.b}><FullscreenOutlined /></p>
+                        <p onClick={() => navigate("/admin/attendance-records")}>View Records</p>
+                    </div>
                 </div>
                 <div className={styles.navigation}>
                     <p className={`${styles.a} ${styles.b}`}>Certificates</p>
