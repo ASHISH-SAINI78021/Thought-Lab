@@ -77,21 +77,22 @@ const ChangePasswordForm = () => {
         <Paper
             elevation={4}
             sx={{
-                p: 4,
+                p: { xs: 3, sm: 4 },
                 maxWidth: 500,
-                margin: 'auto',
+                mx: { xs: 2, sm: 'auto' },
                 mt: 5,
                 borderRadius: '12px',
-                background: 'linear-gradient(to top right, #ffffff, #f4f6f8)'
+                background: 'linear-gradient(to top right, #ffffff, #f4f6f8)',
+                boxSizing: 'border-box'
             }}
         >
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                 <VpnKeyIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />
                 <Box>
-                    <Typography variant="h5" component="h1" fontWeight="600">
+                    <Typography variant="h5" component="h1" fontWeight="600" sx={{ fontSize: { xs: '22px', sm: '28px' } }}>
                         Change User Password
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '14px', sm: '16px' } }}>
                         Reset the password for any user account.
                     </Typography>
                 </Box>
@@ -114,6 +115,10 @@ const ChangePasswordForm = () => {
                                     <AlternateEmailIcon color="action" />
                                 </InputAdornment>
                             ),
+                            sx: { fontSize: '16px' }
+                        }}
+                        InputLabelProps={{
+                            sx: { fontSize: '16px' }
                         }}
                     />
                     <TextField
@@ -142,6 +147,10 @@ const ChangePasswordForm = () => {
                                     </IconButton>
                                 </InputAdornment>
                             ),
+                            sx: { fontSize: '16px' }
+                        }}
+                        InputLabelProps={{
+                            sx: { fontSize: '16px' }
                         }}
                     />
                     <Box sx={{ position: 'relative' }}>
@@ -153,7 +162,8 @@ const ChangePasswordForm = () => {
                             disabled={loading || !email || !newPassword}
                             fullWidth
                             sx={{
-                                py: 1.5,
+                                py: '16px',
+                                fontSize: '18px',
                                 fontWeight: 'bold',
                                 transition: 'all 0.3s ease',
                                 background: 'linear-gradient(45deg, #FF5722 30%, #FF8A65 90%)',

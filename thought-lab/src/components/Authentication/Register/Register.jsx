@@ -1,339 +1,425 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { useNavigate, Link } from 'react-router-dom';
+import {
+    User, Hash, Mail, Lock, BookOpen, Clock,
+    Image as ImageIcon, ChevronDown, Eye, EyeOff, BrainCircuit, GraduationCap
+} from 'lucide-react';
+import { studentRegister } from '../../../http';
 import styles from './Register.module.css';
-// import { url } from '../../../url'; // Removed as Axios utility will manage the base URL
-import { useNavigate } from 'react-router-dom';
-// Import the new Axios API utility function
-import { studentRegister } from '../../../http'; 
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    rollNumber: '',
-    year: '',
-    branch: '',
-    programme: '',
-    email: '',
-    password: '',
-    checkPassword: ''
-  });
-  const [profilePicture, setProfilePicture] = useState(null);
-  const [profilePicturePreview, setProfilePicturePreview] = useState('');
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        name: '',
+        rollNumber: '',
+        year: '',
+        branch: '',
+        programme: '',
+        email: '',
+        password: '',
+        checkPassword: ''
+    });
 
-  const branches = ['Computer Science', 'Electronics and Communication', 'Mechanical', 'Civil', 'Electrical', 'AI & Data Science', 'Mathematics', 'IIoT', 'IT', 'Production', 'MCA', 'Robotics', 'Other'];
-  const programmes = ['B.Tech', 'M.Tech', 'PhD', 'Other'];
-  const years = ['1st', '2nd', '3rd', '4th', '5th', 'Pass out'];
+    const [profilePicture, setProfilePicture] = useState(null);
+    const [profilePicturePreview, setProfilePicturePreview] = useState('');
+    const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+    const branches = [
+        'Computer Science', 'Electronics and Communication', 'Mechanical',
+        'Civil', 'Electrical', 'AI & Data Science', 'Mathematics',
+        'IIoT', 'IT', 'Production', 'MCA', 'Robotics', 'Other'
+    ];
+    const programmes = ['B.Tech', 'M.Tech', 'PhD', 'Other'];
+    const years = ['1st', '2nd', '3rd', '4th', '5th', 'Pass out'];
 
-  const handleProfilePictureChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error('Image size should be less than 2MB');
-        return;
-      }
-      setProfilePicture(file);
-      setProfilePicturePreview(URL.createObjectURL(file));
-    }
-  };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+        // Clear error as user types
+        if (errors[name]) {
+            setErrors(prev => ({ ...prev, [name]: '' }));
+        }
+    };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.rollNumber.trim()) newErrors.rollNumber = 'Roll Number is required';
-    if (!formData.year) newErrors.year = 'Year is required';
-    if (!formData.branch) newErrors.branch = 'Branch is required';
-    if (!formData.programme) newErrors.programme = 'Programme is required';
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
-    }
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    }
-    if (formData.password !== formData.checkPassword) {
-      newErrors.checkPassword = 'Passwords do not match';
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    const handleProfilePictureChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 2 * 1024 * 1024) {
+                toast.error('Image size should be less than 2MB');
+                return;
+            }
+            setProfilePicture(file);
+            setProfilePicturePreview(URL.createObjectURL(file));
+        }
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      toast.error('Please fix the errors in the form.');
-      return;
-    }
+    const validateForm = () => {
+        const newErrors = {};
+        if (!formData.name.trim()) newErrors.name = 'Name is required';
+        if (!formData.rollNumber.trim()) newErrors.rollNumber = 'Roll Number is required';
+        if (!formData.year) newErrors.year = 'Year is required';
+        if (!formData.branch) newErrors.branch = 'Branch is required';
+        if (!formData.programme) newErrors.programme = 'Programme is required';
 
-    setIsSubmitting(true);
-    try {
-      const formDataToSend = new FormData();
-      
-      // Append all text fields from formData
-      Object.entries(formData).forEach(([key, value]) => {
-        if (key !== 'checkPassword') formDataToSend.append(key, value);
-      });
-      
-      // Append the file
-      if (profilePicture) formDataToSend.append('profilePicture', profilePicture);
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            newErrors.email = 'Email is invalid';
+        }
 
-      // --- AXIOS INTEGRATION ---
-      const response = await studentRegister(formDataToSend);
-      const result = response.data; // Axios wraps the response in 'data'
+        if (!formData.password) {
+            newErrors.password = 'Password is required';
+        } else if (formData.password.length < 8) {
+            newErrors.password = 'Password must be at least 8 characters';
+        }
 
-      if (result?.success) {
-        toast.success(result.message || 'Registration successful! You can now log in.');
-        // Navigate to login or home
-        navigate('/login');
-        
-        // NOTE: Clearing the form data is often better done after a successful navigation
-        // if you navigate away immediately, but here's how you clear it if you stay:
-        setFormData({
-          name: '', rollNumber: '', year: '', branch: '', programme: '',
-          email: '', password: '', checkPassword: ''
-        });
-        setProfilePicture(null);
-        setProfilePicturePreview('');
-      } else {
-        // This part handles successful response with a server-side error (e.g., email already exists)
-        toast.error(result.message || 'Registration failed');
-      }
-    } catch (error) {
-      console.error("Registration error:", error);
-      
-      // Axios error handling: Use error.response.data for server-side validation/errors
-      const errorMessage = error.response?.data?.message || 
-                            'Network error or server unavailable. Please try again.';
-                        
-      toast.error(errorMessage);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+        if (formData.password !== formData.checkPassword) {
+            newErrors.checkPassword = 'Passwords do not match';
+        }
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <div className={styles.header}>
-          <h1>Student Registration</h1>
-          <p>Join our academic community</p>
-        </div>
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.formGrid}>
-            {/* Personal Info Column */}
-            <div className={styles.formColumn}>
-              <div className={styles.inputGroup}>
-                <label>Full Name <span className={styles.required}>*</span></label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="John Doe"
-                  className={errors.name ? styles.errorInput : ''}
-                  disabled={isSubmitting}
-                />
-                {errors.name && <span className={styles.error}>{errors.name}</span>}
-              </div>
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!validateForm()) {
+            toast.error('Please fix the errors in the form.');
+            return;
+        }
 
-              <div className={styles.inputGroup}>
-                <label>Roll Number <span className={styles.required}>*</span></label>
-                <input
-                  type="text"
-                  name="rollNumber"
-                  value={formData.rollNumber}
-                  onChange={handleChange}
-                  placeholder="22010732"
-                  className={errors.rollNumber ? styles.errorInput : ''}
-                  disabled={isSubmitting}
-                />
-                {errors.rollNumber && <span className={styles.error}>{errors.rollNumber}</span>}
-              </div>
+        setIsSubmitting(true);
+        try {
+            const formDataToSend = new FormData();
+            Object.entries(formData).forEach(([key, value]) => {
+                if (key !== 'checkPassword') formDataToSend.append(key, value);
+            });
+            if (profilePicture) formDataToSend.append('profilePicture', profilePicture);
 
-              <div className={styles.inputGroup}>
-                <label>Year <span className={styles.required}>*</span></label>
-                <select
-                  name="year"
-                  value={formData.year}
-                  onChange={handleChange}
-                  className={errors.year ? styles.errorInput : ''}
-                  disabled={isSubmitting}
-                >
-                  <option value="">Select Year</option>
-                  {years.map(year => (
-                    <option key={year} value={year}>{year} Year</option>
-                  ))}
-                </select>
-                {errors.year && <span className={styles.error}>{errors.year}</span>}
-              </div>
+            const response = await studentRegister(formDataToSend);
+            const result = response.data;
 
-              <div className={styles.inputGroup}>
-                <label>Profile Picture</label>
-                <div className={styles.fileUpload}>
-                  <label className={styles.uploadLabel}>
-                    {profilePicturePreview ? (
-                      <div className={styles.previewContainer}>
-                        <img src={profilePicturePreview} alt="Preview" className={styles.previewImage} />
-                        <button 
-                          type="button" 
-                          className={styles.removeImage}
-                          onClick={(e) => {
-                            e.preventDefault(); // Prevent opening file dialog
-                            setProfilePicture(null);
-                            setProfilePicturePreview('');
-                          }}
-                          disabled={isSubmitting}
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ) : (
-                      <div className={styles.uploadPlaceholder}>
-                        <svg className={styles.uploadIcon} viewBox="0 0 24 24">
-                          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                        </svg>
-                        <span>Upload Photo (Max 2MB)</span>
-                      </div>
-                    )}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleProfilePictureChange}
-                      className={styles.fileInput}
-                      disabled={isSubmitting}
-                    />
-                  </label>
-                </div>
-              </div>
-            </div>
+            if (result?.success) {
+                toast.success(result.message || 'Registration successful! You can now log in.');
+                navigate('/login');
+            } else {
+                toast.error(result.message || 'Registration failed');
+            }
+        } catch (error) {
+            console.error("Registration error:", error);
+            const errorMessage = error.response?.data?.message || 'Network error or server unavailable. Please try again.';
+            toast.error(errorMessage);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
-            {/* Academic Info Column */}
-            <div className={styles.formColumn}>
-              <div className={styles.inputGroup}>
-                <label>Branch <span className={styles.required}>*</span></label>
-                <div className={styles.branchesContainer}>
-                  <div className={styles.radioGroup}>
-                    {branches.map(branch => (
-                      <label key={branch} className={styles.radioLabel}>
-                        <input
-                          type="radio"
-                          name="branch"
-                          value={branch}
-                          checked={formData.branch === branch}
-                          onChange={handleChange}
-                          disabled={isSubmitting}
-                        />
-                        <span className={styles.radioButton}></span>
-                        {branch}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-                {errors.branch && <span className={styles.error}>{errors.branch}</span>}
-              </div>
+    return (
+        <div className={styles.registerPage}>
+            <div className={styles.registerCard}>
 
-              <div className={styles.inputGroup}>
-                <label>Programme <span className={styles.required}>*</span></label>
-                <div className={styles.radioGroup}>
-                  {programmes.map(programme => (
-                    <label key={programme} className={styles.radioLabel}>
-                      <input
-                        type="radio"
-                        name="programme"
-                        value={programme}
-                        checked={formData.programme === programme}
-                        onChange={handleChange}
-                        disabled={isSubmitting}
-                      />
-                      <span className={styles.radioButton}></span>
-                      {programme}
-                    </label>
-                  ))}
-                </div>
-                {errors.programme && <span className={styles.error}>{errors.programme}</span>}
-              </div>
+                {/* ============ Left Panel (Decorative) ============ */}
+                <div className={styles.brandPanel}>
+                    <div className={styles.decorativeOrb1}></div>
+                    <div className={styles.decorativeOrb2}></div>
 
-              <div className={styles.inputGroup}>
-                <label>Email <span className={styles.required}>*</span></label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="student@example.com"
-                  className={errors.email ? styles.errorInput : ''}
-                  disabled={isSubmitting}
-                />
-                {errors.email && <span className={styles.error}>{errors.email}</span>}
-              </div>
-            </div>
+                    <div className={styles.brandContent}>
+                        <div className={styles.brandMark}>
+                            <BrainCircuit size={28} strokeWidth={2.5} />
+                        </div>
+                        <h2>Join <span className={styles.peachText}>Thought Lab</span></h2>
+                        <p>Become part of our leading academic community. Access resources, courses, and connect with peers.</p>
+                    </div>
 
-            {/* Password Column */}
-            <div className={styles.formColumn}>
-              <div className={styles.inputGroup}>
-                <label>Password <span className={styles.required}>*</span></label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="••••••••"
-                  className={errors.password ? styles.errorInput : ''}
-                  disabled={isSubmitting}
-                />
-                {errors.password && <span className={styles.error}>{errors.password}</span>}
-              </div>
+                    <div className={styles.testimonial}>
+                        <p className={styles.testimonialQuote}>
+                            "I learned to stay silent—not because I’m weak, but because I’m building something louder than words.
+                            "
+                        </p>
+                        <div className={styles.testimonialAuthor}>
+                            <div className={styles.authorAvatar}>A</div>
+                            <div className={styles.authorInfo}>
+                                <span className={styles.authorName}>Ashish</span>
+                                <span className={styles.authorRole}>Batch 2026</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-              <div className={styles.inputGroup}>
-                <label>Confirm Password <span className={styles.required}>*</span></label>
-                <input
-                  type="password"
-                  name="checkPassword"
-                  value={formData.checkPassword}
-                  onChange={handleChange}
-                  placeholder="••••••••"
-                  className={errors.checkPassword ? styles.errorInput : ''}
-                  disabled={isSubmitting}
-                />
-                {errors.checkPassword && <span className={styles.error}>{errors.checkPassword}</span>}
-              </div>
-            </div>
-          </div>
+                {/* ============ Right Panel (Form) ============ */}
+                <div className={styles.formPanel}>
+                    <div className={styles.mobileHeader}>
+                        <div className={styles.mobileBrandMark}>
+                            <BrainCircuit size={24} strokeWidth={2.5} />
+                        </div>
+                    </div>
 
-          <div className={styles.termsContainer}>
-            <p>By registering, you agree to our <a href="/terms" className={styles.link}>Terms of Service</a> and <a href="/privacy" className={styles.link}>Privacy Policy</a></p>
-          </div>
+                    <div className={styles.formHeader}>
+                        <h1>Student Registration</h1>
+                        <p>Fill in your details to create your account.</p>
+                    </div>
 
-          <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
-            {isSubmitting ? (
-              <>
-                <span className={styles.spinner}></span>
-                Registering...
-              </>
-            ) : <p>Register Now</p>}
-          </button>
-          
-          <div className={styles.loginRedirect}>
-            <p>Already have an account? <a href="/login" className={styles.link}>Login here</a></p>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+                    <form onSubmit={handleSubmit} className={styles.registerForm}>
+                        <div className={styles.formGrid}>
+
+                            {/* --- Column 1: Personal & Academic ID --- */}
+                            <div className={styles.formColumn}>
+
+                                {/* Full Name */}
+                                <div className={styles.inputGroup}>
+                                    <label>Full Name <span className={styles.required}>*</span></label>
+                                    <div className={styles.inputWrapper}>
+                                        <User size={18} className={styles.inputIcon} />
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            placeholder="John Doe"
+                                            className={errors.name ? styles.errorInput : ''}
+                                            disabled={isSubmitting}
+                                        />
+                                    </div>
+                                    {errors.name && <span className={styles.errorMessage}>{errors.name}</span>}
+                                </div>
+
+                                {/* Roll Number */}
+                                <div className={styles.inputGroup}>
+                                    <label>Roll Number <span className={styles.required}>*</span></label>
+                                    <div className={styles.inputWrapper}>
+                                        <Hash size={18} className={styles.inputIcon} />
+                                        <input
+                                            type="text"
+                                            name="rollNumber"
+                                            value={formData.rollNumber}
+                                            onChange={handleChange}
+                                            placeholder="22010732"
+                                            className={errors.rollNumber ? styles.errorInput : ''}
+                                            disabled={isSubmitting}
+                                        />
+                                    </div>
+                                    {errors.rollNumber && <span className={styles.errorMessage}>{errors.rollNumber}</span>}
+                                </div>
+
+                                {/* Year */}
+                                <div className={styles.inputGroup}>
+                                    <label>Year <span className={styles.required}>*</span></label>
+                                    <div className={styles.inputWrapper}>
+                                        <Clock size={18} className={styles.inputIcon} />
+                                        <select
+                                            name="year"
+                                            value={formData.year}
+                                            onChange={handleChange}
+                                            className={errors.year ? styles.errorInput : ''}
+                                            disabled={isSubmitting}
+                                        >
+                                            <option value="" disabled>Select Year</option>
+                                            {years.map(year => (
+                                                <option key={year} value={year}>{year} Year</option>
+                                            ))}
+                                        </select>
+                                        <ChevronDown size={18} className={styles.selectArrow} />
+                                    </div>
+                                    {errors.year && <span className={styles.errorMessage}>{errors.year}</span>}
+                                </div>
+
+                                {/* Email */}
+                                <div className={styles.inputGroup}>
+                                    <label>Email Address <span className={styles.required}>*</span></label>
+                                    <div className={styles.inputWrapper}>
+                                        <Mail size={18} className={styles.inputIcon} />
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            placeholder="student@example.com"
+                                            className={errors.email ? styles.errorInput : ''}
+                                            disabled={isSubmitting}
+                                        />
+                                    </div>
+                                    {errors.email && <span className={styles.errorMessage}>{errors.email}</span>}
+                                </div>
+
+                                {/* Passwords (moved to left col on desktop if space allows, but grid is 1fr 1fr) */}
+                                <div className={styles.inputGroup}>
+                                    <label>Password <span className={styles.required}>*</span></label>
+                                    <div className={styles.inputWrapper}>
+                                        <Lock size={18} className={styles.inputIcon} />
+                                        <input
+                                            type={showPassword ? "text" : "password"}
+                                            name="password"
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                            placeholder="Min 8 characters"
+                                            className={errors.password ? styles.errorInput : ''}
+                                            disabled={isSubmitting}
+                                        />
+                                        <button
+                                            type="button"
+                                            className={styles.passwordToggle}
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            tabIndex={-1}
+                                        >
+                                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                                        </button>
+                                    </div>
+                                    {errors.password && <span className={styles.errorMessage}>{errors.password}</span>}
+                                </div>
+                            </div>
+
+                            {/* --- Column 2: Specifics & Pictures --- */}
+                            <div className={styles.formColumn}>
+
+                                {/* Programme */}
+                                <div className={styles.inputGroup}>
+                                    <label>Programme <span className={styles.required}>*</span></label>
+                                    <div className={styles.radioGroup}>
+                                        {programmes.map(prog => (
+                                            <label key={prog} className={`${styles.radioLabel} ${formData.programme === prog ? styles.activeRadio : ''}`}>
+                                                <input
+                                                    type="radio"
+                                                    name="programme"
+                                                    value={prog}
+                                                    checked={formData.programme === prog}
+                                                    onChange={handleChange}
+                                                    disabled={isSubmitting}
+                                                />
+                                                <span className={styles.radioButton}></span>
+                                                {prog}
+                                            </label>
+                                        ))}
+                                    </div>
+                                    {errors.programme && <span className={styles.errorMessage}>{errors.programme}</span>}
+                                </div>
+
+                                {/* Branch */}
+                                <div className={styles.inputGroup}>
+                                    <label>Branch <span className={styles.required}>*</span></label>
+                                    <div className={styles.branchesContainer}>
+                                        <div className={styles.radioGroup} style={{ gridTemplateColumns: 'minmax(0, 1fr)' }}>
+                                            {branches.map(branch => (
+                                                <label key={branch} className={`${styles.radioLabel} ${formData.branch === branch ? styles.activeRadio : ''}`} style={{ padding: '8px' }}>
+                                                    <input
+                                                        type="radio"
+                                                        name="branch"
+                                                        value={branch}
+                                                        checked={formData.branch === branch}
+                                                        onChange={handleChange}
+                                                        disabled={isSubmitting}
+                                                    />
+                                                    <span className={styles.radioButton}></span>
+                                                    {branch}
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    {errors.branch && <span className={styles.errorMessage}>{errors.branch}</span>}
+                                </div>
+
+                                {/* Profile Picture */}
+                                <div className={styles.inputGroup}>
+                                    <label>Profile Picture</label>
+                                    <label className={styles.uploadLabel}>
+                                        {profilePicturePreview ? (
+                                            <div className={styles.previewContainer}>
+                                                <img src={profilePicturePreview} alt="Preview" className={styles.previewImage} />
+                                                <span className={styles.previewText}>{profilePicture?.name || 'Selected Image'}</span>
+                                                <button
+                                                    type="button"
+                                                    className={styles.removeImage}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setProfilePicture(null);
+                                                        setProfilePicturePreview('');
+                                                    }}
+                                                    disabled={isSubmitting}
+                                                >
+                                                    ✕
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div className={styles.uploadPlaceholder}>
+                                                <ImageIcon size={18} />
+                                                <span>Upload Photo (Max 2MB)</span>
+                                            </div>
+                                        )}
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleProfilePictureChange}
+                                            className={styles.fileInput}
+                                            disabled={isSubmitting}
+                                        />
+                                    </label>
+                                </div>
+
+                                {/* Confirm Password */}
+                                <div className={styles.inputGroup}>
+                                    <label>Confirm Password <span className={styles.required}>*</span></label>
+                                    <div className={styles.inputWrapper}>
+                                        <Lock size={18} className={styles.inputIcon} />
+                                        <input
+                                            type={showConfirmPassword ? "text" : "password"}
+                                            name="checkPassword"
+                                            value={formData.checkPassword}
+                                            onChange={handleChange}
+                                            placeholder="Confirm password"
+                                            className={errors.checkPassword ? styles.errorInput : ''}
+                                            disabled={isSubmitting}
+                                        />
+                                        <button
+                                            type="button"
+                                            className={styles.passwordToggle}
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                            tabIndex={-1}
+                                        >
+                                            {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                                        </button>
+                                    </div>
+                                    {errors.checkPassword && <span className={styles.errorMessage}>{errors.checkPassword}</span>}
+                                </div>
+
+                            </div>
+                        </div>
+
+                        {/* --- Footer / Submit --- */}
+                        <div className={styles.formFooter}>
+                            <p className={styles.termsText}>
+                                By registering, you agree to our <Link to="/terms" className={styles.link}>Terms of Service</Link> and <Link to="/privacy" className={styles.link}>Privacy Policy</Link>
+                            </p>
+
+                            <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+                                {isSubmitting ? (
+                                    <>
+                                        <span className={styles.spinner}></span>
+                                        Registering...
+                                    </>
+                                ) : (
+                                    <>
+                                        <GraduationCap size={20} />
+                                        Create Account
+                                    </>
+                                )}
+                            </button>
+
+                            <div className={styles.loginRedirect}>
+                                <p>Already have an account? <Link to="/login" className={styles.link}>Sign in here</Link></p>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default Register;

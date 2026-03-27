@@ -1,41 +1,45 @@
 .cards {
   display: flex;
-  gap: 1.5rem;
-  padding: 1rem;
+  box-sizing: border-box;
+  gap: 24px;
+  padding: 16px;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .liveUsersList {
-  margin: 2rem 1rem;
-  padding: 1.5rem;
+  box-sizing: border-box;
+  margin: 32px 16px;
+  padding: 24px;
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .listTitle {
-  font-size: 1.2rem;
+  font-size: 19px;
   color: #2d3748;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
   font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .nameBadges {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
+  gap: 13px;
 }
 
 .nameBadge {
   background: #f7fafc;
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
   border-radius: 20px;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 10px;
   border: 1px solid #e2e8f0;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -60,7 +64,7 @@
 }
 
 .userRoll {
-  font-size: 0.8rem;
+  font-size: 13px;
   color: #a0aec0;
 }
 
@@ -72,5 +76,15 @@
 @media (max-width: 768px) {
   .cards {
     flex-direction: column;
+    padding: 8px;
+  }
+
+  .liveUsersList {
+    margin: 16px 8px;
+    padding: 16px;
+  }
+
+  .listTitle {
+    font-size: 18px;
   }
 }

@@ -1,5 +1,6 @@
 .container {
-    padding: 2rem;
+    box-sizing: border-box;
+    padding: 32px;
     background: #f0f2f5;
     min-height: 100vh;
 }
@@ -8,11 +9,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 32px;
 }
 
 .title {
-    font-size: 2rem;
+    font-size: 32px;
     font-weight: 600;
     color: #1a1a1a;
     margin: 0;
@@ -20,9 +21,10 @@
 
 .tableContainer {
     background: #ffffff;
-    padding: 1.5rem;
+    padding: 24px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
 }
 
 .imageContainer {
@@ -45,7 +47,7 @@
 }
 
 .noImage {
-    font-size: 0.8rem;
+    font-size: 14px;
     color: #999;
 }
 
@@ -56,16 +58,17 @@
 
 @media (max-width: 768px) {
     .container {
-        padding: 1rem;
+        padding: 16px;
+        padding-top: 120px;
     }
 
     .header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1rem;
+        gap: 16px;
     }
 
     .title {
-        font-size: 1.5rem;
+        font-size: 24px;
     }
 }

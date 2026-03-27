@@ -81,57 +81,59 @@ const GameScoreUpdater = ({ screen }) => {
         />
       </div>
 
-      <table className={styles.table}>
-        <thead>
-          <tr className={styles.head}>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Roll Number</th>
-            <th>Branch</th>
-            <th>Year</th>
-            <th>Score</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody className={styles.tbody}>
-          {paginatedData.length > 0 ? (
-            paginatedData.map((item, index) => (
-              <tr key={item._id}>
-                <td>{index + 1}</td>
-                <td>{item.user?.name}</td>
-                <td>{item.user?.rollNumber}</td>
-                <td>{item.user?.branch}</td>
-                <td>{item.user?.year}</td>
-                <td>{item.score}</td>
-                <td>
-                  <button
-                    className={styles.updateButton}
-                    onClick={() =>
-                      handleScoreUpdate(item.user._id, item.score, "increase")
-                    }
-                  >
-                    +10
-                  </button>
-                  <button
-                    className={styles.decreaseButton}
-                    onClick={() =>
-                      handleScoreUpdate(item.user._id, item.score, "decrease")
-                    }
-                  >
-                    -10
-                  </button>
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr className={styles.head}>
+              <th className={styles.hideOnMobile}>ID</th>
+              <th>Name</th>
+              <th className={styles.hideOnMobile}>Roll Number</th>
+              <th>Branch</th>
+              <th className={styles.hideOnMobile}>Year</th>
+              <th>Score</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody className={styles.tbody}>
+            {paginatedData.length > 0 ? (
+              paginatedData.map((item, index) => (
+                <tr key={item._id}>
+                  <td className={styles.hideOnMobile}>{index + 1}</td>
+                  <td>{item.user?.name}</td>
+                  <td className={styles.hideOnMobile}>{item.user?.rollNumber}</td>
+                  <td>{item.user?.branch}</td>
+                  <td className={styles.hideOnMobile}>{item.user?.year}</td>
+                  <td>{item.score}</td>
+                  <td>
+                    <button
+                      className={styles.updateButton}
+                      onClick={() =>
+                        handleScoreUpdate(item.user._id, item.score, "increase")
+                      }
+                    >
+                      +10
+                    </button>
+                    <button
+                      className={styles.decreaseButton}
+                      onClick={() =>
+                        handleScoreUpdate(item.user._id, item.score, "decrease")
+                      }
+                    >
+                      -10
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={7} style={{ textAlign: "center" }}>
+                  No matching records found.
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={7} style={{ textAlign: "center" }}>
-                No matching records found.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       <div className={styles.footer}>
         <div className={styles.rows}>

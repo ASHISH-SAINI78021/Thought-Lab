@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { 
-  TextField, 
-  Button, 
-  Box, 
-  Typography, 
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
   Paper,
   Snackbar,
   Alert,
@@ -35,9 +35,9 @@ const PromoteUserForm = () => {
 
     // Guard clause: Ensure user is authenticated before sending request
     if (!auth?.token) {
-        setSnackbar({ open: true, message: 'Authentication error: No token found. Please log in.', severity: 'error' });
-        setLoading(false);
-        return;
+      setSnackbar({ open: true, message: 'Authentication error: No token found. Please log in.', severity: 'error' });
+      setLoading(false);
+      return;
     }
 
     try {
@@ -67,24 +67,25 @@ const PromoteUserForm = () => {
   };
 
   return (
-    <Paper 
-      elevation={4} 
-      sx={{ 
-        p: 4, 
-        maxWidth: 500, 
-        margin: 'auto', 
+    <Paper
+      elevation={4}
+      sx={{
+        p: { xs: 3, sm: 4 },
+        maxWidth: 500,
+        mx: { xs: 2, sm: 'auto' },
         mt: 5,
         borderRadius: '12px',
-        background: 'linear-gradient(to top right, #ffffff, #f4f6f8)'
+        background: 'linear-gradient(to top right, #ffffff, #f4f6f8)',
+        boxSizing: 'border-box'
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
         <AdminPanelSettingsIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />
         <Box>
-          <Typography variant="h5" component="h1" fontWeight="600">
+          <Typography variant="h5" component="h1" fontWeight="600" sx={{ fontSize: { xs: '22px', sm: '28px' } }}>
             Admin Promotion
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '14px', sm: '16px' } }}>
             Grant administrative privileges to a user.
           </Typography>
         </Box>
@@ -107,6 +108,10 @@ const PromoteUserForm = () => {
                   <AlternateEmailIcon color="action" />
                 </InputAdornment>
               ),
+              sx: { fontSize: '16px' }
+            }}
+            InputLabelProps={{
+              sx: { fontSize: '16px' }
             }}
           />
           <Box sx={{ position: 'relative' }}>
@@ -118,14 +123,15 @@ const PromoteUserForm = () => {
               disabled={loading || !email}
               fullWidth
               sx={{
-                py: 1.5,
+                py: '16px',
+                fontSize: '18px',
                 fontWeight: 'bold',
                 transition: 'all 0.3s ease',
                 background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
                 boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .3)',
                 '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 6px 10px 4px rgba(33, 203, 243, .3)',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 6px 10px 4px rgba(33, 203, 243, .3)',
                 }
               }}
             >
