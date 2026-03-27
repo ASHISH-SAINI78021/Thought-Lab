@@ -79,7 +79,9 @@ function Navbar() {
             <>
               <NotificationBell />
               <Tooltip title={auth.user.name} placement="bottom">
-                <Avatar src={auth.user.profilePicture} className="user-avatar" />
+                <Link to={`/profile/${auth.user.id}`}>
+                  <Avatar src={auth.user.profilePicture} className="user-avatar" />
+                </Link>
               </Tooltip>
               <button onClick={handleLogout} className="logout-btn" title="Logout">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -120,6 +122,15 @@ function Navbar() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link
+                to={`/profile/${auth?.user?.id}`}
+                className={`mobile-nav-link ${location.pathname.startsWith('/profile') ? 'active' : ''}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Profile
+              </Link>
+            </li>
             {(auth?.user?.role === 'admin' || auth?.user?.role === 'superAdmin') && (
               <li>
                 <Link
@@ -135,7 +146,9 @@ function Navbar() {
 
           {auth?.user && (
             <div className="mobile-user-info">
-              <Avatar src={auth?.user?.profilePicture} size={64} />
+              <Link to={`/profile/${auth?.user?.id}`} onClick={() => setIsMobileMenuOpen(false)}>
+                <Avatar src={auth?.user?.profilePicture} size={64} />
+              </Link>
               <div className="user-details">
                 <p className="user-name">{auth?.user?.name}</p>
                 <p className="user-role">{auth?.user?.role}</p>

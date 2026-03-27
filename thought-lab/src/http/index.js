@@ -143,4 +143,6 @@ export const deleteTask = (taskId) => api.delete(`/tasks/${taskId}`);
 export const getNotifications = () => api.get('/notifications');
 export const markNotificationAsRead = (notificationId) => api.post('/notifications/read', { notificationId });
 
+export const updateUserProfile = (data) => api.put('/profile/update', data);
+
 export default api;

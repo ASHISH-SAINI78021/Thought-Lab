@@ -320,6 +320,27 @@ function TaskAssigner() {
                 </div>
               )}
 
+              {task.status === 'COMPLETED' && (
+                <div className="completed-info-section" style={{ marginTop: '15px', padding: '10px', background: '#f0fff4', borderRadius: '6px', border: '1px solid #c6f6d5' }}>
+                  <p style={{ margin: '0 0 5px 0', color: '#2f855a' }}>
+                    <strong>✅ Completed by:</strong> {task.assignedTo?.name || 'Unknown'} ({task.assignedTo?.rollNumber || 'N/A'})
+                  </p>
+                  {task.completedAt && (
+                    <p style={{ margin: 0, fontSize: '12px', color: '#48bb78' }}>
+                      <strong>On:</strong> {new Date(task.completedAt).toLocaleString()}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {task.status === 'FAILED' && (
+                <div className="failed-info-section" style={{ marginTop: '15px', padding: '10px', background: '#fff5f5', borderRadius: '6px', border: '1px solid #fed7d7' }}>
+                  <p style={{ margin: '0 0 5px 0', color: '#c53030' }}>
+                    <strong>❌ Failed by:</strong> {task.assignedTo?.name || 'Unknown'} ({task.assignedTo?.rollNumber || 'N/A'})
+                  </p>
+                </div>
+              )}
+
               <button className="btn-delete" onClick={() => handleDelete(task._id)}>Delete Task</button>
             </div>
           ))

@@ -26,6 +26,7 @@ router.get('/auth-status', isLogin, (req, res) => {
 router.get('/user/:id', AuthController.getUser);
 router.put('/api/increment-year', UserController.incrementYear); // middleware
 router.get('/users', isLogin, isAdmin, UserController.getAllUsers); // Get all users for admin
+router.put('/profile/update', isLogin, upload.single('profilePicture'), UserController.updateProfile);
 
 // attendance routes
 router.post('/api/attendance-register', upload.single("image"), isLogin, attendanceController.register);

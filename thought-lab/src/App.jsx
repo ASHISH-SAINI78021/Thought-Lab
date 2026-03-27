@@ -97,6 +97,7 @@ const AppContent = () => {
         <Route path="/utter-your-thoughts" element={<UtterYourThoughts />} />
         <Route path="/leaderboard" element={<Table />} />
         <Route path="/leaderboard/:id" element={<StudentProfile />} />
+        <Route path="/profile/:id" element={<PrivateRoute><StudentProfile /></PrivateRoute>} />
         <Route path="/appointment-form" element={<AppointmentForm />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
