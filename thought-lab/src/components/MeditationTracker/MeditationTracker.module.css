@@ -1,411 +1,425 @@
 :root {
-    --primary: #FFC3A0;
-    --light: #fecfb4;
-    --secondary: #2f3d61;
-    --accent: #D5E8D4;
-    --text: #4A4A4A;
-    --background: #faf2eb;
-    --black: #000000;
+  --primary: #FFC3A0;
+  --primary-light: #FFD6BC;
+  --secondary: #2f3d61;
+  --secondary-light: #415582;
+  --accent: #D5E8D4;
+  --background: #faf2eb;
+  --text-main: #2f3d61;
+  --text-muted: #576574;
+  --glass-white: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --shadow-soft: 0 15px 35px rgba(255, 195, 160, 0.2);
+}
+
+.mainContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: var(--background);
+  padding: 40px 20px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-main);
+}
+
+.container {
+  background: var(--glass-white);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 2px solid var(--glass-border);
+  border-radius: 35px;
+  box-shadow: var(--shadow-soft);
+  width: 100%;
+  max-width: 600px;
+  overflow: hidden;
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  .mainContainer{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  .container {
-    background-color: var(--background);
-    border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 100%;
-    max-width: 500px;
-    margin: 20px;
+}
+
+.header {
+  padding: 50px 40px 30px;
+  text-align: center;
+}
+
+.meditationIcon {
+  font-size: 45px;
+  margin-bottom: 18px;
+  color: var(--secondary);
+  display: inline-block;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
   }
-  
+
+  50% {
+    transform: translateY(-8px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: var(--secondary);
+}
+
+.header p {
+  color: var(--text-muted);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.content {
+  padding: 0 40px 40px;
+}
+
+.todaySummary {
+  background: white;
+  padding: 30px;
+  border-radius: 25px;
+  margin-bottom: 40px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(255, 195, 160, 0.15);
+  border: 1px solid var(--primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.summaryLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  opacity: 0.6;
+}
+
+.summaryScore {
+  font-size: 52px;
+  font-weight: 900;
+  color: var(--secondary);
+  line-height: 1;
+}
+
+.summaryText {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.question {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+  color: var(--secondary);
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 35px;
+}
+
+.optionBtn {
+  padding: 15px 40px;
+  border: 2px solid var(--primary);
+  border-radius: 18px;
+  background: white;
+  color: var(--secondary);
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 1;
+}
+
+.optionBtn:hover {
+  background: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 195, 160, 0.4);
+}
+
+.optionBtn.selected {
+  background: var(--secondary);
+  color: white;
+  border-color: var(--secondary);
+}
+
+.durationContainer {
+  margin-bottom: 35px;
+  display: none;
+}
+
+.durationContainer.active {
+  display: block;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.durationInput {
+  width: 100%;
+  padding: 18px;
+  background: white;
+  border: 2px solid var(--primary-light);
+  border-radius: 18px;
+  color: var(--secondary);
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.3s;
+  margin-bottom: 15px;
+}
+
+.durationInput:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(255, 195, 160, 0.2);
+}
+
+.calculateBtn {
+  background: var(--secondary);
+  color: white;
+  border: none;
+  padding: 18px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-weight: 800;
+  width: 100%;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.calculateBtn:hover {
+  transform: translateY(-2px);
+  background: var(--secondary-light);
+  box-shadow: 0 10px 20px rgba(47, 61, 97, 0.2);
+}
+
+.resultContainer {
+  text-align: center;
+  padding: 30px;
+  border-radius: 25px;
+  background: var(--accent);
+  margin-top: 30px;
+  display: none;
+}
+
+.resultContainer.active {
+  display: block;
+}
+
+.scoreCircle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: white;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 900;
+  margin: 0 auto 15px;
+}
+
+.scoreLabel {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--secondary);
+}
+
+.history {
+  margin-top: 50px;
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.historyTitle {
+  font-weight: 800;
+  color: var(--secondary);
+  font-size: 20px;
+}
+
+.filterControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.clearBtn {
+  background: rgba(255, 195, 160, 0.1);
+  border: 1.5px solid var(--primary);
+  color: var(--secondary);
+  padding: 8px 15px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.clearBtn:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.datePicker {
+  padding: 10px 15px;
+  background: white;
+  border: 1.5px solid var(--primary);
+  border-radius: 12px;
+  color: var(--secondary);
+  font-weight: 700;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.historyItem {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 195, 160, 0.3);
+  transition: all 0.3s ease;
+}
+
+.historyItem:hover {
+  transform: translateX(5px);
+  border-color: var(--primary);
+  box-shadow: 0 8px 25px rgba(255, 195, 160, 0.2);
+}
+
+.historyMain {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.historyName {
+  font-weight: 800;
+  color: var(--secondary);
+  font-size: 16px;
+}
+
+.historyDate {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.historyStats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--background);
+  padding: 12px 18px;
+  border-radius: 15px;
+}
+
+.historyDetails {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.historyScore {
+  font-weight: 800;
+  color: var(--secondary);
+  font-size: 16px;
+}
+
+.footer {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(255, 195, 160, 0.05);
+  border-top: 1px dashed var(--primary);
+}
+
+.emptyHistory {
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 25px;
+  color: var(--text-muted);
+  border: 1px dashed var(--primary);
+}
+
+/* Response for empty state */
+@media (max-width: 480px) {
   .header {
-    background-color: var(--primary);
-    color: var(--text);
-    padding: 20px;
-    text-align: center;
-    position: relative;
+    padding: 40px 25px 25px;
   }
-  
+
   .header h1 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 5px;
-    color: var(--secondary);
+    font-size: 28px;
   }
-  
-  .header p {
-    opacity: 0.9;
-    font-size: 14px;
-  }
-  
+
   .content {
-    padding: 20px;
+    padding: 0 25px 35px;
   }
-  
-  .question {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-align: center;
-    color: var(--secondary);
-  }
-  
-  .options {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-  }
-  
+
   .optionBtn {
     padding: 12px 20px;
-    border: 2px solid var(--secondary);
-    border-radius: 12px;
-    background: var(--background);
-    color: var(--secondary);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    flex: 1;
-    text-align: center;
-    min-width: 100px;
   }
-  
-  .optionBtn:hover {
-    background: var(--light);
-  }
-  
-  .optionBtn.selected {
-    background: var(--secondary);
-    color: var(--background);
-  }
-  
-  .durationContainer {
-    margin-bottom: 25px;
-    display: none;
-  }
-  
-  .durationContainer.active {
-    display: block;
-    animation: fadeIn 0.5s;
-  }
-  
-  .durationLabel {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: 600;
-    color: var(--text);
-    font-size: 16px;
-  }
-  
-  .durationInput {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid var(--light);
-    border-radius: 12px;
-    font-size: 16px;
-    transition: border-color 0.3s;
-    background-color: white;
-  }
-  
-  .durationInput:focus {
-    border-color: var(--secondary);
-    outline: none;
-  }
-  
-  .calculateBtn {
-    background-color: var(--secondary);
-    color: var(--background);
-    border: none;
-    padding: 14px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 600;
-    width: 100%;
-    font-size: 16px;
-    transition: background-color 0.3s;
-    margin-top: 10px;
-  }
-  
-  .calculateBtn:hover {
-    background-color: var(--text);
-  }
-  
-  .resultContainer {
-    text-align: center;
-    padding: 20px;
-    border-radius: 12px;
-    background: var(--accent);
-    margin-top: 20px;
-    display: none;
-  }
-  
-  .resultContainer.active {
-    display: block;
-    animation: fadeIn 0.5s;
-  }
-  
-  .scoreCircle {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: var(--secondary);
-    color: var(--background);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    font-weight: 700;
-    margin: 0 auto 15px;
-    border: 5px solid var(--primary);
-  }
-  
-  .scoreLabel {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--secondary);
-    margin-bottom: 10px;
-  }
-  
-  .scoreDetails {
-    color: var(--text);
-    margin-bottom: 5px;
-    font-size: 14px;
-  }
-  
-  .history {
-    margin-top: 25px;
-    padding-top: 15px;
-    border-top: 1px solid var(--light);
-  }
-  
-  .historyTitle {
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: var(--text);
-    font-size: 16px;
-  }
-  
-  .historyItem {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background: var(--light);
-    border-radius: 8px;
-    margin-bottom: 8px;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-  
-  .historyDate {
-    color: var(--text);
-    font-size: 14px;
-    flex: 1;
-    min-width: 100px;
-  }
-  
-  .historyDetails {
-    font-size: 14px;
-    color: var(--text);
-    flex: 1;
-    text-align: center;
-    min-width: 100px;
-  }
-  
-  .historyScore {
-    font-weight: 600;
-    color: var(--secondary);
-    font-size: 14px;
-    flex: 1;
-    text-align: right;
-    min-width: 60px;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  .meditationIcon {
-    font-size: 35px;
-    margin-bottom: 12px;
-    color: var(--secondary);
-  }
-  
-  .footer {
-    text-align: center;
-    padding: 15px;
-    color: var(--text);
-    font-size: 12px;
-    background-color: var(--light);
-  }
-  
-  .historyList {
-    display: flex;
+
+  .historyHeader {
     flex-direction: column;
-    gap: 8px;
+    align-items: flex-start;
+    gap: 15px;
   }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .container {
-      margin: 15px;
-      border-radius: 15px;
-    }
-    
-    .header {
-      padding: 15px;
-    }
-    
-    .header h1 {
-      font-size: 22px;
-    }
-    
-    .content {
-      padding: 15px;
-    }
-    
-    .question {
-      font-size: 18px;
-      margin-bottom: 15px;
-    }
-    
-    .options {
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    
-    .optionBtn {
-      padding: 10px 15px;
-      font-size: 14px;
-      min-width: 80px;
-    }
-    
-    .scoreCircle {
-      width: 90px;
-      height: 90px;
-      font-size: 24px;
-    }
-    
-    .scoreLabel {
-      font-size: 16px;
-    }
+
+  .filterControls {
+    width: 100%;
+    justify-content: space-between;
   }
-  
-  @media (max-width: 480px) {
-    .historyItem {
-      overflow: scroll;
-    }
-    .container {
-      margin: 10px;
-      border-radius: 12px;
-      font-size: 5rem;
-    }
-    
-    .header {
-      padding: 12px;
-    }
-    
-    .header h1 {
-      font-size: 20px;
-    }
-    
-    .header p {
-      font-size: 12px;
-    }
-    
-    .content {
-      padding: 12px;
-    }
-    
-    .question {
-      font-size: 16px;
-    }
-    
-    .options {
-      flex-direction: column;
-      gap: 8px;
-    }
-    
-    .optionBtn {
-      width: 100%;
-      padding: 12px;
-    }
-    
-    .durationInput {
-      padding: 10px;
-      font-size: 14px;
-    }
-    
-    .calculateBtn {
-      padding: 12px;
-      font-size: 14px;
-    }
-    
-    .resultContainer {
-      padding: 15px;
-    }
-    
-    .scoreCircle {
-      width: 80px;
-      height: 80px;
-      font-size: 22px;
-      border-width: 4px;
-    }
-    
-    .scoreLabel {
-      font-size: 15px;
-    }
-    
-    .scoreDetails {
-      font-size: 13px;
-    }
-    
-    .historyItem {
-      flex-direction: column;
-      text-align: center;
-      gap: 5px;
-    }
-    
-    .historyDate, .historyDetails, .historyScore {
-      text-align: center;
-      min-width: auto;
-    }
-    
-    .footer {
-      padding: 12px;
-      font-size: 11px;
-    }
-    
-    .meditationIcon {
-      font-size: 30px;
-    }
-  }
-  
-  /* For very small devices */
-  @media (max-width: 320px) {
-    .historyItem{
-      overflow: scroll;
-    }
-    .header h1 {
-      font-size: 18px;
-    }
-    
-    .question {
-      font-size: 15px;
-    }
-    
-    .optionBtn {
-      font-size: 13px;
-      padding: 10px;
-    }
-    
-    .durationLabel {
-      font-size: 14px;
-    }
-  }
+}

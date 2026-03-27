@@ -126,7 +126,7 @@ export const reactToBlog = (blogId, type) => api.post(`/blog/${blogId}/react`, {
 export const getBlogReactions = (blogId) => api.get(`/blog/${blogId}/reactions`);
 export const addComment = (blogId, content) => api.post(`/blog/${blogId}/comment`, { content });
 export const saveMeditationSession = (userId, sessionData)=> api.post(`/meditation-session/${userId}`, sessionData);
-export const getMeditationHistory = () => api.get('/meditation-history');
+export const getMeditationHistory = (date) => api.get(`/meditation-history${date ? `?date=${date}` : ''}`);
 export const getStudentProfile = (id) => api.get(`/user/${id}`);
 export const getAllUsers = () => api.get('/users'); // New API for Admin
 
@@ -144,5 +144,6 @@ export const getNotifications = () => api.get('/notifications');
 export const markNotificationAsRead = (notificationId) => api.post('/notifications/read', { notificationId });
 
 export const updateUserProfile = (data) => api.put('/profile/update', data);
+export const getUserPointsHistory = (id, page = 1, limit = 10) => api.get(`/user-history/${id}?page=${page}&limit=${limit}`);
 
 export default api;

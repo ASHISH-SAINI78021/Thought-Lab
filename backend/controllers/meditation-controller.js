@@ -4,7 +4,8 @@ const Leaderboard = require('../Models/leaderboard-modal.js');
 class MeditationController {
     async meditationHistory(req, res){
         try {
-            const sessions = await meditationService.meditationHistory();
+            const { date } = req.query;
+            const sessions = await meditationService.meditationHistory(date);
             if (!sessions.length){
                 console.log("NO sessions");
                 return res.json({
@@ -65,7 +66,7 @@ class MeditationController {
 
     
             // Create meditation session
-            const session = await meditationService.meditationSession(scoreValue, details, duration, date, profilePicture, name);
+            const session = await meditationService.meditationSession(scoreValue, details, duration, date, profilePicture, name, id);
     
             return res.json({
                 success: true,

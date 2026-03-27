@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './StudentProfile.module.css';
 import toast from 'react-hot-toast';
-import { getStudentProfile, updateUserProfile } from '../../http';
+import { getStudentProfile, updateUserProfile, getUserPointsHistory } from '../../http';
 import { useAuth } from '../../Context/auth';
 
 const StudentProfile = () => {
@@ -15,11 +15,15 @@ const StudentProfile = () => {
     // Check if this is the logged-in user's own profile
     const isOwnProfile = auth?.user?.id === id;
 
-    // Edit Mode State
+    // State for Point History and Editing
     const [isEditMode, setIsEditMode] = useState(false);
     const [editData, setEditData] = useState({});
     const [isUpdating, setIsUpdating] = useState(false);
     const [previewImage, setPreviewImage] = useState(null);
+    const [pointsHistory, setPointsHistory] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [limit] = useState(10);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -44,8 +48,25 @@ const StudentProfile = () => {
                 setIsLoading(false);
             }
         };
+
         fetchProfile();
     }, [id]);
+
+    useEffect(() => {
+        const fetchHistory = async () => {
+            try {
+                const response = await getUserPointsHistory(id, currentPage, limit);
+                if (response.data.success) {
+                    setPointsHistory(response.data.history);
+                    setTotalPages(response.data.pagination.totalPages);
+                }
+            } catch (error) {
+                console.error("Points history error:", error);
+            }
+        };
+
+        if (id) fetchHistory();
+    }, [id, currentPage, limit]);
 
     const startEditing = () => {
         setEditData({
@@ -201,6 +222,12 @@ const StudentProfile = () => {
                     >
                         <i className="fas fa-calendar-check"></i> Attendance
                     </button>
+                    <button
+                        className={`${styles.tab} ${activeTab === 'points' ? styles.activeTab : ''}`}
+                        onClick={() => setActiveTab('points')}
+                    >
+                        <i className="fas fa-coins"></i> Points History
+                    </button>
                 </div>
 
                 <div className={styles.tabContent}>
@@ -283,6 +310,60 @@ const StudentProfile = () => {
                                 </div>
                             </div>
                         )
+                    ) : activeTab === 'points' ? (
+                        <div className={styles.pointsHistorySection}>
+                            <h3 className={styles.sectionTitle}>Points Earning History</h3>
+                            {pointsHistory.length > 0 ? (
+                                <>
+                                    <div className={styles.pointsList}>
+                                        {pointsHistory.map((item) => (
+                                            <div key={`${item.type}-${item.id}`} className={styles.pointsItem}>
+                                                <div className={styles.pointsInfo}>
+                                                    <div className={styles.pointsType}>
+                                                        <span className={`${styles.badge} ${styles[item.type.toLowerCase() + 'Badge']}`}>
+                                                            {item.type}
+                                                        </span>
+                                                        <span className={styles.pointsDate}>
+                                                            {new Date(item.date).toLocaleDateString()}
+                                                        </span>
+                                                    </div>
+                                                    <p className={styles.pointsTitle}>{item.title}</p>
+                                                </div>
+                                                <div className={`${styles.pointsValue} ${item.points >= 0 ? styles.positive : styles.negative}`}>
+                                                    {item.points >= 0 ? '+' : ''}{item.points}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    {totalPages > 1 && (
+                                        <div className={styles.pagination}>
+                                            <button
+                                                className={styles.pageBtn}
+                                                disabled={currentPage === 1}
+                                                onClick={() => setCurrentPage(prev => prev - 1)}
+                                            >
+                                                <i className="fas fa-chevron-left"></i> Previous
+                                            </button>
+                                            <span className={styles.pageInfo}>
+                                                Page {currentPage} of {totalPages}
+                                            </span>
+                                            <button
+                                                className={styles.pageBtn}
+                                                disabled={currentPage === totalPages}
+                                                onClick={() => setCurrentPage(prev => prev + 1)}
+                                            >
+                                                Next <i className="fas fa-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                    )}
+                                </>
+                            ) : (
+                                <div className={styles.emptyHistory}>
+                                    <i className="fas fa-history"></i>
+                                    <p>No points records available yet.</p>
+                                </div>
+                            )}
+                        </div>
                     ) : (
                         <div className={styles.attendanceSection}>
                             <div className={styles.attendanceStats}>
@@ -323,8 +404,8 @@ const StudentProfile = () => {
                         </div>
                     )}
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 

@@ -27,6 +27,7 @@ router.get('/user/:id', AuthController.getUser);
 router.put('/api/increment-year', UserController.incrementYear); // middleware
 router.get('/users', isLogin, isAdmin, UserController.getAllUsers); // Get all users for admin
 router.put('/profile/update', isLogin, upload.single('profilePicture'), UserController.updateProfile);
+router.get('/user-history/:id', isLogin, UserController.getUserHistory);
 
 // attendance routes
 router.post('/api/attendance-register', upload.single("image"), isLogin, attendanceController.register);

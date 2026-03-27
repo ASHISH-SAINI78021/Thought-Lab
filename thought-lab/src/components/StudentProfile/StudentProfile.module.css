@@ -722,3 +722,189 @@
     transform: rotate(360deg);
   }
 }
+
+/* POINTS HISTORY SECTION */
+.pointsHistorySection {
+  animation: fadeIn 0.3s ease;
+}
+
+.sectionTitle {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  color: #333;
+  font-weight: 700;
+  border-bottom: 2px solid #FFC3A0;
+  padding-bottom: 8px;
+  display: inline-block;
+}
+
+.pointsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pointsItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 18px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+}
+
+.pointsItem:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-color: #FFC3A0;
+}
+
+.pointsInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pointsType {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.taskBadge {
+  background: #e1f5fe;
+  color: #0288d1;
+}
+
+.meditationBadge {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.pointsDate {
+  font-size: 12px;
+  color: #999;
+}
+
+.pointsTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.pointsValue {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.positive {
+  color: #2ecc71;
+}
+
+.pointsValue.negative {
+  color: #e74c3c;
+}
+
+/* PAGINATION STYLES */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.pageBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #FFC3A0;
+  color: #2f3d61;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background: #FFC3A0;
+  color: white;
+  box-shadow: 0 4px 10px rgba(255, 195, 160, 0.3);
+}
+
+.pageBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: #eee;
+  color: #999;
+}
+
+.pageInfo {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+}
+
+@media (max-width: 480px) {
+  .pagination {
+    gap: 10px;
+  }
+
+  .pageBtn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .pageInfo {
+    font-size: 12px;
+  }
+}
+
+.emptyHistory {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+}
+
+.emptyHistory i {
+  font-size: 40px;
+  margin-bottom: 15px;
+  opacity: 0.3;
+}
+
+.emptyHistory p {
+  font-size: 16px;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .pointsItem {
+    padding: 12px 15px;
+  }
+
+  .pointsTitle {
+    font-size: 14px;
+  }
+
+  .pointsValue {
+    font-size: 16px;
+  }
+}
