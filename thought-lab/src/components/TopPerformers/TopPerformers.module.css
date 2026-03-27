@@ -1,0 +1,311 @@
+/* TopPerformers.module.css */
+
+.section {
+    position: relative;
+    padding: 80px 24px 100px;
+    background: linear-gradient(180deg, #faf2eb 0%, #fff5ef 60%, #faf2eb 100%);
+    overflow: hidden;
+    text-align: center;
+}
+
+/* ── Decorative orbs ── */
+.orb1 {
+    position: absolute;
+    top: -80px;
+    left: -80px;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 195, 160, 0.35) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.orb2 {
+    position: absolute;
+    bottom: -100px;
+    right: -80px;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(47, 61, 97, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* ── Header ── */
+.eyebrow {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #FFC3A0;
+    margin: 0 0 10px;
+}
+
+.title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 800;
+    color: #2f3d61;
+    margin: 0 0 14px;
+    line-height: 1.1;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: #6b7280;
+    max-width: 480px;
+    margin: 0 auto 60px;
+    line-height: 1.6;
+}
+
+/* ── Podium wrapper ── */
+.podiumWrap {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 16px;
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+/* ── Individual card ── */
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    max-width: 240px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
+.emptyCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-width: 240px;
+    opacity: 0.5;
+}
+
+/* ── Avatar shell ── */
+.avatarShell {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.medal {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 28px;
+    z-index: 2;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
+}
+
+.avatarRing {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 4px solid;
+    padding: 3px;
+    background: white;
+    box-shadow: 0 0 0 0 var(--glow), 0 8px 24px rgba(0, 0, 0, 0.12);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover .avatarRing {
+    box-shadow: 0 0 0 8px var(--glow), 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+/* First-place card is slightly bigger */
+.card:nth-child(2) .avatarRing {
+    width: 116px;
+    height: 116px;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.emptyAvatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-size: 32px;
+}
+
+/* ── Name block ── */
+.nameBlock {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+}
+
+.roll {
+    font-size: 12px;
+    color: #9ca3af;
+    margin: 0;
+}
+
+/* ── Podium block ── */
+.podium {
+    width: 100%;
+    border-radius: 14px 14px 0 0;
+    background: linear-gradient(160deg, #2f3d61 0%, #1a2540 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 8px;
+    gap: 4px;
+    position: relative;
+    transition: box-shadow 0.3s ease;
+}
+
+.podium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 3px;
+    border-radius: 0 0 6px 6px;
+    background: var(--medal-color, #FFD700);
+    opacity: 0.8;
+}
+
+.rankNum {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 1px;
+}
+
+.score {
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+}
+
+.score small {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+/* ── "View All" link ── */
+.viewAll {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 48px;
+    padding: 12px 28px;
+    border-radius: 9999px;
+    background: #2f3d61;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 16px rgba(47, 61, 97, 0.25);
+}
+
+.viewAll:hover {
+    background: #FFC3A0;
+    color: #2f3d61;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 195, 160, 0.4);
+}
+
+/* ── Skeleton loader ── */
+.skeleton {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 16px;
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.skeletonCard {
+    flex: 1;
+    max-width: 200px;
+    height: 260px;
+    border-radius: 14px;
+    background: linear-gradient(110deg, #ecdfc5 30%, #f5ede0 50%, #ecdfc5 70%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+}
+
+.skeletonCard:nth-child(2) {
+    height: 310px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+    .podiumWrap {
+        gap: 8px;
+    }
+
+    .avatarRing {
+        width: 72px;
+        height: 72px;
+    }
+
+    .card:nth-child(2) .avatarRing {
+        width: 84px;
+        height: 84px;
+    }
+
+    .name {
+        font-size: 13px;
+        max-width: 110px;
+    }
+
+    .score {
+        font-size: 16px;
+    }
+
+    .medal {
+        font-size: 20px;
+    }
+}

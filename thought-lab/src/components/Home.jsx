@@ -6,10 +6,12 @@ import Features from "./Features";
 import About from "./About";
 import Testimonials from "./Testimonials";
 import Footer from "./Footer/Footer";
+import TopPerformers from "./TopPerformers/TopPerformers";
 
 const Home = () => {
   return (
     <>
+      <TopPerformers />
       <div className={styles.container}>
         <div className={styles.heroSection}>
           <div className={styles.heroContent}>

@@ -138,7 +138,7 @@ io.on("connection", async (socket) => {
   // Send initial leaderboard with user details
   socket.on("get-initial-leaderboard", async () => {
     let data = await Leaderboard.find()
-      .populate("user", "name rollNumber branch year")
+      .populate("user", "name rollNumber branch year profilePicture")
       .sort({ score: -1 });
   
     // If empty, auto-create from users
@@ -149,7 +149,7 @@ io.on("connection", async (socket) => {
       // console.log(entries);
   
       data = await Leaderboard.find()
-        .populate("user", "name rollNumber branch year")
+        .populate("user", "name rollNumber branch year profilePicture")
         .sort({ score: -1 });
     }
 
@@ -183,7 +183,7 @@ io.on("connection", async (socket) => {
 
     // Send updated list to everyone with populated user data
     const fullLeaderboard = await Leaderboard.find()
-      .populate("user", "name rollNumber branch")
+      .populate("user", "name rollNumber branch profilePicture")
       .sort({ score: -1 });
 
     io.emit("leaderboard-update", fullLeaderboard);
