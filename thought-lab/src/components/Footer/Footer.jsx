@@ -12,30 +12,55 @@ import {
 const Footer = () => {
   return (
     <footer className="footer">
+      {/* Wave transition from cream background */}
       <div className="footer-wave">
-        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
+        <svg
+          data-name="Layer 1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+            className="shape-fill"
+          />
         </svg>
       </div>
 
       <div className="container">
-        <div className="footer-grid">
-          {/* Column 1: About Us */}
-          <div className="footer-column">
-            <div className="footer-brand">
-              <h3>Thought Lab</h3>
-              <div className="accent-line"></div>
+        {/* ── Brand row with inline newsletter ── */}
+        <div className="footer-brand-row">
+          <a href="/" className="footer-logo">
+            <div className="footer-logo-icon">🧠</div>
+            <div>
+              <div className="footer-logo-text">
+                Thought <span>Lab</span>
+              </div>
+              <div className="footer-tagline">Mental Wellness Platform</div>
             </div>
+          </a>
+
+          <div className="newsletter-inline">
+            <input type="email" placeholder="Subscribe to our newsletter…" />
+            <button type="submit">Subscribe ✈</button>
+          </div>
+        </div>
+
+        {/* ── Four column grid ── */}
+        <div className="footer-grid">
+          {/* Column 1: About */}
+          <div className="footer-column">
+            <h3>About Us</h3>
             <p>
               A creative space for innovation, collaboration, and turning ideas
-              into reality. Join us to build the future, one thought at a time.
+              into reality. We're here to support your mental wellness journey —
+              one thought at a time.
             </p>
           </div>
 
           {/* Column 2: Quick Links */}
           <div className="footer-column none">
             <h3>Quick Links</h3>
-            <div className="accent-line"></div>
             <ul>
               <li>
                 <a href="/">
@@ -43,32 +68,31 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/about">
-                  <span className="link-arrow">→</span> About Us
-                </a>
-              </li>
-              <li>
-                <a href="/events">
+                <a href="/all-events">
                   <span className="link-arrow">→</span> Events
                 </a>
               </li>
               <li>
-                <a href="/contact">
-                  <span className="link-arrow">→</span> Contact
+                <a href="/blog">
+                  <span className="link-arrow">→</span> Blog
                 </a>
               </li>
               <li>
-                <a href="/faq">
-                  <span className="link-arrow">→</span> FAQ
+                <a href="/courses">
+                  <span className="link-arrow">→</span> Courses
+                </a>
+              </li>
+              <li>
+                <a href="/meditation-timer">
+                  <span className="link-arrow">→</span> Sadhna
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: Contact Info */}
+          {/* Column 3: Contact */}
           <div className="footer-column">
-            <h3>Contact Us</h3>
-            <div className="accent-line"></div>
+            <h3>Contact</h3>
             <div className="contact-item">
               <i className="icon-location"></i>
               <p>NIT Kurukshetra, Haryana, India</p>
@@ -85,11 +109,9 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Column 4: Social Media */}
+          {/* Column 4: Social */}
           <div className="footer-column">
             <h3>Follow Us</h3>
-            <div className="accent-line"></div>
-            <p className="social-text">Stay connected with us on social media</p>
             <div className="social-icons">
               <a
                 href="https://github.com/Gurbajsingh1"
@@ -132,29 +154,27 @@ const Footer = () => {
                 <span>LinkedIn</span>
               </a>
             </div>
-
-            <div className="newsletter">
-              <h4>Subscribe to our newsletter</h4>
-              <div className="newsletter-form">
-                <input type="email" placeholder="Your email address" />
-                <button type="submit">Subscribe</button>
-              </div>
-            </div>
           </div>
         </div>
+      </div>
 
-        <div className="footer-bottom">
+      {/* Gradient divider line */}
+      <div className="footer-divider" />
+
+      {/* Bottom bar */}
+      <div className="footer-bottom">
+        <p>© {new Date().getFullYear()} Thought Lab. All Rights Reserved.</p>
+
+        <div className="footer-links">
+          <a href="/privacy-policy">Privacy Policy</a>
+          <span>|</span>
+          <a href="/terms-of-service">Terms of Service</a>
+        </div>
+
+        <div className="made-with">
           <p>
-            &copy; {new Date().getFullYear()} Thought Lab. All Rights Reserved.
+            Made with <FaHeart className="heart-icon" /> by Thought Lab Team
           </p>
-          <div className="footer-links">
-            <a href="/privacy-policy">Privacy Policy</a>
-            <span>|</span>
-            <a href="/terms-of-service">Terms of Service</a>
-          </div>
-          <div className="made-with">
-            <p>Made with <FaHeart className="heart-icon" /> by Thought Lab Team</p>
-          </div>
         </div>
       </div>
     </footer>

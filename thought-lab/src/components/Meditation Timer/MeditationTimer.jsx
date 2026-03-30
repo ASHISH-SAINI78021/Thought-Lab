@@ -12,23 +12,23 @@ const MeditationTimer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const [lastTrackChange, setLastTrackChange] = useState(0); 
+  const [lastTrackChange, setLastTrackChange] = useState(0);
   const [auth] = useAuth();
-  
+
   const audioRef = useRef(null);
-  
+
   const FIXED_DURATION_MINUTES = 15;
   const FIXED_DURATION_SECONDS = FIXED_DURATION_MINUTES * 60;
 
   const musicTracks = [
-    '/audio/meditation-1.mp3', 
+    '/audio/meditation-1.mp3',
     '/audio/meditation-2.mp3',
     '/audio/meditation-3.mp3'
   ];
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.3; 
+      audioRef.current.volume = 0.3;
       audioRef.current.loop = true;
     }
   }, []);
@@ -50,12 +50,12 @@ const MeditationTimer = () => {
     if (isActive && timeLeft > 0) {
       const minutesElapsed = Math.floor((FIXED_DURATION_SECONDS - timeLeft) / 60);
       const fiveMinuteInterval = Math.floor(minutesElapsed / 5);
-      
+
       if (fiveMinuteInterval !== lastTrackChange && fiveMinuteInterval < musicTracks.length) {
         console.log(`🔄 Switching to track ${fiveMinuteInterval + 1} at ${minutesElapsed} minutes`);
         setCurrentTrackIndex(fiveMinuteInterval);
         setLastTrackChange(fiveMinuteInterval);
-        
+
         if (audioRef.current && !isMuted) {
           audioRef.current.src = musicTracks[fiveMinuteInterval];
           audioRef.current.play().catch(error => {
@@ -75,7 +75,7 @@ const MeditationTimer = () => {
 
   useEffect(() => {
     let interval = null;
-    
+
     if (isActive && timeLeft > 0) {
       interval = setInterval(() => {
         setTimeLeft(timeLeft => timeLeft - 1);
@@ -86,7 +86,7 @@ const MeditationTimer = () => {
       setIsCompleted(true);
       completeMeditation();
     }
-    
+
     return () => clearInterval(interval);
   }, [isActive, timeLeft]);
 
@@ -99,7 +99,7 @@ const MeditationTimer = () => {
     setIsCompleted(false);
     setCurrentTrackIndex(0);
     setLastTrackChange(0);
-    
+
     if (audioRef.current && !isMuted) {
       audioRef.current.src = musicTracks[0];
       audioRef.current.play().catch(error => {
@@ -118,7 +118,7 @@ const MeditationTimer = () => {
     setIsCompleted(false);
     setCurrentTrackIndex(0);
     setLastTrackChange(0);
-    
+
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
@@ -131,7 +131,7 @@ const MeditationTimer = () => {
 
   const calculateScore = (duration) => {
     const durationNum = parseInt(duration);
-    
+
     if (isNaN(durationNum) || durationNum <= 0) {
       return 0;
     }
@@ -153,18 +153,18 @@ const MeditationTimer = () => {
       profilePicture: auth?.user?.profilePicture,
       name: auth?.user?.name
     };
-    
+
     try {
       setIsLoading(true);
-      
+
       const response = await apiSaveMeditationSession(auth.user.id, sessionData);
-      
+
       toast.success("Meditation session saved successfully!");
       return response.data;
-      
+
     } catch (error) {
       console.error('Error saving meditation session:', error);
-      
+
       const errorMessage = error.response?.data?.message || 'Error saving your meditation session';
       toast.error(errorMessage);
       return null;
@@ -176,13 +176,13 @@ const MeditationTimer = () => {
   const completeMeditation = useCallback(async () => {
     const score = calculateScore(FIXED_DURATION_MINUTES);
     const details = `${FIXED_DURATION_MINUTES} minutes (timer)`;
-    
+
     const result = await saveMeditationSession(score, details);
-    
+
     if (result) {
       toast.success(`Meditation completed! ${score} points earned.`);
     }
-    
+
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
@@ -201,7 +201,7 @@ const MeditationTimer = () => {
   const getCurrentSegment = () => {
     const minutesElapsed = Math.floor((FIXED_DURATION_SECONDS - timeLeft) / 60);
     if (minutesElapsed < 5) return "First 5 minutes";
-    if (minutesElapsed < 10) return "Second 5 minutes"; 
+    if (minutesElapsed < 10) return "Second 5 minutes";
     if (minutesElapsed < 15) return "Final 5 minutes";
     return "Meditation complete";
   };
@@ -209,51 +209,67 @@ const MeditationTimer = () => {
   return (
     <div className={styles.container}>
       <div className={styles.background}></div>
-      
-      <audio 
-        ref={audioRef} 
+
+      <audio
+        ref={audioRef}
         preload="auto"
         onError={(e) => console.log('Audio error:', e)}
       >
         <source src={musicTracks[currentTrackIndex]} type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio>
-      
+
       <div className={styles.timerCard}>
         <div className={styles.header}>
+          <div className={styles.heroEyebrow}>Sadhna · Daily Practice</div>
           <h1>Mindful Moments</h1>
-          <p>{FIXED_DURATION_MINUTES}-Minute Meditation Timer</p>
+          <p>{FIXED_DURATION_MINUTES}-Minute Meditation Session</p>
         </div>
-        
+
         <div className={styles.timerContainer}>
           <div className={styles.circularProgress}>
             <svg className={styles.progressSvg} viewBox="0 0 100 100">
-              <circle 
-                className={styles.progressBackground} 
-                cx="50" 
-                cy="50" 
-                r="45" 
+              <defs>
+                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FFC3A0" />
+                  <stop offset="100%" stopColor="#ff7c3a" />
+                </linearGradient>
+              </defs>
+              <circle
+                className={styles.progressBackground}
+                cx="50"
+                cy="50"
+                r="45"
               />
-              <circle 
-                className={styles.progressCircle} 
-                cx="50" 
-                cy="50" 
-                r="45" 
-                strokeDasharray={283} 
+              <circle
+                className={styles.progressCircle}
+                cx="50"
+                cy="50"
+                r="45"
+                strokeDasharray={283}
                 strokeDashoffset={283 - (progress * 2.83)}
               />
             </svg>
-            
+
             <div className={styles.timeDisplay}>
               <span className={styles.time}>{formatTime(timeLeft)}</span>
               <span className={styles.timeLabel}>minutes remaining</span>
               <span className={styles.segmentLabel}>{getCurrentSegment()}</span>
             </div>
           </div>
-          
+
+          {/* Segment progress dots */}
+          <div className={styles.segmentDots}>
+            {[0, 1, 2].map(i => {
+              const minElapsed = Math.floor((FIXED_DURATION_SECONDS - timeLeft) / 60);
+              const active = minElapsed >= i * 5;
+              return <div key={i} className={`${styles.dot} ${active ? styles.activeDot : ''}`} />;
+            })}
+          </div>
+
           <div className={styles.controls}>
             {!isActive && timeLeft > 0 && !isCompleted && (
-              <button 
+              <button
                 className={`${styles.controlBtn} ${styles.playBtn}`}
                 onClick={startTimer}
                 disabled={isLoading}
@@ -262,9 +278,9 @@ const MeditationTimer = () => {
                 <span>Begin</span>
               </button>
             )}
-            
+
             {isActive && (
-              <button 
+              <button
                 className={`${styles.controlBtn} ${styles.pauseBtn}`}
                 onClick={pauseTimer}
                 disabled={isLoading}
@@ -273,9 +289,9 @@ const MeditationTimer = () => {
                 <span>Pause</span>
               </button>
             )}
-            
+
             {(timeLeft < FIXED_DURATION_SECONDS || isCompleted) && (
-              <button 
+              <button
                 className={`${styles.controlBtn} ${styles.resetBtn}`}
                 onClick={resetTimer}
                 disabled={isLoading}
@@ -284,8 +300,8 @@ const MeditationTimer = () => {
                 <span>Reset</span>
               </button>
             )}
-            
-            <button 
+
+            <button
               className={`${styles.controlBtn} ${styles.musicBtn} ${isMuted ? styles.muted : ''}`}
               onClick={toggleMute}
               disabled={!isActive && timeLeft === FIXED_DURATION_SECONDS}
@@ -295,7 +311,7 @@ const MeditationTimer = () => {
             </button>
           </div>
         </div>
-        
+
         <div className={styles.status}>
           {isLoading ? (
             <div className={styles.loading}>
@@ -311,7 +327,7 @@ const MeditationTimer = () => {
             <p className={styles.instruction}>Find a comfortable position and focus on your breath</p>
           )}
         </div>
-        
+
         <div className={styles.footer}>
           <p>Each minute of meditation = 1 point | Score rounded to nearest 10</p>
           {isActive && !isMuted && (

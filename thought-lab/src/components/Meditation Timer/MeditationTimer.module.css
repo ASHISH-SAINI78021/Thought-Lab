@@ -1,333 +1,503 @@
-/* MeditationTimer.module.css */
+/* =====================================================
+   MeditationTimer.module.css  — Premium "Sadhna" Design
+   Theme: Deep cosmic · Navy × Peach glow
+   ===================================================== */
 
+/* ── Page shell ────────────────────────────────── */
 .container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    position: relative;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  }
-  
-  .background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: transparent;
-    z-index: -1;
-  }
-  
-  .timerCard {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 24px;
-    padding: 40px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.2);
-    width: 100%;
-    max-width: 480px;
-    text-align: center;
-  }
-  
-  .header {
-    margin-bottom: 40px;
-  }
-  
-  .header h1 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #2D3748;
-    margin: 0 0 8px 0;
-    letter-spacing: -0.5px;
-  }
-  
-  .header p {
-    color: #718096;
-    font-size: 16px;
-    margin: 0;
-    font-weight: 500;
-  }
-  
-  .timerContainer {
-    margin-bottom: 40px;
-  }
-  
-  .circularProgress {
-    position: relative;
-    width: 260px;
-    height: 260px;
-    margin: 0 auto 30px;
-  }
-  
-  .progressSvg {
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-  }
-  
-  .progressBackground {
-    fill: none;
-    stroke: #EDF2F7;
-    stroke-width: 6;
-  }
-  
-  .progressCircle {
-    fill: none;
-    stroke: #667eea;
-    stroke-width: 6;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 0.5s ease;
-  }
-  
-  .timeDisplay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .time {
-    font-size: 48px;
-    font-weight: 700;
-    color: #2D3748;
-    margin-bottom: 4px;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -1px;
-  }
-  
-  .timeLabel {
-    font-size: 14px;
-    color: #718096;
-    font-weight: 500;
-  }
-  
-  .controls {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-  }
-  
-  .controlBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-  }
-  
-  .controlBtn:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
-  }
-  
-  .playBtn {
-    background: #48BB78;
-    color: white;
-  }
-  
-  .playBtn:hover {
-    background: #38A169;
-  }
-  
-  .pauseBtn {
-    background: #ED8936;
-    color: white;
-  }
-  
-  .pauseBtn:hover {
-    background: #DD6B20;
-  }
-  
-  .resetBtn {
-    background: #E2E8F0;
-    color: #4A5568;
-  }
-  
-  .resetBtn:hover {
-    background: #CBD5E0;
-  }
-  
-  .status {
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 30px;
-  }
-  
-  .instruction {
-    color: #718096;
-    font-size: 16px;
-    font-style: italic;
-    margin: 0;
-  }
-  
-  .loading, .completed {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  .loading p, .completed p {
-    margin: 0;
-    font-weight: 500;
-  }
-  
-  .loading p {
-    color: #4A5568;
-  }
-  
-  .completed p {
-    color: #48BB78;
-  }
-  
-  .spinner {
-    font-size: 24px;
-    color: #667eea;
-    animation: spin 1s linear infinite;
-  }
-  
-  .checkIcon {
-    font-size: 32px;
-    color: #48BB78;
-  }
-  
-  .footer {
-    border-top: 1px solid #E2E8F0;
-    padding-top: 20px;
-  }
-  
-  .footer p {
-    color: #718096;
-    font-size: 14px;
-    margin: 0;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 600px) {
-    .timerCard {
-      padding: 30px 20px;
-    }
-    
-    .circularProgress {
-      width: 220px;
-      height: 220px;
-    }
-    
-    .time {
-      font-size: 40px;
-    }
-    
-    .controls {
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .controlBtn {
-      width: 140px;
-    }
-    .p {
-        color: #718096;
-        font-size: 3rem;
-        font-style: italic;
-        margin: 0;
-      }
-  }
-
-  /* Add to your existing styles */
-
-.musicBtn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-  color: white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  position: relative;
+  font-family: 'Montserrat', 'Poppins', -apple-system, sans-serif;
+  background: linear-gradient(160deg, #0d1326 0%, #1a2340 50%, #2f3d61 100%);
+  overflow: hidden;
 }
 
-.musicBtn.muted {
-  background: linear-gradient(135deg, #868686 0%, #5a5a5a 100%) !important;
+/* ── Star-field bg ─────────────────────────────── */
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(255, 195, 160, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(47, 61, 97, 0.4) 0%, transparent 55%),
+    radial-gradient(ellipse at 60% 10%, rgba(255, 140, 90, 0.05) 0%, transparent 45%);
 }
 
-.musicBtn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+/* Floating ambient orbs */
+.background::before {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(255, 195, 160, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: orbFloat 12s ease-in-out infinite alternate;
 }
 
-.musicInfo {
-  margin-top: 8px;
-  font-size: 0.9em;
-  color: #667eea;
+.background::after {
+  content: '';
+  position: absolute;
+  bottom: 10%;
+  right: 8%;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(100, 120, 200, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: orbFloat 16s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes orbFloat {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    transform: translate(25px, 25px) scale(1.12);
+  }
+}
+
+/* ── Card ──────────────────────────────────────── */
+.timerCard {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 195, 160, 0.15);
+  border-radius: 32px;
+  padding: 48px 44px 40px;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 24px 64px rgba(0, 0, 0, 0.45),
+    0 0 80px rgba(255, 195, 160, 0.06);
+  animation: cardIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Header ────────────────────────────────────── */
+.header {
+  margin-bottom: 44px;
+}
+
+.heroEyebrow {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(255, 195, 160, 0.2), rgba(255, 195, 160, 0.08));
+  border: 1px solid rgba(255, 195, 160, 0.3);
+  color: #FFC3A0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 8px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #fff 40%, #FFC3A0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header p {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  margin: 0;
   font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
-/* Ensure controls layout can accommodate the new button */
+/* ── Timer container ───────────────────────────── */
+.timerContainer {
+  margin-bottom: 36px;
+}
+
+/* ── Circular progress ──────────────────────────── */
+.circularProgress {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 0 auto 32px;
+}
+
+/* Outer breathing ring */
+.circularProgress::before {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 195, 160, 0.08) 0%, transparent 70%);
+  animation: breatheRing 4s ease-in-out infinite;
+}
+
+@keyframes breatheRing {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+.progressSvg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  filter: drop-shadow(0 0 16px rgba(255, 195, 160, 0.25));
+}
+
+.progressBackground {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.07);
+  stroke-width: 5;
+}
+
+.progressCircle {
+  fill: none;
+  stroke: url(#progressGradient);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+  filter: drop-shadow(0 0 6px rgba(255, 195, 160, 0.6));
+}
+
+/* ── Time display ──────────────────────────────── */
+.timeDisplay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.time {
+  font-size: 54px;
+  font-weight: 900;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -2px;
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(255, 195, 160, 0.3);
+}
+
+.timeLabel {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.segmentLabel {
+  margin-top: 4px;
+  font-size: 11px;
+  color: #FFC3A0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  opacity: 0.8;
+}
+
+/* ── Segment dots ───────────────────────────────── */
+.segmentDots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transition: all 0.4s ease;
+}
+
+.dot.activeDot {
+  background: linear-gradient(135deg, #FFC3A0, #ff8c5a);
+  box-shadow: 0 0 10px rgba(255, 195, 160, 0.6);
+  transform: scale(1.3);
+}
+
+/* ── Controls ───────────────────────────────────── */
 .controls {
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .controlBtn {
-  /* Your existing button styles */
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 25px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 100px;
   justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 30px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Add to MeditationTimer.module.css */
-
-.musicInfo {
-  margin-top: 8px;
-  font-size: 0.9em;
-  color: #667eea;
-  font-weight: 500;
+.controlBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
-.musicInfoMuted {
-  margin-top: 8px;
-  font-size: 0.9em;
-  color: #868686;
-  font-weight: 500;
+.controlBtn:not(:disabled):hover {
+  transform: translateY(-3px);
+}
+
+/* Ripple on click */
+.controlBtn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.15);
+  opacity: 0;
+  border-radius: inherit;
+  transition: opacity 0.2s;
+}
+
+.controlBtn:active::after {
+  opacity: 1;
+}
+
+.playBtn {
+  background: linear-gradient(135deg, #FFC3A0, #ff8c5a);
+  color: #2f3d61;
+  box-shadow: 0 6px 24px rgba(255, 195, 160, 0.35);
+  min-width: 120px;
+}
+
+.playBtn:not(:disabled):hover {
+  box-shadow: 0 10px 32px rgba(255, 195, 160, 0.5);
+}
+
+.pauseBtn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.pauseBtn:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.resetBtn {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.resetBtn:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
 }
 
 .musicBtn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-  color: white;
+  background: rgba(100, 120, 200, 0.18) !important;
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(100, 120, 200, 0.3);
+}
+
+.musicBtn:not(:disabled):hover {
+  background: rgba(100, 120, 200, 0.3) !important;
+  color: #fff;
+  border-color: rgba(100, 120, 200, 0.5);
 }
 
 .musicBtn.muted {
-  background: linear-gradient(135deg, #868686 0%, #5a5a5a 100%) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
-.musicBtn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+/* ── Status area ────────────────────────────────── */
+.status {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.instruction {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+.loading,
+.completed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.loading .p {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.completed .p {
+  color: #FFC3A0;
+}
+
+.spinner {
+  font-size: 26px;
+  color: #FFC3A0;
+  animation: spin 1s linear infinite;
+}
+
+.checkIcon {
+  font-size: 36px;
+  color: #FFC3A0;
+  filter: drop-shadow(0 0 12px rgba(255, 195, 160, 0.5));
+  animation: popIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── Footer strip ───────────────────────────────── */
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 20px;
+}
+
+.footer p {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  margin: 0 0 6px;
+  letter-spacing: 0.3px;
+}
+
+.musicInfo {
+  color: #FFC3A0 !important;
+  opacity: 0.75;
+  font-weight: 600;
+  font-size: 12px;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.75;
+  }
+}
+
+/* ── Animations ─────────────────────────────────── */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Responsive ─────────────────────────────────── */
+@media (max-width: 600px) {
+  .timerCard {
+    padding: 36px 24px 30px;
+    border-radius: 24px;
+  }
+
+  .circularProgress {
+    width: 240px;
+    height: 240px;
+  }
+
+  .time {
+    font-size: 46px;
+  }
+
+  .controls {
+    gap: 10px;
+  }
+
+  .controlBtn {
+    padding: 11px 20px;
+    font-size: 13px;
+  }
+
+  .header h1 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 400px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controlBtn {
+    justify-content: center;
+  }
 }
