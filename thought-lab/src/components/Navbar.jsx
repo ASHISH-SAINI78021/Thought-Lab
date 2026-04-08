@@ -32,8 +32,10 @@ function Navbar() {
     }
   };
 
+  const isDarkTheme = location.pathname.startsWith('/student');
+
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isDarkTheme ? 'navbar-dark' : ''}`}>
       <div className="navbar-container">
         {/* Logo */}
         <Link to="/" className="navbar-logo" onClick={() => setIsMobileMenuOpen(false)}>
@@ -67,6 +69,20 @@ function Navbar() {
                   className={`nav-link ${location.pathname === '/admin' ? 'active' : ''}`}
                 >
                   Admin
+                </Link>
+              </li>
+            )}
+            {auth?.user?.role === 'mentor' && (
+              <li>
+                <Link to="/mentor" className={`nav-link ${location.pathname.startsWith('/mentor') ? 'active' : ''}`}>
+                  Mentor Panel
+                </Link>
+              </li>
+            )}
+            {(auth?.user?.role === 'student' || auth?.user?.role === 'user') && (
+              <li>
+                <Link to="/student" className={`nav-link ${location.pathname.startsWith('/student') ? 'active' : ''}`}>
+                  Student Portal
                 </Link>
               </li>
             )}
@@ -139,6 +155,28 @@ function Navbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Admin
+                </Link>
+              </li>
+            )}
+            {auth?.user?.role === 'mentor' && (
+              <li>
+                <Link
+                  to="/mentor"
+                  className={`mobile-nav-link ${location.pathname.startsWith('/mentor') ? 'active' : ''}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Mentor Panel
+                </Link>
+              </li>
+            )}
+            {(auth?.user?.role === 'student' || auth?.user?.role === 'user') && (
+              <li>
+                <Link
+                  to="/student"
+                  className={`mobile-nav-link ${location.pathname.startsWith('/student') ? 'active' : ''}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Student Portal
                 </Link>
               </li>
             )}

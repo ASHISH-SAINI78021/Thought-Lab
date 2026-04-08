@@ -65,6 +65,17 @@ const New = ({ children }) => {
                     </div>
                 </div>
                 <div className={styles.navigation}>
+                    <p className={`${styles.a} ${styles.b}`}>Mentorship</p>
+                    <div className={styles.second}>
+                        <p className={styles.b}><FullscreenOutlined /></p>
+                        <p onClick={() => goTo("/admin/assign-mentor")}>Assign Mentors</p>
+                    </div>
+                    <div className={styles.second}>
+                        <p className={styles.b}><FullscreenOutlined /></p>
+                        <p onClick={() => goTo("/admin/system-tasks")}>System Tasks</p>
+                    </div>
+                </div>
+                <div className={styles.navigation}>
                     <p className={`${styles.a} ${styles.b}`}>Games</p>
                     <div className={styles.second}>
                         <p className={styles.b}><FullscreenOutlined /></p>

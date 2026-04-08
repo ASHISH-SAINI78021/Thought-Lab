@@ -1,0 +1,816 @@
+/* ── Page ── */
+.page {
+    min-height: 100vh;
+    background: #111318;
+    font-family: 'Poppins', 'Inter', Arial, sans-serif;
+    color: #f0f0f0;
+    padding-bottom: 6rem;
+    font-size: 16px !important;
+}
+
+/* ── Header ── */
+.header {
+    background: #16181f;
+    border-bottom: 1px solid #2a2d38;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+}
+
+.headerInner {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 14px 16px 10px;
+    box-sizing: border-box;
+}
+
+.headerTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.dateLabel {
+    font-size: 22px !important;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+.statsRow {
+    margin-top: 4px;
+}
+
+.statsChip {
+    background: #1e2130;
+    border: 1px solid #2a2d38;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px !important;
+    color: #94a3b8;
+}
+
+/* ── Week Strip ── */
+.weekStrip {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.dayPill {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.dayName {
+    font-size: 11px !important;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.dayCircle {
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 44px;
+    border-radius: 50%;
+    border: 2px solid #2a2d38;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px !important;
+    font-weight: 700;
+    color: #475569;
+    transition: all 0.25s;
+    box-sizing: border-box;
+}
+
+.dayPillToday .dayName {
+    color: #a5b4fc;
+}
+
+.dayPillToday .dayCircle {
+    border-color: #6366f1;
+    color: #a5b4fc;
+}
+
+.dayCircleDone {
+    background: #22c55e;
+    border-color: #22c55e;
+    color: #fff !important;
+    font-size: 14px !important;
+}
+
+/* ── Habit List ── */
+.habitList {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 60px 20px;
+    color: #475569;
+    font-size: 16px !important;
+}
+
+.emptyEmoji {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+/* ── Habit Card ── */
+.habitCard {
+    background: #16181f;
+    border: 1px solid #2a2d38;
+    border-radius: 16px;
+    padding: 14px;
+    transition: border-color 0.25s;
+}
+
+.habitCard:hover {
+    border-color: var(--habit-color, #6366f1);
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.habitIcon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+}
+
+.habitMeta {
+    flex: 1;
+    min-width: 0;
+}
+
+.habitName {
+    font-size: 18px !important;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+.habitStreak {
+    font-size: 13px !important;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+    line-height: 1.4;
+}
+
+.weekDot {
+    color: #374151;
+}
+
+/* ── Card Action Buttons ── */
+.cardActions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.actionBtn {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 8px;
+    border-radius: 20px;
+    border: 2px solid #2a2d38;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 15px !important;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    white-space: nowrap;
+}
+
+.actionBtn:hover {
+    border-color: #6366f1;
+    color: #a5b4fc;
+}
+
+.doneBtn {
+    color: #fff !important;
+    border-color: transparent !important;
+}
+
+.expandBtn {
+    background: transparent;
+    border: 1px solid #2a2d38;
+    color: #94a3b8;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 14px !important;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.expandBtn:hover {
+    border-color: #6366f1;
+    color: #a5b4fc;
+}
+
+.deleteBtn {
+    background: transparent;
+    border: none;
+    color: #475569;
+    font-size: 14px !important;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: color 0.2s;
+}
+
+.deleteBtn:hover {
+    color: #ef4444;
+}
+
+/* ── Weekly Checkboxes ── */
+.weekRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    margin-bottom: 4px;
+}
+
+.dayCol {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.weekDayLabel {
+    font-size: 11px !important;
+    color: #475569;
+    text-transform: uppercase;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.weekDayToday {
+    color: #a5b4fc;
+    font-weight: 700;
+}
+
+.weekBox {
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 44px;
+    border-radius: 8px;
+    border: 2px solid #2a2d38;
+    background: #1e2130;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-sizing: border-box;
+}
+
+.weekBox:hover {
+    border-color: #6366f1;
+}
+
+.weekBoxToday {
+    border-color: #6366f1;
+}
+
+.weekBoxDone {
+    opacity: 1;
+}
+
+.checkMark {
+    color: #fff;
+    font-size: 18px !important;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.timeCell {
+    font-size: 10px !important;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+}
+
+/* ── Habit Type Selector ── */
+.typeRow {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.typeBtn {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 10px;
+    border: 1.5px solid #2a2d38;
+    background: #1e2130;
+    color: #64748b;
+    font-size: 13px !important;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+.typeBtnActive {
+    background: #1e1b4b !important;
+    font-weight: 700;
+}
+
+/* ── Duration Heatmap Table ── */
+.durationTable {
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    width: max-content;
+}
+
+.durationWeek {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+}
+
+.durationWeekLabel {
+    font-size: 9px !important;
+    color: #64748b;
+    text-align: center;
+    margin-bottom: 2px;
+    white-space: nowrap;
+}
+
+.durationCell {
+    width: 28px;
+    height: 22px;
+    border-radius: 4px;
+    background: #1e2130;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px !important;
+    font-weight: 700;
+    transition: background 0.2s;
+    cursor: default;
+}
+
+
+
+/* ── Heatmap ── */
+.heatmapWrap {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #2a2d38;
+    overflow-x: auto;
+}
+
+.heatmapGrid {
+    display: flex;
+    gap: 3px;
+    width: max-content;
+}
+
+.heatmapWeek {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.heatCell {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background: #1e2130;
+    transition: background 0.2s;
+}
+
+.heatCellDone {
+    border-radius: 3px;
+}
+
+.heatCellFuture {
+    opacity: 0.2;
+}
+
+/* ── FAB ── */
+.fab {
+    position: fixed;
+    bottom: 28px;
+    right: 24px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #06b6d4);
+    border: none;
+    color: #fff;
+    font-size: 30px !important;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s, box-shadow 0.25s;
+    z-index: 100;
+}
+
+.fab:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 12px 35px rgba(99, 102, 241, 0.65);
+}
+
+/* ── Modal ── */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 200;
+    animation: fadeIn 0.2s ease;
+}
+
+@media (min-width: 640px) {
+    .overlay {
+        align-items: center;
+    }
+}
+
+.modal {
+    background: #16181f;
+    border: 1px solid #2a2d38;
+    border-radius: 24px 24px 0 0;
+    padding: 24px 20px;
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 640px) {
+    .modal {
+        border-radius: 24px;
+        margin: 1rem;
+    }
+}
+
+.modalTitle {
+    font-size: 22px !important;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.field {
+    width: 100%;
+    background: #1e2130;
+    border: 1.5px solid #2a2d38;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 15px !important;
+    color: #f0f0f0;
+    outline: none;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    transition: border-color 0.25s;
+}
+
+.field:focus {
+    border-color: #6366f1;
+}
+
+.field::placeholder {
+    color: #475569;
+}
+
+.controlLabel {
+    display: block;
+    font-size: 12px !important;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.emojiGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.emojiBtn {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 1.5px solid #2a2d38;
+    background: #1e2130;
+    font-size: 20px !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.emojiBtn:hover {
+    border-color: #6366f1;
+}
+
+.emojiBtnActive {
+    border-color: #6366f1 !important;
+    background: #1e1b4b !important;
+}
+
+.colorRow {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.colorSwatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.colorSwatch:hover {
+    transform: scale(1.15);
+}
+
+.colorSwatchActive {
+    border-color: #f1f5f9;
+    transform: scale(1.15);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 16px !important;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.submitBtn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.closeModalBtn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #1e2130;
+    border: 1px solid #2a2d38;
+    color: #64748b;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font-size: 14px !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.closeModalBtn:hover {
+    background: #2a2d38;
+    color: #fff;
+}
+
+/* ── Animations ── */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Active Timer Bar (Floating UI) ── */
+.activeTimerBar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(22, 24, 31, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid #2a2d38;
+    border-top-width: 3px;
+    border-radius: 16px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: calc(100% - 40px);
+    max-width: 600px;
+    z-index: 100;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8);
+    animation: slideUpBar 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpBar {
+    from {
+        transform: translate(-50%, 100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+.atInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.atIcon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px !important;
+    border: 2px solid;
+}
+
+.atName {
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+}
+
+.atTime {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 24px !important;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.5px;
+}
+
+.atStatusIcon {
+    font-size: 16px !important;
+}
+
+.atActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.atBtn,
+.atBtnCancel {
+    background: #1e2130;
+    border: 1px solid #2a2d38;
+    color: #cbd5e1;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px !important;
+    transition: all 0.2s;
+}
+
+.atBtn:hover {
+    background: #2a2d38;
+    color: #fff;
+}
+
+.atBtnCancel:hover {
+    background: #fee2e2;
+    color: #ef4444;
+    border-color: #ef4444;
+}
+
+.atBtnLog {
+    border: none;
+    color: #fff;
+    padding: 0 16px;
+    height: 36px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px !important;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+}
+
+.atBtnLog:hover {
+    opacity: 0.85;
+}
+
+@media (max-width: 639px) {
+    .activeTimerBar {
+        flex-wrap: wrap;
+        padding: 16px;
+        gap: 16px;
+        bottom: 16px;
+        width: calc(100% - 32px);
+    }
+
+    .atInfo {
+        flex: 1;
+    }
+
+    .atTime {
+        width: 100%;
+        justify-content: center;
+        font-size: 32px !important;
+    }
+
+    .atActions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .atBtnLog {
+        flex: 1;
+    }
+
+    .atName {
+        max-width: none;
+    }
+}

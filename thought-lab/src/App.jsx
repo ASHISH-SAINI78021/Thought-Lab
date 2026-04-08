@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, Outlet } from "react-router-dom";
 import { useAuth } from "./Context/auth";
 import Navbar from "./components/Navbar.jsx";
 import Home from "./components/Home";
@@ -32,12 +32,19 @@ import CertificateGenerator from "./components/Admin/CertificateGenerator/Certif
 import RegisterAdmin from "./components/Admin/RegisterAdmin/RegisterAdmin";
 import ChangePassword from "./components/Admin/ChangePassword/ChangePassword";
 import QRTInfoPage from "./components/QRT";
+import MentorRoute from "./components/MentorRoute/MentorRoute";
+import MentorDashboard from "./components/Mentor/MentorDashboard/MentorDashboard";
+import SystemTasks from "./components/Admin/SystemTasks/SystemTasks";
+import StudentRoute from "./components/StudentRoute/StudentRoute";
+import StudentDashboard from "./components/Student/StudentDashboard/StudentDashboard";
+import HabitTracker from "./components/Student/HabitTracker/HabitTracker";
 import Developer from "./components/Developer/Developer";
 import Alumni from "./components/Alumni/Almuni";
 import StudentProfile from "./components/StudentProfile/StudentProfile";
 import MeditationTracker from "./components/MeditationTracker/MeditationTracker";
 import AttendanceSuccess from "./components/Attendence/AttendanceSuccess/AttendanceSuccess";
 import TaskAssigner from "./components/Admin/TaskAssigner/TaskAssigner";
+import MentorAssignment from "./components/Admin/MentorAssignment/MentorAssignment";
 import TaskDashboard from "./components/TaskDashboard/TaskDashboard";
 import MeditationTimer from "./components/Meditation Timer/MeditationTimer";
 import FaceRecognitionSuccess from "./components/Attendence/FacialRecognitionSuccess/FacialRecognitionSuccess";
@@ -158,6 +165,8 @@ const AppContent = () => {
           }
         >
           <Route index element={<AdminPanel />} />
+          <Route path="assign-mentor" element={<MentorAssignment />} />
+          <Route path="system-tasks" element={<SystemTasks />} />
           <Route path="create-blog" element={<BlogEditor />} />
           <Route path="create-blog/full-screen" element={<BlogEditor check="true" />} />
           <Route path="game-score-updater" element={<GameScoreUpdater />} />
@@ -170,6 +179,31 @@ const AppContent = () => {
           <Route path="change-password" element={<ChangePassword />} />
           <Route path="create-certificates" element={<CertificateGenerator />} />
           <Route path="create-course" element={<CourseCreator />} />
+        </Route>
+
+        {/* Mentor Routes */}
+        <Route
+          path="/mentor/*"
+          element={
+            <MentorRoute>
+              <MentorDashboard />
+            </MentorRoute>
+          }
+        >
+          <Route index element={<MentorDashboard />} />
+        </Route>
+
+        {/* Student Routes */}
+        <Route
+          path="/student/*"
+          element={
+            <StudentRoute>
+              <Outlet />
+            </StudentRoute>
+          }
+        >
+          <Route index element={<HabitTracker />} />
+          <Route path="tasks" element={<StudentDashboard />} />
         </Route>
 
         {/* Blog Routes (Admin Protected) */}

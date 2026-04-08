@@ -26,7 +26,8 @@ const userSchema = new Schema({
             status : String
         }
     ],
-    role: { type: String, enum: ['user', 'admin', 'superAdmin'], default: 'user' }
+    mentorId: { type: Schema.Types.ObjectId, ref: 'User', default: null },
+    role: { type: String, enum: ['user', 'admin', 'superAdmin', 'mentor', 'student'], default: 'user' }
 }, {
     timestamps: true,
     toJSON: { getters: true }

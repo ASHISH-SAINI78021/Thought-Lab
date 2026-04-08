@@ -104,7 +104,7 @@ const Login = () => {
         const data = await res.json();
         if (data?.success) {
           setSuccessMsg("Logged in successfully!");
-          setAuth(data?.user);
+          setAuth(data);
           localStorage.setItem("auth", JSON.stringify(data));
           window.location.href = "/";
         } else {

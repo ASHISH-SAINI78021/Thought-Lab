@@ -557,3 +557,113 @@ body.mobile-menu-open {
     font-size: 5rem;
   }
 } */
+
+/* ── Dark Theme Overrides (Student Portal) ── */
+.navbar.navbar-dark {
+  background: rgba(22, 24, 31, 0.98);
+  border-bottom: 1px solid rgba(42, 45, 56, 0.8);
+}
+
+.navbar.navbar-dark .logo-text {
+  color: #fff;
+}
+
+.navbar.navbar-dark .logo-icon {
+  background: #6366f1;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.navbar.navbar-dark .logo-icon:hover {
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
+
+.navbar.navbar-dark .nav-link {
+  color: #94a3b8;
+}
+
+.navbar.navbar-dark .nav-link:hover {
+  background: #1e2130;
+  color: #fff;
+}
+
+.navbar.navbar-dark .nav-link.active {
+  background: #1e1b4b;
+  color: #a5b4fc;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.navbar.navbar-dark .mobile-menu-toggle span {
+  background: #cbd5e1;
+}
+
+.navbar.navbar-dark .logout-btn {
+  background: #1e2130;
+  color: #cbd5e1;
+  border: 1px solid #2a2d38;
+}
+
+.navbar.navbar-dark .logout-btn:hover {
+  background: #fee2e2;
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.navbar.navbar-dark .mobile-menu {
+  background: #16181f;
+}
+
+.navbar.navbar-dark .mobile-menu-header {
+  background: #16181f;
+  border-bottom-color: #2a2d38;
+}
+
+.navbar.navbar-dark .mobile-menu-close {
+  background: #1e2130;
+  color: #cbd5e1;
+  border: 1px solid #2a2d38;
+}
+
+.navbar.navbar-dark .mobile-menu-close:hover {
+  background: #2a2d38;
+  color: #fff;
+}
+
+.navbar.navbar-dark .mobile-nav-link {
+  color: #94a3b8;
+}
+
+.navbar.navbar-dark .mobile-nav-link:hover {
+  background: #1e2130;
+  color: #fff;
+}
+
+.navbar.navbar-dark .mobile-nav-link.active {
+  background: #1e1b4b;
+  color: #a5b4fc;
+  box-shadow: none;
+}
+
+.navbar.navbar-dark .mobile-user-info {
+  border-top-color: #2a2d38;
+}
+
+.navbar.navbar-dark .user-name {
+  color: #fff;
+}
+
+.navbar.navbar-dark .user-role {
+  color: #64748b;
+}
+
+.navbar.navbar-dark .mobile-logout-btn {
+  background: #1e2130;
+  color: #cbd5e1;
+  border: 1px solid #2a2d38;
+  box-shadow: none;
+}
+
+.navbar.navbar-dark .mobile-logout-btn:hover {
+  background: #fee2e2;
+  color: #ef4444;
+  border-color: #ef4444;
+}

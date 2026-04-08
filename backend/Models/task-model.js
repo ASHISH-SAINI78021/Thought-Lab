@@ -14,7 +14,12 @@ const taskSchema = new Schema({
     },
     assignedTo: { type: Schema.Types.ObjectId, ref: 'User', default: null },
     bidders: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    completedAt: { type: Date }
+    completedAt: { type: Date },
+    comments: [{
+        text: { type: String, required: true },
+        mentorId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+        createdAt: { type: Date, default: Date.now }
+    }]
 }, {
     timestamps: true
 });

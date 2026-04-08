@@ -1,0 +1,575 @@
+/* ──────────────── BASE ──────────────── */
+.container {
+    padding: 1.2rem;
+    color: #4a5568;
+    font-family: 'Poppins', sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+@media (min-width: 640px) {
+    .container {
+        padding: 2rem;
+    }
+}
+
+.pageHeader {
+    margin-bottom: 1.5rem;
+}
+
+.title {
+    font-size: 1.6rem;
+    color: #1e293b;
+    margin: 0 0 0.3rem 0;
+    font-weight: 800;
+}
+
+@media (min-width: 640px) {
+    .title {
+        font-size: 2rem;
+    }
+}
+
+.subtitle {
+    color: #718096;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* ──────────────── STUDENT GRID ──────────────── */
+.emptyState {
+    background: white;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    border-radius: 12px;
+    border: 1px dashed #cbd5e0;
+    color: #a0aec0;
+    font-size: 1.1rem;
+}
+
+.studentGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+/* ──────────────── STUDENT CARD ──────────────── */
+.studentCard {
+    background: white;
+    border-radius: 16px;
+    padding: 1.2rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.2s;
+}
+
+.studentCard:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 640px) {
+    .studentCard {
+        padding: 1.5rem;
+    }
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    border-bottom: 1px solid #edf2f7;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.studentInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.avatarCircle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #3b82f6);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.studentName {
+    font-size: 1.1rem;
+    color: #2d3748;
+    margin: 0 0 0.25rem 0;
+    font-weight: 700;
+}
+
+@media (min-width: 480px) {
+    .studentName {
+        font-size: 1.3rem;
+    }
+}
+
+.studentRoll {
+    font-size: 0.85rem;
+    color: #718096;
+    background: #edf2f7;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.expandBtn {
+    background: transparent;
+    border: 1.5px solid #3b82f6;
+    color: #3b82f6;
+    padding: 0.45rem 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.expandBtn:hover,
+.expandBtnActive {
+    background: #3b82f6;
+    color: white;
+}
+
+/* ──────────────── STATS ROW ──────────────── */
+.statsRow {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+}
+
+.statBox {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 70px;
+}
+
+.statNumber {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    line-height: 1;
+}
+
+.statLabel {
+    font-size: 0.75rem;
+    color: #718096;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.2rem;
+}
+
+/* ──────────────── PROGRESS BAR ──────────────── */
+.progressBarWrap {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.progressBarFill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ──────────────── EXPANDED SECTION ──────────────── */
+.expandedSection {
+    margin-top: 1.25rem;
+    animation: fadeSlideDown 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* ──────────────── SECTION TITLES ──────────────── */
+.sectionTitle {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 0.75rem 0;
+}
+
+/* ──────────────── CONSISTENCY CHART ──────────────── */
+.chartWrap {
+    background: #f8faff;
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+}
+
+.chartTooltip {
+    background: #1e293b;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tooltipLabel {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #93c5fd;
+    font-size: 0.75rem;
+}
+
+/* ──────────────── SCORE SECTION ──────────────── */
+.scoreSection {
+    background: linear-gradient(135deg, #fdf4ff, #eff6ff);
+    border-radius: 12px;
+    padding: 1rem 1rem 1.2rem;
+    border: 1px solid #e9d5ff;
+}
+
+.formulaNote {
+    font-size: 0.82rem;
+    color: #475569;
+    margin: 0 0 0.9rem 0;
+    line-height: 1.5;
+}
+
+.finalScorePreview {
+    color: #7c3aed;
+    font-size: 0.92rem;
+}
+
+.formulaNote2 {
+    color: #94a3b8;
+    font-size: 0.78rem;
+}
+
+.scoreInputRow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.sliderWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.sliderLabel {
+    font-size: 0.85rem;
+    color: #374151;
+    font-weight: 600;
+}
+
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #6366f1, #a855f7);
+    outline: none;
+    cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #6366f1;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    border: 2px solid white;
+}
+
+.sliderTicks {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: #94a3b8;
+}
+
+.reasonInput {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid #e9d5ff;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    background: white;
+    color: #1e293b;
+    outline: none;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.reasonInput:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.awardBtn {
+    width: 100%;
+    padding: 0.85rem;
+    background: linear-gradient(135deg, #7c3aed, #6366f1);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
+    transition: all 0.2s;
+}
+
+.awardBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.45);
+}
+
+.awardBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ──────────────── TASKS SECTION ──────────────── */
+.tasksSection {
+    border-top: 1px dashed #e2e8f0;
+    padding-top: 1rem;
+}
+
+.noTasksMsg {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.tasksList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.taskItem {
+    background: #f7fafc;
+    padding: 1rem;
+    border-radius: 10px;
+    border-left: 3px solid #3b82f6;
+}
+
+.taskHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.taskTitleGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.assignedBadge {
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.1rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid #dbeafe;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.taskHeader strong {
+    font-size: 0.97rem;
+    color: #2d3748;
+}
+
+.taskBadge {
+    border: 1px solid;
+    padding: 0.15rem 0.55rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.taskDesc {
+    color: #4a5568;
+    font-size: 0.88rem;
+    margin: 0 0 0.6rem 0;
+    line-height: 1.5;
+}
+
+.taskMeta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.82rem;
+    color: #718096;
+    flex-wrap: wrap;
+}
+
+/* ──────────────── COMMENTS ──────────────── */
+.commentsSection {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.commentList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+}
+
+.commentBubble {
+    background: #ebf8ff;
+    color: #2b6cb0;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.commentAuthor {
+    color: #3182ce;
+    font-weight: 600;
+    margin-right: 0.25rem;
+}
+
+.addCommentForm {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.addCommentForm input {
+    flex: 1;
+    min-width: 0;
+    background: white;
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    color: #4a5568;
+    outline: none;
+    font-size: 0.85rem;
+}
+
+.addCommentForm input:focus {
+    border-color: #3182ce;
+}
+
+.addCommentForm button {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.addCommentForm button:hover {
+    background: #2563eb;
+}
+
+/* ──────────────── HABITS SECTION ──────────────── */
+.habitsSection {
+    margin-bottom: 0.5rem;
+}
+
+.habitsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+}
+
+.habitCard {
+    background: #f8fafc;
+    padding: 0.75rem;
+    border-radius: 10px;
+    border-left: 4px solid #3b82f6;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.habitCard:hover {
+    transform: translateY(-2px);
+}
+
+.habitEmoji {
+    font-size: 1.2rem;
+}
+
+.habitInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.habitName {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90px;
+}
+
+.habitStatus {
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.habitTime {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    font-size: 0.65rem;
+    background: #fff;
+    padding: 1px 4px;
+    border-radius: 4px;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+/* ──────────────── ANIMATIONS ──────────────── */
+@keyframes fadeSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

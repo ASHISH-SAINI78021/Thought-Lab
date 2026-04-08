@@ -1,0 +1,304 @@
+/* ──────────────── PAGE ──────────────── */
+.page {
+    min-height: 100vh;
+    background: #f6f7fb;
+    font-family: 'Poppins', sans-serif;
+    padding-bottom: 60px;
+}
+
+/* ──────────────── HERO ──────────────── */
+.hero {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #1e3a5f 100%);
+    padding: 40px 20px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.12);
+    pointer-events: none;
+}
+
+.heroBadge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #a5b4fc;
+    padding: 5px 16px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.heroTitle {
+    font-size: 28px;
+    font-weight: 900;
+    color: #fff;
+    margin: 0 0 12px 0;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+@media (min-width: 640px) {
+    .heroTitle {
+        font-size: 38px;
+    }
+}
+
+.heroSub {
+    color: #a5b4fc;
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.heroSub strong {
+    color: #c7d2fe;
+}
+
+/* ──────────────── LOADING ──────────────── */
+.loadingWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 60px 30px;
+    color: #64748b;
+    font-size: 16px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e2e8f0;
+    border-top-color: #6366f1;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.btnSpinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2.5px solid rgba(255, 255, 255, 0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ──────────────── EMPTY STATE ──────────────── */
+.emptyState {
+    text-align: center;
+    padding: 60px 30px;
+    color: #64748b;
+    font-size: 16px;
+}
+
+.emptyIcon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+/* ──────────────── MENTOR GRID ──────────────── */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+@media (min-width: 580px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 32px 24px;
+    }
+}
+
+@media (min-width: 900px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 32px 40px;
+    }
+}
+
+/* ──────────────── MENTOR CARD ──────────────── */
+.card {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid #e8edf8;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.card:hover:not(.cardFull) {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(99, 102, 241, 0.14);
+    border-color: #c7d2fe;
+}
+
+.cardFull {
+    opacity: 0.65;
+    filter: grayscale(0.3);
+}
+
+/* ──────────────── FULL RIBBON ──────────────── */
+.fullRibbon {
+    position: absolute;
+    top: 14px;
+    right: -28px;
+    background: #ef4444;
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 4px 40px;
+    transform: rotate(45deg);
+    text-transform: uppercase;
+}
+
+/* ──────────────── CARD TOP ──────────────── */
+.cardTop {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #06b6d4);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.mentorName {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+}
+
+.branch {
+    font-size: 13px;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* ──────────────── CAPACITY BAR ──────────────── */
+.capacityWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.capacityHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.capacityLabel {
+    font-size: 12px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.capacityCount {
+    font-size: 13px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.capacityFull {
+    color: #ef4444;
+}
+
+.barTrack {
+    height: 7px;
+    background: #e2e8f0;
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.barFill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.spotsLeft {
+    font-size: 12px;
+    color: #22c55e;
+    font-weight: 600;
+}
+
+/* ──────────────── SELECT BUTTON ──────────────── */
+.selectBtn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #6366f1, #3b82f6);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+    transition: all 0.22s ease;
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.selectBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
+}
+
+.selectBtnDisabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+    box-shadow: none;
+    cursor: not-allowed;
+}

@@ -46,6 +46,58 @@ class UserController {
         }
     }
 
+    async assignMentor(req, res) {
+        try {
+            const { studentId, mentorId } = req.body;
+            
+            // Validate the mentor has less than 5 students
+            const userModel = require('../Models/user-model.js');
+            const studentCount = await userModel.countDocuments({ mentorId });
+            
+            if (studentCount >= 5) {
+                return res.status(400).json({ success: false, message: "This mentor has reached the maximum student limit (5)." });
+            }
+            
+            const student = await userModel.findByIdAndUpdate(studentId, { mentorId }, { new: true });
+            if (!student) {
+                return res.status(404).json({ success: false, message: "Student not found." });
+            }
+            
+            return res.json({ success: true, message: "Mentor assigned successfully.", student });
+        } catch (error) {
+            console.error("Error assigning mentor:", error);
+            return res.status(500).json({ success: false, message: "Internal server error" });
+        }
+    }
+
+    async changeUserRole(req, res) {
+        try {
+            const { email, role } = req.body;
+            if (!email || !role) {
+                return res.status(400).json({ success: false, message: "Email and role are required." });
+            }
+            
+            const User = require('../Models/user-model.js');
+            const userToUpdate = await User.findOne({ email });
+            
+            if (!userToUpdate) {
+                return res.status(404).json({ success: false, message: "User not found." });
+            }
+
+            if (userToUpdate.role === 'superAdmin' && req.user.role !== 'superAdmin') {
+                return res.status(403).json({ success: false, message: "Cannot modify SuperAdmin role." });
+            }
+
+            userToUpdate.role = role;
+            await userToUpdate.save();
+
+            return res.json({ success: true, message: `User role successfully updated to ${role}.`, user: userToUpdate });
+        } catch (error) {
+            console.error("Error changing user role:", error);
+            return res.status(500).json({ success: false, message: "Internal server error" });
+        }
+    }
+
     async updateProfile(req, res) {
         try {
             const userId = req.user._id;
@@ -151,7 +203,81 @@ class UserController {
             return res.status(500).json({ success: false, message: "Internal Server Error" });
         }
     }
-}
 
+    /**
+     * GET /mentors/available
+     * Lists all mentors with their current student count and availability
+     */
+    async getAvailableMentors(req, res) {
+        try {
+            const mentors = await User.find({ role: 'mentor' }).select('name email rollNumber branch');
+            const result = await Promise.all(mentors.map(async (mentor) => {
+                const studentCount = await User.countDocuments({ mentorId: mentor._id });
+                return {
+                    _id: mentor._id,
+                    name: mentor.name,
+                    email: mentor.email,
+                    rollNumber: mentor.rollNumber,
+                    branch: mentor.branch,
+                    studentCount,
+                    isFull: studentCount >= 5,
+                    spotsLeft: Math.max(0, 5 - studentCount)
+                };
+            }));
+            return res.json({ success: true, mentors: result });
+        } catch (error) {
+            console.error("Error fetching available mentors:", error);
+            return res.status(500).json({ success: false, message: "Internal server error" });
+        }
+    }
+
+    /**
+     * POST /student/request-mentor
+     * Body: { mentorId }
+     * Student self-selects a mentor (must not be assigned already + mentor not full)
+     */
+    async requestMentor(req, res) {
+        try {
+            const studentId = req.user._id;
+            const { mentorId } = req.body;
+
+            if (!mentorId) {
+                return res.status(400).json({ success: false, message: "mentorId is required" });
+            }
+
+            const student = await User.findById(studentId);
+            if (!student) return res.status(404).json({ success: false, message: "User not found" });
+
+            // If they are already assigned, auto-recover the frontend state instead of failing
+            if (student.mentorId) {
+                return res.json({ 
+                    success: true, 
+                    message: "You are already assigned to a mentor!", 
+                    user: student 
+                });
+            }
+
+            const mentor = await User.findOne({ _id: mentorId, role: 'mentor' });
+            if (!mentor) return res.status(404).json({ success: false, message: "Mentor not found." });
+
+            const studentCount = await User.countDocuments({ mentorId });
+            if (studentCount >= 5) {
+                return res.status(400).json({ success: false, message: "This mentor's team is full (max 5 students)." });
+            }
+
+            student.mentorId = mentorId;
+            await student.save();
+
+            return res.json({
+                success: true,
+                message: `You've been added to ${mentor.name}'s team!`,
+                user: student
+            });
+        } catch (error) {
+            console.error("Error requesting mentor:", error);
+            return res.status(500).json({ success: false, message: "Internal server error" });
+        }
+    }
+}
 
 module.exports = new UserController();

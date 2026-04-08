@@ -1,0 +1,322 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 300;
+    animation: fadeIn 0.2s ease;
+}
+
+@media (min-width: 640px) {
+    .overlay {
+        align-items: center;
+    }
+}
+
+.modal {
+    background: #16181f;
+    border: 1px solid #2a2d38;
+    border-radius: 24px 24px 0 0;
+    padding: 22px 20px 32px;
+    width: 100%;
+    max-width: 460px;
+    position: relative;
+    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@media (min-width: 640px) {
+    .modal {
+        border-radius: 24px;
+        margin: 1rem;
+    }
+}
+
+/* Header */
+.modalHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.modalIcon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px !important;
+    flex-shrink: 0;
+}
+
+.modalTitle {
+    font-size: 22px !important;
+    font-weight: 800;
+    color: #fff;
+    flex: 1;
+}
+
+.closeBtn {
+    background: #1e2130;
+    border: 1px solid #2a2d38;
+    color: #64748b;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 14px !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.closeBtn:hover {
+    background: #2a2d38;
+    color: #fff;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    background: #1e2130;
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.tab {
+    flex: 1;
+    padding: 8px 4px;
+    border-radius: 9px;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-size: 13px !important;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.tabActive {
+    color: #fff !important;
+}
+
+.tab:hover:not(.tabActive) {
+    color: #94a3b8;
+}
+
+/* Body */
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Big display */
+.bigDisplay {
+    background: #1e2130;
+    border-radius: 14px;
+    border: 1.5px solid #2a2d38;
+    padding: 20px;
+    text-align: center;
+}
+
+.bigTime {
+    font-size: 42px !important;
+    font-weight: 800;
+    line-height: 1;
+}
+
+/* Presets */
+.presets {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.preset {
+    flex: 1;
+    max-width: 80px;
+    padding: 10px 0;
+    border-radius: 10px;
+    border: 1.5px solid #2a2d38;
+    background: #1e2130;
+    color: #64748b;
+    font-size: 14px !important;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.preset:hover {
+    border-color: #6366f1;
+    color: #a5b4fc;
+}
+
+.presetActive {
+    color: #fff !important;
+}
+
+/* Spinners */
+.spinners {
+    display: flex;
+    background: #1e2130;
+    border-radius: 14px;
+    border: 1px solid #2a2d38;
+    overflow: hidden;
+}
+
+.spinner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 10px;
+    gap: 6px;
+}
+
+.spinnerLabel {
+    font-size: 12px !important;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.spinArrow {
+    background: transparent;
+    border: none;
+    color: #475569;
+    font-size: 16px !important;
+    cursor: pointer;
+    padding: 2px 10px;
+    border-radius: 6px;
+    transition: color 0.2s;
+    font-family: inherit;
+}
+
+.spinArrow:hover {
+    color: #a5b4fc;
+}
+
+.spinValue {
+    font-size: 36px !important;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.spinDivider {
+    width: 1px;
+    background: #2a2d38;
+    align-self: stretch;
+}
+
+/* Stopwatch Hero */
+.watchHero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    background: #1e2130;
+    border-radius: 14px;
+    border: 1px solid #2a2d38;
+}
+
+.heroEmoji {
+    font-size: 64px !important;
+    animation: pulse 2s infinite ease-in-out;
+    margin-bottom: 12px;
+}
+
+.heroText {
+    color: #94a3b8;
+    font-size: 15px !important;
+    text-align: center;
+    line-height: 1.5;
+    margin: 0;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Log/Submit btn */
+.logBtn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px !important;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.logBtn:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+.resetBtn {
+    background: transparent;
+    border: 1px solid #2a2d38;
+    border-radius: 10px;
+    color: #64748b;
+    font-size: 14px !important;
+    padding: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.2s;
+    align-self: center;
+}
+
+.resetBtn:hover {
+    color: #e11d48;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

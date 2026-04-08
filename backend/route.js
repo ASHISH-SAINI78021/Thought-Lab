@@ -13,6 +13,11 @@ const TaskController = require('./controllers/task-controller.js');
 const { isLogin } = require('./middlewares/auth-middleware.js');
 const { isAdmin } = require('./middlewares/admin-middleware.js');
 const { isSuperAdmin } = require('./middlewares/superAdmin-middleware.js');
+const { isMentor } = require('./middlewares/mentor-middleware.js');
+const { isStudent } = require('./middlewares/student-middleware.js');
+const DailyTaskController = require('./controllers/daily-task-controller.js');
+const DashboardController = require('./controllers/dashboard-controller.js');
+const HabitController = require('./controllers/habit-controller.js');
 
 // authentication routes
 router.post('/register', upload.single('profilePicture'), AuthController.registerStudent);
@@ -99,5 +104,46 @@ router.delete('/tasks/:taskId', isLogin, isAdmin, TaskController.deleteTask);
 // Notification Routes
 router.get('/notifications', isLogin, NotificationController.getNotifications);
 router.post('/notifications/read', isLogin, NotificationController.markAsRead);
+
+// --- Mentorship & Daily Task Routes ---
+
+// Student Task Endpoints
+router.post('/daily-tasks', isLogin, isStudent, DailyTaskController.createDailyTask);
+router.get('/daily-tasks/my-tasks', isLogin, isStudent, DailyTaskController.getMyTasks);
+router.put('/daily-tasks/:taskId/status', isLogin, isStudent, DailyTaskController.updateTaskStatus);
+router.put('/daily-tasks/:taskId', isLogin, isStudent, DailyTaskController.updateTaskDetails);
+router.delete('/daily-tasks/:taskId', isLogin, isStudent, DailyTaskController.deleteMyTask);
+
+// Mentor Endpoints
+router.get('/mentor/students/:studentId/tasks', isLogin, isMentor, DailyTaskController.getStudentTasks);
+router.get('/mentor/students/:studentId/habits', isLogin, isMentor, HabitController.getStudentHabits);
+router.post('/mentor/tasks/:taskId/comment', isLogin, isMentor, DailyTaskController.addCommentToTask);
+router.get('/dashboard/mentor', isLogin, isMentor, DashboardController.getMentorDashboard);
+router.post('/mentor/students/:studentId/add-score', isLogin, isMentor, DashboardController.addScoreToStudent);
+router.get('/mentor/students/:studentId/consistency', isLogin, isMentor, DashboardController.getConsistencyData);
+
+// Student Consistency & Leaderboard
+router.get('/student/consistency', isLogin, isStudent, DashboardController.getConsistencyData);
+router.get('/leaderboard', DashboardController.getLeaderboard);
+
+// Admin Mentorship & Dashboard Endpoints
+router.post('/admin/assign-mentor', isLogin, isAdmin, UserController.assignMentor);
+router.put('/admin/change-role', isLogin, isAdmin, UserController.changeUserRole);
+router.get('/dashboard/admin', isLogin, isAdmin, DashboardController.getAdminDashboard);
+router.get('/admin/students/:studentId/tasks', isLogin, isAdmin, DailyTaskController.getStudentTasks);
+router.get('/admin/students/:studentId/habits', isLogin, isAdmin, HabitController.getStudentHabits);
+
+// Mentor discovery & self-assignment (any logged-in user)
+router.get('/mentors/available', isLogin, UserController.getAvailableMentors);
+router.post('/student/request-mentor', isLogin, UserController.requestMentor);
+
+// Habit Tracker Routes (Student)
+router.get('/habits/my-habits', isLogin, isStudent, HabitController.getMyHabits);
+router.post('/habits', isLogin, isStudent, HabitController.createHabit);
+router.put('/habits/:id/toggle', isLogin, isStudent, HabitController.toggleHabit);
+router.put('/habits/:id/toggle-date', isLogin, isStudent, HabitController.toggleDate);
+router.post('/habits/:id/log-time', isLogin, isStudent, HabitController.logTime);
+router.put('/habits/:id', isLogin, isStudent, HabitController.editHabit);
+router.delete('/habits/:id', isLogin, isStudent, HabitController.deleteHabit);
 
 module.exports = router;
