@@ -1,0 +1,5 @@
+{
+  "appId": "com.thoughtlab.app",
+  "appName": "Thought Lab",
+  "webDir": "dist"
+}
