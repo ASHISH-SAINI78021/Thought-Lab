@@ -1,4 +1,4 @@
-import logo from "../assets/logo.png";
+import logo from "../assets/calm-women.png";
 import { Link, useLocation } from "react-router-dom";
 import { Avatar, Tooltip } from 'antd';
 import "./Navbar.css";
