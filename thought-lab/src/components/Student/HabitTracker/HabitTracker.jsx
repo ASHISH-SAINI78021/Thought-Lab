@@ -184,22 +184,61 @@ export default function HabitTracker() {
     useEffect(() => { if (auth?.token) fetchHabits(); }, [auth?.token]);
 
     const handleToggleToday = async (habitId) => {
+        const originalHabits = [...habits];
+        setHabits(prev => prev.map(h => {
+            if (h._id === habitId) {
+                const completions = h.completions.includes(todayStr)
+                    ? h.completions.filter(c => c !== todayStr)
+                    : [...h.completions, todayStr];
+                return { ...h, completions };
+            }
+            return h;
+        }));
+
         try {
             const res = await fetch(`${url}/habits/${habitId}/toggle`, { method: 'PUT', headers: { Authorization: auth?.token } });
             const d = await res.json();
-            if (d.success) setHabits(prev => prev.map(h => h._id === habitId ? d.habit : h));
-        } catch { toast.error('Toggle failed'); }
+            if (d.success) {
+                // Sync with server response to ensure ID consistency etc.
+                setHabits(prev => prev.map(h => h._id === habitId ? d.habit : h));
+            } else {
+                toast.error(d.message || 'Toggle failed');
+                setHabits(originalHabits);
+            }
+        } catch {
+            toast.error('Toggle failed');
+            setHabits(originalHabits);
+        }
     };
 
     const handleToggleDate = async (habitId, dateStr) => {
+        const originalHabits = [...habits];
+        setHabits(prev => prev.map(h => {
+            if (h._id === habitId) {
+                const completions = h.completions.includes(dateStr)
+                    ? h.completions.filter(c => c !== dateStr)
+                    : [...h.completions, dateStr];
+                return { ...h, completions };
+            }
+            return h;
+        }));
+
         try {
             const res = await fetch(`${url}/habits/${habitId}/toggle-date`, {
                 method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: auth?.token },
                 body: JSON.stringify({ date: dateStr })
             });
             const d = await res.json();
-            if (d.success) setHabits(prev => prev.map(h => h._id === habitId ? d.habit : h));
-        } catch { toast.error('Toggle failed'); }
+            if (d.success) {
+                setHabits(prev => prev.map(h => h._id === habitId ? d.habit : h));
+            } else {
+                toast.error(d.message || 'Toggle failed');
+                setHabits(originalHabits);
+            }
+        } catch {
+            toast.error('Toggle failed');
+            setHabits(originalHabits);
+        }
     };
 
     const handleLogTime = async (habitId, minutes) => {

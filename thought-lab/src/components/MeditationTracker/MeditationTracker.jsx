@@ -125,6 +125,14 @@ const MeditationTracker = () => {
                   name: auth?.user?.name
             };
 
+            const originalHistory = [...history];
+            const originalTotalScore = totalScoreForDay;
+
+            // Optimistic Update
+            const optimisticHistory = [sessionData, ...history];
+            setHistory(optimisticHistory);
+            setTotalScoreForDay(prev => prev + score);
+
             try {
                   setLoading(true);
                   // --- AXIOS INTEGRATION for POST ---
@@ -133,20 +141,22 @@ const MeditationTracker = () => {
 
                   if (newSessionData.success) {
                         toast.success(newSessionData.message || "Meditation session saved successfully!");
-                        // Add to beginning of history array (safely checking for the session property)
-                        const newHistory = [newSessionData?.session, ...history].filter(item => item);
-                        setHistory(newHistory);
-
-                        // Update total score for day
-                        const newTotal = newHistory.reduce((acc, curr) => acc + (Number(curr.score) || 0), 0);
-                        setTotalScoreForDay(newTotal);
+                        // Sync with server data (which will have real ID)
+                        const syncedHistory = [newSessionData?.session, ...originalHistory].filter(item => item);
+                        setHistory(syncedHistory);
+                        const finalTotal = syncedHistory.reduce((acc, curr) => acc + (Number(curr.score) || 0), 0);
+                        setTotalScoreForDay(finalTotal);
                   } else {
                         toast.error(newSessionData.message || 'Failed to save your meditation session.');
+                        setHistory(originalHistory);
+                        setTotalScoreForDay(originalTotalScore);
                   }
 
             } catch (error) {
                   console.error('Error saving meditation session:', error);
                   toast.error(error.response?.data?.message || error.message || 'Error saving your meditation session.');
+                  setHistory(originalHistory);
+                  setTotalScoreForDay(originalTotalScore);
             } finally {
                   setLoading(false);
             }

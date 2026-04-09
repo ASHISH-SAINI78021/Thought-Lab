@@ -108,6 +108,11 @@ export default function StudentDashboard() {
     };
 
     const updateStatus = async (taskId, status) => {
+        const originalTasks = [...tasks];
+        // Optimistic Update
+        setTasks(t => t.map(x => x._id === taskId ? { ...x, status } : x));
+        toast.success(`Moved to "${status}"`);
+
         try {
             const res = await fetch(`${url}/daily-tasks/${taskId}/status`, {
                 method: 'PUT',
@@ -116,21 +121,38 @@ export default function StudentDashboard() {
             });
             const d = await res.json();
             if (d.success) {
+                // Sync with server response
                 setTasks(t => t.map(x => x._id === taskId ? d.task : x));
-                toast.success(`Moved to "${status}"`);
+            } else {
+                toast.error(d.message || "Update failed");
+                setTasks(originalTasks);
             }
-        } catch { toast.error("Update failed"); }
+        } catch {
+            toast.error("Update failed");
+            setTasks(originalTasks);
+        }
     };
 
     const handleDelete = async (taskId) => {
         if (!confirm("Delete this task?")) return;
+        const originalTasks = [...tasks];
+        // Optimistic Delete
+        setTasks(t => t.filter(x => x._id !== taskId));
+        toast.success("Deleted");
+
         try {
             const res = await fetch(`${url}/daily-tasks/${taskId}`, {
                 method: 'DELETE', headers: { Authorization: auth?.token }
             });
             const d = await res.json();
-            if (d.success) { setTasks(t => t.filter(x => x._id !== taskId)); toast.success("Deleted"); }
-        } catch { toast.error("Delete failed"); }
+            if (!d.success) {
+                toast.error(d.message || "Delete failed");
+                setTasks(originalTasks);
+            }
+        } catch {
+            toast.error("Delete failed");
+            setTasks(originalTasks);
+        }
     };
 
     // Stats
