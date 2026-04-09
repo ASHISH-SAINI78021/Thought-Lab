@@ -23,12 +23,12 @@ const StudentRoute = ({ children }) => {
         );
     }
 
-    if (!auth?.user || (auth.user.role !== "student" && auth.user.role !== "user" && auth.user.role !== "admin" && auth.user.role !== "superAdmin")) {
+    if (!auth?.user || (auth.user.role !== "student" && auth.user.role !== "user" && auth.user.role !== "admin" && auth.user.role !== "superAdmin" && auth.user.role !== "mentor")) {
         return <Navigate to="/unauthorized" replace />;
     }
 
-    // Force students/users to pick a mentor before accessing any protected portal routes
-    if ((auth.user.role === "student" || auth.user.role === "user") && !auth.user.mentorId) {
+    // Force students/users/mentors to pick a mentor before accessing any protected portal routes
+    if ((auth.user.role === "student" || auth.user.role === "user" || auth.user.role === "mentor") && !auth.user.mentorId) {
         return <MentorPicker />;
     }
 

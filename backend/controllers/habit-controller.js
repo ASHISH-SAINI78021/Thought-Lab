@@ -128,9 +128,15 @@ class HabitController {
             const student = await User.findById(studentId);
             if (!student) return res.status(404).json({ success: false, message: "Student not found." });
 
-            // check mentor authorization
-            if (req.user.role === 'mentor' && student.mentorId?.toString() !== req.user._id.toString()) {
-                return res.status(403).json({ success: false, message: "You are not assigned to this student." });
+            // check mentor authorization:
+            // Allow if viewing self (Mentor-as-Student) OR if they are the assigned mentor
+            if (req.user.role === 'mentor') {
+                const isViewingSelf = req.user._id.toString() === studentId.toString();
+                const isAssignedMentor = student.mentorId?.toString() === req.user._id.toString();
+
+                if (!isViewingSelf && !isAssignedMentor) {
+                    return res.status(403).json({ success: false, message: "You are not assigned to this student." });
+                }
             }
 
             const habits = await Habit.find({ student: studentId }).sort({ createdAt: 1 });

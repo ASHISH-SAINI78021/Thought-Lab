@@ -79,7 +79,7 @@ function Navbar() {
                 </Link>
               </li>
             )}
-            {(auth?.user?.role === 'student' || auth?.user?.role === 'user') && (
+            {(auth?.user?.role === 'student' || auth?.user?.role === 'user' || auth?.user?.role === 'admin' || auth?.user?.role === 'superAdmin' || auth?.user?.role === 'mentor') && (
               <li>
                 <Link to="/student" className={`nav-link ${location.pathname.startsWith('/student') ? 'active' : ''}`}>
                   Student Portal
@@ -169,7 +169,7 @@ function Navbar() {
                 </Link>
               </li>
             )}
-            {(auth?.user?.role === 'student' || auth?.user?.role === 'user') && (
+            {(auth?.user?.role === 'student' || auth?.user?.role === 'user' || auth?.user?.role === 'admin' || auth?.user?.role === 'superAdmin' || auth?.user?.role === 'mentor') && (
               <li>
                 <Link
                   to="/student"

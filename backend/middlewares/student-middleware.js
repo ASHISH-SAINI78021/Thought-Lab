@@ -3,7 +3,7 @@ const isStudent = async (req, res, next) => {
         if (!req.user) {
             return res.status(401).json({ success: false, message: "Not authenticated" });
         }
-        if (req.user.role === 'student' || req.user.role === 'user' || req.user.role === 'admin' || req.user.role === 'superAdmin') {
+        if (req.user.role === 'student' || req.user.role === 'user' || req.user.role === 'admin' || req.user.role === 'superAdmin' || req.user.role === 'mentor') {
             next();
         } else {
             return res.status(403).json({ success: false, message: "Access denied. Student module." });

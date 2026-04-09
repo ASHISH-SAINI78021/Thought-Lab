@@ -498,6 +498,10 @@
     background: #2563eb;
 }
 
+.pageHeader {
+    margin-bottom: 30px;
+}
+
 /* ──────────────── HABITS SECTION ──────────────── */
 .habitsSection {
     margin-bottom: 0.5rem;

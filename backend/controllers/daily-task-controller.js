@@ -118,18 +118,14 @@ class DailyTaskController {
                 return res.status(404).json({ success: false, message: "Student not found." });
             }
 
-            // check mentor authorization
+            // check mentor authorization: 
+            // Allow if viewing self (Mentor-as-Student) OR if they are the assigned mentor
             if (req.user.role === 'mentor') {
-                const studentMentorId = student.mentorId?.toString();
-                const currentMentorId = req.user._id?.toString();
-                
-                if (studentMentorId !== currentMentorId) {
-                    console.log(`❌ [Auth Error] Mentor ${currentMentorId} tried to access student ${studentId} (Assigned Mentor: ${studentMentorId})`);
-                    return res.status(403).json({ 
-                        success: false, 
-                        message: "You are not assigned to this student.",
-                        debug: { studentMentorId, currentMentorId } 
-                    });
+                const isViewingSelf = req.user._id.toString() === studentId.toString();
+                const isAssignedMentor = student.mentorId?.toString() === req.user._id.toString();
+
+                if (!isViewingSelf && !isAssignedMentor) {
+                    return res.status(403).json({ success: false, message: "You are not assigned to this student." });
                 }
             }
 
@@ -185,9 +181,14 @@ class DailyTaskController {
 
             // Authorization check
             const student = isDaily ? task.student : task.assignedTo;
-            if (req.user.role === 'mentor' && student.mentorId?.toString() !== req.user._id.toString()) {
-                return res.status(403).json({ success: false, message: "Cannot comment on this student's task." });
-            }
+                if (req.user.role === 'mentor') {
+                    const isViewingSelf = req.user._id.toString() === student._id.toString();
+                    const isAssignedMentor = student.mentorId?.toString() === req.user._id.toString();
+
+                    if (!isViewingSelf && !isAssignedMentor) {
+                        return res.status(403).json({ success: false, message: "Unauthorized. This student is not assigned to you." });
+                    }
+                }
 
             task.comments.push({
                 text,

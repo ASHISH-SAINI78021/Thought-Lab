@@ -210,7 +210,11 @@ class UserController {
      */
     async getAvailableMentors(req, res) {
         try {
-            const mentors = await User.find({ role: 'mentor' }).select('name email rollNumber branch');
+            // Exclude the current user from the list (prevents self-mentoring if they are a mentor)
+            const mentors = await User.find({ 
+                role: 'mentor', 
+                _id: { $ne: req.user._id } 
+            }).select('name email rollNumber branch');
             const result = await Promise.all(mentors.map(async (mentor) => {
                 const studentCount = await User.countDocuments({ mentorId: mentor._id });
                 return {
@@ -247,6 +251,10 @@ class UserController {
 
             const student = await User.findById(studentId);
             if (!student) return res.status(404).json({ success: false, message: "User not found" });
+
+            if (studentId.toString() === mentorId.toString()) {
+                return res.status(400).json({ success: false, message: "You cannot be your own mentor!" });
+            }
 
             // If they are already assigned, auto-recover the frontend state instead of failing
             if (student.mentorId) {

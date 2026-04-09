@@ -70,6 +70,9 @@ class DashboardController {
 
             // My students
             const students = await User.find({ mentorId }).select('name email rollNumber profilePicture');
+            
+            // Also get the mentor info for UI context
+            const mentorInfo = await User.findById(mentorId).select('name email role');
 
             const startOfDay = new Date();
             startOfDay.setHours(0, 0, 0, 0);
@@ -143,6 +146,21 @@ class DashboardController {
     async getConsistencyData(req, res) {
         try {
             const studentId = req.params.studentId || req.user._id;
+
+            // Authorization
+            if (req.params.studentId) {
+                const student = await User.findById(studentId);
+                if (!student) return res.status(404).json({ success: false, message: "Student not found." });
+
+                if (req.user.role === 'mentor') {
+                    const isViewingSelf = req.user._id.toString() === studentId.toString();
+                    const isAssignedMentor = student.mentorId?.toString() === req.user._id.toString();
+
+                    if (!isViewingSelf && !isAssignedMentor) {
+                        return res.status(403).json({ success: false, message: "Unauthorized. This student is not assigned to you." });
+                    }
+                }
+            }
 
             const days = [];
             for (let i = 6; i >= 0; i--) {
