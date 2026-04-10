@@ -11,6 +11,7 @@ class UserDto {
 
     constructor(user, token){
         this.id = user._id;
+        this._id = user._id;
         this.name = user.name;
         this.profilePicture = user.profilePicture;
         this.year = user.year;

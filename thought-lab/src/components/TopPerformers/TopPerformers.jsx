@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { socket } from '../../App';
 import styles from './TopPerformers.module.css';
+import { url } from '../../url';
 
 const FALLBACK_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80';
 
@@ -10,6 +11,13 @@ const MEDALS = [
     { rank: 2, label: '🥈', color: '#C0C0C0', glow: 'rgba(192, 192, 192, 0.35)', podiumHeight: '130px', order: 0 },
     { rank: 3, label: '🥉', color: '#CD7F32', glow: 'rgba(205, 127, 50, 0.35)', podiumHeight: '100px', order: 2 },
 ];
+
+const getProfileImage = (path) => {
+    if (!path) return FALLBACK_AVATAR;
+    if (path.startsWith('http') || path.startsWith('data:')) return path;
+    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+    return `${url}/${cleanPath}`;
+};
 
 const PerformerCard = ({ item, medal }) => {
     if (!item) return (
@@ -34,7 +42,7 @@ const PerformerCard = ({ item, medal }) => {
                 <span className={styles.medal}>{medal.label}</span>
                 <div className={styles.avatarRing} style={{ borderColor: medal.color }}>
                     <img
-                        src={item.user?.profilePicture || FALLBACK_AVATAR}
+                        src={getProfileImage(item.user?.profilePicture)}
                         alt={item.user?.name}
                         className={styles.avatar}
                         onError={e => { e.target.src = FALLBACK_AVATAR; }}

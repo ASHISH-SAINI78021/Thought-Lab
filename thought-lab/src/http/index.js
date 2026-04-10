@@ -143,7 +143,11 @@ export const deleteTask = (taskId) => api.delete(`/tasks/${taskId}`);
 export const getNotifications = () => api.get('/notifications');
 export const markNotificationAsRead = (notificationId) => api.post('/notifications/read', { notificationId });
 
-export const updateUserProfile = (data) => api.put('/profile/update', data);
+export const updateUserProfile = (data) => api.put('/profile/update', data, {
+    headers: {
+        'Content-Type': 'multipart/form-data'
+    }
+});
 export const getUserPointsHistory = (id, page = 1, limit = 10) => api.get(`/user-history/${id}?page=${page}&limit=${limit}`);
 
 export default api;

@@ -1,15 +1,21 @@
 import logo from "../assets/calm-women.png";
 import { Link, useLocation } from "react-router-dom";
-import { Avatar, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import "./Navbar.css";
 import { useAuth } from "../Context/auth";
 import { useState } from "react";
 import NotificationBell from './NotificationBell/NotificationBell';
+import { url } from "../url";
+
+const FALLBACK_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80';
 
 function Navbar() {
   const location = useLocation();
   const [auth, setAuth, logout] = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  console.log("🛠️ [Navbar] Current Auth State:", auth);
+  console.log("🖼️ [Navbar] Profile Picture:", auth?.user?.profilePicture);
 
   const Links = [
     { name: "Home", link: "/" },
@@ -33,6 +39,13 @@ function Navbar() {
   };
 
   const isDarkTheme = location.pathname.startsWith('/student');
+
+  const getProfileImage = (path) => {
+    if (!path) return FALLBACK_AVATAR;
+    if (path.startsWith('http') || path.startsWith('data:')) return path;
+    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+    return `${url}/${cleanPath}`;
+  };
 
   return (
     <nav className={`navbar ${isDarkTheme ? 'navbar-dark' : ''}`}>
@@ -95,8 +108,19 @@ function Navbar() {
             <>
               <NotificationBell />
               <Tooltip title={auth.user.name} placement="bottom">
-                <Link to={`/profile/${auth.user.id}`}>
-                  <Avatar src={auth.user.profilePicture} className="user-avatar" />
+                <Link to={`/profile/${auth.user.id || auth.user._id}`} className="avatar-link">
+                  <div className="user-avatar-wrapper">
+                    <img
+                      src={getProfileImage(auth.user.profilePicture)}
+                      alt={auth.user.name}
+                      className="user-avatar-img"
+                      key={auth.user.profilePicture}
+                      onError={(e) => {
+                        console.error("Navbar Avatar failed to load:", e.target.src);
+                        e.target.src = FALLBACK_AVATAR;
+                      }}
+                    />
+                  </div>
                 </Link>
               </Tooltip>
               <button onClick={handleLogout} className="logout-btn" title="Logout">
@@ -184,8 +208,15 @@ function Navbar() {
 
           {auth?.user && (
             <div className="mobile-user-info">
-              <Link to={`/profile/${auth?.user?.id}`} onClick={() => setIsMobileMenuOpen(false)}>
-                <Avatar src={auth?.user?.profilePicture} size={64} />
+              <Link to={`/profile/${auth?.user?.id || auth?.user?._id}`} onClick={() => setIsMobileMenuOpen(false)}>
+                <div className="mobile-avatar-wrapper">
+                  <img
+                    src={getProfileImage(auth?.user?.profilePicture)}
+                    alt="User"
+                    className="mobile-avatar-img"
+                    onError={(e) => { e.target.src = FALLBACK_AVATAR; }}
+                  />
+                </div>
               </Link>
               <div className="user-details">
                 <p className="user-name">{auth?.user?.name}</p>

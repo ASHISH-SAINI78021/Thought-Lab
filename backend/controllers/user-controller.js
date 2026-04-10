@@ -1,4 +1,5 @@
 const userService = require('../services/user-service.js');
+const UserDto = require('../dtos/user-dtos.js');
 const Task = require('../Models/task-model.js');
 const Meditation = require('../Models/meditation-model.js');
 const User = require('../Models/user-model.js');
@@ -39,7 +40,8 @@ class UserController {
     async getAllUsers(req, res) {
         try {
             const users = await userService.allUsers();
-            return res.json({ success: true, users });
+            const userDtos = users.map(user => new UserDto(user));
+            return res.json({ success: true, users: userDtos });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ success: false, message: error.message });
@@ -100,20 +102,23 @@ class UserController {
 
     async updateProfile(req, res) {
         try {
-            const userId = req.user._id;
+            const userId = req.user.id || req.user._id;
+            console.log("Updating profile for user ID:", userId);
             const { name, phone, email, branch, programme, year } = req.body;
             
-            const updateData = {
-                name,
-                phone,
-                email,
-                branch,
-                programme,
-                year
-            };
+            const updateData = {};
+            if (name) updateData.name = name;
+            if (phone) updateData.phone = phone;
+            if (email) updateData.email = email;
+            if (branch) updateData.branch = branch;
+            if (programme) updateData.programme = programme;
+            if (year) updateData.year = year;
+
+            console.log("Update Data planned:", updateData);
 
             if (req.file) {
-                updateData.profilePicture = `storage/${req.file.filename}`;
+                console.log("New profile picture path:", req.file.path);
+                updateData.profilePicture = req.file.path;
             }
 
             const user = await userService.updateUser(userId, updateData);
@@ -122,7 +127,11 @@ class UserController {
                 return res.status(404).json({ success: false, message: "User not found" });
             }
 
-            return res.json({ success: true, message: "Profile updated successfully", user });
+            return res.json({ 
+                success: true, 
+                message: "Profile updated successfully", 
+                user: new UserDto(user) 
+            });
         } catch (error) {
             console.error("Error updating profile:", error);
             return res.status(500).json({ success: false, message: "Internal Server Error" });

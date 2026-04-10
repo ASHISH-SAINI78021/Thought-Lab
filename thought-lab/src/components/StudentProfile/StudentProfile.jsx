@@ -4,9 +4,10 @@ import styles from './StudentProfile.module.css';
 import toast from 'react-hot-toast';
 import { getStudentProfile, updateUserProfile, getUserPointsHistory } from '../../http';
 import { useAuth } from '../../Context/auth';
+import { url } from '../../url'; // Import backend URL
 
 const StudentProfile = () => {
-    const [auth] = useAuth();
+    const [auth, setAuth] = useAuth();
     const [activeTab, setActiveTab] = useState('profile');
     const [isLoading, setIsLoading] = useState(true);
     const { id } = useParams();
@@ -116,7 +117,22 @@ const StudentProfile = () => {
             const response = await updateUserProfile(formData);
             if (response.data.success) {
                 toast.success("Profile updated successfully!");
-                setStudentData(response.data.user);
+                const updatedUser = response.data.user;
+                setStudentData(updatedUser);
+
+                // Update global auth state and localStorage
+                setAuth(prev => {
+                    const newAuth = {
+                        ...prev,
+                        user: {
+                            ...prev.user,
+                            ...updatedUser
+                        }
+                    };
+                    localStorage.setItem('auth', JSON.stringify(newAuth));
+                    return newAuth;
+                });
+
                 setIsEditMode(false);
                 setPreviewImage(null);
             } else {
@@ -128,6 +144,12 @@ const StudentProfile = () => {
         } finally {
             setIsUpdating(false);
         }
+    };
+
+    const getProfileImage = (path) => {
+        if (!path) return "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80";
+        if (path.startsWith('http') || path.startsWith('data:')) return path;
+        return `${url}/${path}`;
     };
 
     // Calculate attendance stats
@@ -166,7 +188,7 @@ const StudentProfile = () => {
                     <div className={styles.avatarSection}>
                         <div className={styles.avatarWrapper}>
                             <img
-                                src={previewImage || studentData.profilePicture}
+                                src={previewImage || getProfileImage(studentData.profilePicture)}
                                 alt={studentData.name}
                                 className={styles.avatar}
                                 onError={(e) => {

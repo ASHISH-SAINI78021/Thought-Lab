@@ -60,12 +60,15 @@ import UploadWinner from "./components/Winner/AdminAddWinner/AddWinner.jsx";
 import Winners from "./components/Winner/winners.jsx";
 import io from "socket.io-client";
 import { url } from "./url";
+import { getStudentProfile } from "./http";
 
 const socket = io(`${url}`);
 export { socket };
 
 const AppContent = () => {
-  const [auth] = useAuth();
+  const [auth, setAuth] = useAuth();
+  console.log("🔍 [AppContent] Current Auth State (User):", auth?.user);
+  console.log("📸 [AppContent] Profile Picture URL:", auth?.user?.profilePicture);
 
   useEffect(() => {
     const lenis = new Lenis({ duration: 1.9 });
@@ -89,6 +92,46 @@ const AppContent = () => {
       return () => clearTimeout(timeout);
     }
   }, [auth]);
+
+  // Global Auth Refresh (Ensures Avatar and Profile reflect latest DB state)
+  useEffect(() => {
+    const getProfileImage = (path) => {
+      if (!path || path === 'null' || path === 'undefined' || path === 'fallback-avatar.png') return "fallback-avatar.png";
+      if (path.startsWith('http') || path.startsWith('data:')) return path;
+      const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+      return `${url}/${cleanPath}`;
+    };
+
+    const refreshAuth = async () => {
+      if (auth?.user?.id || auth?.user?._id) {
+        try {
+          const userId = auth.user.id || auth.user._id;
+          const { data } = await getStudentProfile(userId);
+          if (data.success) {
+            setAuth(prev => {
+              const updatedAuth = {
+                ...prev,
+                user: {
+                  ...(prev.user || {}),
+                  ...data.user
+                }
+              };
+              localStorage.setItem('auth', JSON.stringify(updatedAuth));
+              console.log("✅ [Auth] Sync Complete. New Picture:", data.user.profilePicture);
+              return updatedAuth;
+            });
+            console.log("🔄 [Auth] Profile synchronized with backend");
+          }
+        } catch (error) {
+          console.error("❌ [Auth] Failed to sync profile with backend:", error);
+        }
+      }
+    };
+
+    // Delay slightly to not conflict with login/registration flows
+    const timer = setTimeout(refreshAuth, 200);
+    return () => clearTimeout(timer);
+  }, [auth?.user?.id, auth?.user?._id]); // Run when ID is available or changes
 
   return (
     <>

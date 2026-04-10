@@ -252,7 +252,7 @@ class AuthController {
 
       return res.json({
         success : true,
-        user
+        user: new UserDto(user)
       });
     }
     catch(err){
