@@ -1,125 +1,99 @@
-import React, { useEffect, useState } from 'react';
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React, { useEffect, useRef } from 'react';
 import './About.css';
 
-gsap.registerPlugin(ScrollTrigger);
+const PILLARS = [
+    { icon: '🧠', label: 'Mental Wellness' },
+    { icon: '🌿', label: 'Mindful Growth' },
+    { icon: '🤝', label: 'Community Support' },
+    { icon: '🔬', label: 'Evidence-Based' },
+];
 
 const About = () => {
-    const [isMobile, setIsMobile] = useState(false);
-    
+    const sectionRef = useRef(null);
+
     useEffect(() => {
-        // Check if device is mobile
-        const checkMobile = () => {
-            const isMobileDevice = window.innerWidth < 768;
-            setIsMobile(isMobileDevice);
-        };
-        
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        
-        // Only run animations on non-mobile devices
-        if (!isMobile) {
-            let aboutUs = gsap.utils.toArray(".aboutUs");
-            let aboutUsHeading = gsap.utils.toArray(".aboutUsHeading");
-            let aboutUsContent = gsap.utils.toArray(".aboutUsContent");
-            let aboutUsWelcome = gsap.utils.toArray(".aboutUsWelcome");
-
-            gsap.to(aboutUs, {
-                opacity: 0,
-                scale: 0.8,
-                y: "-50%",
-                scrollTrigger: {
-                    trigger: aboutUs,
-                    start: "35% top",
-                    end: "top -250%",
-                    scrub: 0.2,
-                    markers: false
-                },
-            });
-
-            gsap.fromTo(aboutUsHeading,
-                {
-                    y: 100,
-                    opacity: 0
-                },
-                {
-                    delay: 2,
-                    opacity: 1,
-                    y: 0,
-                    scrollTrigger: {
-                        trigger: aboutUs,
-                        start: "top 45%",
-                        end: "top 10%",
-                        scrub: 0.5,
-                    },
-                });
-
-            gsap.fromTo(aboutUsContent,
-                {
-                    opacity: 0
-                },
-                {
-                    opacity: 1,
-                    delay: 4,
-                    duration: 3,
-                    y: 0,
-                    scrollTrigger: {
-                        trigger: aboutUs,
-                        start: "top 55%",
-                        end: "top top",
-                        scrub: true,
-                    },
-                });
-
-            gsap.fromTo(aboutUsWelcome,
-                {
-                    y: 200,
-                    opacity: 0
-                },
-                {
-                    opacity: 1,
-                    delay: 4,
-                    y: 0,
-                    scrollTrigger: {
-                        trigger: aboutUs,
-                        start: "top 65%",
-                        end: "top 25%",
-                        scrub: 1,
-                    },
-                });
-        }
-        
-        return () => {
-            window.removeEventListener('resize', checkMobile);
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-        }
-    }, [isMobile]);
+        const el = sectionRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    el.classList.add('about-visible');
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.15 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
 
     return (
-        <div className="aboutUs">
-            <div className="about-container">
-                <p className={`aboutUsWelcome ${isMobile ? 'mobile-visible' : ''}`}>
-                    Welcome to Thought Lab
-                </p>
-                <div className="content">
-                    <h1 className={`aboutUsHeading ${isMobile ? 'mobile-visible' : ''}`}>
-                        Who We Are?
-                    </h1>
-                    <div className="about-content-text">
-                        <p className={`aboutUsContent ${isMobile ? 'mobile-visible' : ''}`}>
-                            Thought Lab is a supportive platform for students and young
-                            adults, making mental wellness approachable and actionable.
-                            "We're committed to creating a safe space where everyone feels
-                            heard, supported, and empowered to prioritize their mental
-                            well-being."
-                        </p>
+        <section className="about-dark" ref={sectionRef}>
+            {/* Background mesh */}
+            <div className="about-mesh" />
+
+            <div className="about-inner">
+                {/* Left column */}
+                <div className="about-left">
+                    <span className="about-eyebrow">Who We Are</span>
+                    <h2 className="about-heading">
+                        A Sanctuary for <br />
+                        <span className="about-grad">Every RTU Mind.</span>
+                    </h2>
+                    <div className="about-accent-bar" />
+
+                    {/* Pillar chips */}
+                    <div className="about-pillars">
+                        {PILLARS.map((p, i) => (
+                            <div key={i} className="about-pillar">
+                                <span>{p.icon}</span> {p.label}
+                            </div>
+                        ))}
                     </div>
                 </div>
-                <div className="aboutUsImage"></div>
+
+                {/* Right column */}
+                <div className="about-right">
+                    {/* Glass card */}
+                    <div className="about-glass-card">
+                        <p className="about-body">
+                            <strong>Thought Lab</strong> is the official mental wellness platform of{' '}
+                            <strong className="about-rtu">Rajasthan Technical University (RTU), Kota</strong>.
+                            We are built by students, for students — a digital space where mental health
+                            is never an afterthought.
+                        </p>
+                        <p className="about-body">
+                            Through meditation tools, expert-led events, community challenges, and
+                            face-recognition attendance, we make it easier for every RTU student to
+                            prioritise their inner well-being without slowing down their academic journey.
+                        </p>
+
+                        {/* RTU + TIC badge row */}
+                        <div className="about-badges">
+                            <span className="about-badge about-badge-teal">🏛️ RTU, Kota</span>
+                            <span className="about-badge about-badge-violet">🧠 Thought &amp; Innovation Centre</span>
+                            <span className="about-badge about-badge-green">✅ Est. 2024</span>
+                        </div>
+                    </div>
+
+                    {/* Mini stat grid */}
+                    <div className="about-mini-stats">
+                        {[
+                            { n: '500+', l: 'Students' },
+                            { n: '50+', l: 'Sessions' },
+                            { n: '10+', l: 'Mentors' },
+                            { n: '24/7', l: 'Support' },
+                        ].map((s, i) => (
+                            <div key={i} className="about-mini-stat">
+                                <div className="about-mini-val">{s.n}</div>
+                                <div className="about-mini-lbl">{s.l}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
-        </div>
-    )
-}
+        </section>
+    );
+};
 
 export default About;

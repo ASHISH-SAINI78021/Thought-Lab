@@ -1,0 +1,19 @@
+.tilted-card {
+    perspective: 1000px;
+    position: relative;
+    border-radius: inherit;
+}
+
+.tilted-card-inner {
+    transform: translateZ(30px);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    pointer-events: none;
+    /* Let the mouse events flow to the wrapper */
+}
+
+/* Allow interactive inner elements like links to process clicks */
+.tilted-card-inner>* {
+    pointer-events: auto;
+}

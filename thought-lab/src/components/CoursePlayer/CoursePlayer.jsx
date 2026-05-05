@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { PlayCircle, Clock, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
 import { getCourse } from '../../http';
 import './CoursePlayer.css';
+import SplashCursor from '../react-bits/SplashCursor';
 
 const CoursePlayer = () => {
     const { courseId } = useParams();
@@ -49,6 +50,7 @@ const CoursePlayer = () => {
     if (loading) {
         return (
             <div className="course-player-page">
+                <SplashCursor />
                 <div className="course-player-loading">
                     <div className="loading-spinner" />
                     <span>Loading course…</span>
@@ -61,6 +63,7 @@ const CoursePlayer = () => {
     if (error || !course) {
         return (
             <div className="course-player-page">
+                <SplashCursor />
                 <div className="course-player-error">
                     <h2>Course Not Available</h2>
                     <p>{error}</p>
@@ -79,6 +82,7 @@ const CoursePlayer = () => {
 
     return (
         <div className="course-player-page">
+            <SplashCursor />
             <div className="course-player-container">
 
                 {/* ── Inline header (no sticky topbar) ── */}

@@ -3,6 +3,7 @@ import styles from './BlogItem.module.css';
 import { url } from '../../../url';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../../Context/auth';
+import SplashCursor from '../../react-bits/SplashCursor';
 
 /* Helper: first letter of a name as avatar */
 const Avatar = ({ name, className }) => {
@@ -123,6 +124,7 @@ const BlogItem = () => {
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
+        <SplashCursor />
         <div className={styles.loadingSpinner} />
         <p className={styles.loadingText}>Loading article…</p>
       </div>
@@ -132,6 +134,7 @@ const BlogItem = () => {
   if (error) {
     return (
       <div className={styles.errorContainer}>
+        <SplashCursor />
         <span className={styles.errorIcon}>😕</span>
         <p className={styles.errorMessage}>{error}</p>
         <button className={styles.retryButton} onClick={() => window.location.reload()}>
@@ -144,6 +147,7 @@ const BlogItem = () => {
   if (!blog) {
     return (
       <div className={styles.emptyContainer}>
+        <SplashCursor />
         <span className={styles.emptyIcon}>📄</span>
         <p>Blog post not found.</p>
       </div>
@@ -161,6 +165,7 @@ const BlogItem = () => {
   /* ── Render ── */
   return (
     <div className={styles.shell}>
+      <SplashCursor />
       {/* ── Hero ── */}
       {blog.thumbnail ? (
         <div className={styles.heroBanner}>

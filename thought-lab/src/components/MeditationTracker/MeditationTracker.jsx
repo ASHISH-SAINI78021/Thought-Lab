@@ -7,6 +7,7 @@ import { useAuth } from "../../Context/auth";
 import { Avatar } from 'antd';
 // Import Axios API functions
 import { getMeditationHistory, saveMeditationSession as apiSaveMeditationSession } from '../../http';
+import SplashCursor from '../react-bits/SplashCursor';
 
 const MeditationTracker = () => {
       const [selectedOption, setSelectedOption] = useState(null);
@@ -175,6 +176,7 @@ const MeditationTracker = () => {
 
       return (
             <div className={styles.mainContainer}>
+                  <SplashCursor />
                   <div className={styles.container}>
                         <div className={styles.header}>
                               <div className={styles.meditationIcon}>
@@ -243,14 +245,6 @@ const MeditationTracker = () => {
                                     <div className={styles.historyHeader}>
                                           <div className={styles.historyTitle}>History Records</div>
                                           <div className={styles.filterControls}>
-                                                {selectedDate && (
-                                                      <button
-                                                            className={styles.clearBtn}
-                                                            onClick={() => setSelectedDate('')}
-                                                      >
-                                                            Show All
-                                                      </button>
-                                                )}
                                                 <input
                                                       type="date"
                                                       className={styles.datePicker}

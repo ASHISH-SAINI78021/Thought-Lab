@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { socket } from '../../App';
 import styles from './TopPerformers.module.css';
+import SpotlightCard from '../react-bits/SpotlightCard';
 import { url } from '../../url';
 
 const FALLBACK_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80';
@@ -33,9 +34,11 @@ const PerformerCard = ({ item, medal }) => {
     );
 
     return (
-        <Link
+        <SpotlightCard
+            as={Link}
             to={`/leaderboard/${item.user?._id}`}
             className={styles.card}
+            spotlightColor={medal.glow}
             style={{ '--glow': medal.glow, '--medal-color': medal.color, '--podium-h': medal.podiumHeight, '--order': medal.order }}
         >
             <div className={styles.avatarShell}>
@@ -57,7 +60,7 @@ const PerformerCard = ({ item, medal }) => {
                 <span className={styles.rankNum}>#{medal.rank}</span>
                 <span className={styles.score}>{item.score} <small>pts</small></span>
             </div>
-        </Link>
+        </SpotlightCard>
     );
 };
 

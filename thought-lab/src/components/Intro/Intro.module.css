@@ -1,0 +1,676 @@
+/* MindScape.module.css — Dark Futuristic RTU Theme */
+
+.container {
+    background: #080d1a;
+    color: #e2e8f0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ===== NAV ===== */
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.2rem 8vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(8, 13, 26, 0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.navLogo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -1px;
+}
+
+.accentText {
+    background: linear-gradient(135deg, #00d4ff, #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.navLinks {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+}
+
+.navLink {
+    text-decoration: none;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.navLink:hover {
+    color: #00d4ff;
+}
+
+/* ===== HERO ===== */
+.hero {
+    min-height: 100vh;
+    background: radial-gradient(circle at 0% 0%, #101a33 0%, #080d1a 100%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 8vw;
+    position: relative;
+    overflow: hidden;
+}
+
+.heroLeft {
+    position: relative;
+    z-index: 2;
+}
+
+.heroEyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #00d4ff;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+}
+
+.heroEyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: #00d4ff;
+}
+
+.heroTitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    letter-spacing: -2px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+}
+
+.italic {
+    font-style: italic;
+    color: #a855f7;
+}
+
+.accent {
+    background: linear-gradient(135deg, #00d4ff, #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+}
+
+.heroSub {
+    font-size: 1.2rem;
+    color: #94a3b8;
+    line-height: 1.8;
+    max-width: 500px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+}
+
+.heroCta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+}
+
+.btnPrimary {
+    background: linear-gradient(135deg, #00d4ff, #a855f7);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+    transition: all 0.3s;
+}
+
+.btnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+}
+
+.btnGhost {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1rem 2.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+}
+
+.btnGhost:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+}
+
+/* ===== ORBITS & BRAIN ===== */
+.orbit {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    animation: spin 30s linear infinite;
+}
+
+.orbit1 {
+    width: 480px;
+    height: 480px;
+    top: -50px;
+    left: -50px;
+}
+
+.orbit2 {
+    width: 560px;
+    height: 560px;
+    top: -90px;
+    left: -90px;
+    animation-direction: reverse;
+    animation-duration: 45s;
+}
+
+.orbitDot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #00d4ff;
+    top: 50%;
+    left: 10px;
+    box-shadow: 0 0 15px #00d4ff;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.brainCard {
+    width: 380px;
+    height: 380px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-30px);
+    }
+}
+
+.brainEmoji {
+    font-size: 6rem;
+    filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.4));
+}
+
+.brainLabel {
+    font-size: 1rem;
+    color: #a855f7;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* ===== SECTION COMMON ===== */
+.section {
+    padding: 10rem 8vw;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sectionTag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #00d4ff;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sectionTitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    letter-spacing: -1px;
+}
+
+.sectionDesc {
+    font-size: 1.2rem;
+    color: #94a3b8;
+    line-height: 1.8;
+    max-width: 600px;
+}
+
+/* ===== NEUROPLASTICITY ===== */
+.neuroGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    margin-top: 5rem;
+}
+
+.typeCard {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 24px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s;
+    backdrop-filter: blur(10px);
+}
+
+.typeCard:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #00d4ff;
+    transform: translateY(-5px);
+}
+
+.typeName {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 1rem 0;
+}
+
+.typeDesc {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.positivityGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.plasticityCard {
+    border-radius: 32px;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+}
+
+.plasticityTitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+}
+
+.plasticityPos .plasticityTitle {
+    color: #10b981;
+}
+
+.plasticityNeg .plasticityTitle {
+    color: #f43f5e;
+}
+
+.plasticityList {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.plasticityList li {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.5rem 1.2rem;
+    border-radius: 40px;
+}
+
+.plasticityPos li {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.plasticityNeg li {
+    background: rgba(244, 63, 94, 0.1);
+    color: #f43f5e;
+    border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+/* ===== MEDITATION SECTION ===== */
+.meditationSection {
+    background: linear-gradient(180deg, #080d1a 0%, #101a33 100%);
+}
+
+.meditationHero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    margin-top: 5rem;
+}
+
+.baCard {
+    border-radius: 24px;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    gap: 2rem;
+    transition: all 0.4s;
+    backdrop-filter: blur(20px);
+}
+
+.baCard:hover {
+    border-color: #00d4ff;
+    transform: translateX(10px);
+}
+
+.baLabel {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.baBefore .baLabel {
+    color: #f43f5e;
+}
+
+.baAfter .baLabel {
+    color: #10b981;
+}
+
+.baHeading {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.baPoints li {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+}
+
+.baPoints li::before {
+    content: '→';
+    color: #00d4ff;
+    font-weight: 800;
+}
+
+.lotusCenter {
+    width: 240px;
+    height: 240px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 6rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 80px rgba(0, 212, 255, 0.15);
+}
+
+.statPill {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statNum {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    font-weight: 950;
+    color: #00d4ff;
+}
+
+.statLabel {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+/* ===== THOUGHTS SECTION ===== */
+.step {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 24px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.step:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #a855f7;
+}
+
+.stepNumber {
+    color: #a855f7;
+    font-weight: 800;
+}
+
+.stepName {
+    color: #ffffff;
+}
+
+.destinyVisual {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 40px;
+    padding: 4rem;
+}
+
+.destinyQuote {
+    font-size: 1.6rem;
+    color: #e2e8f0;
+    border-left: 4px solid #a855f7;
+    padding-left: 2rem;
+}
+
+.chainItem {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.destinyChain {
+    background: linear-gradient(135deg, #00d4ff, #a855f7);
+    border: none;
+}
+
+/* ===== SPIRITUAL TOOLS ===== */
+.toolCard {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 32px;
+    padding: 3rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.5s ease;
+}
+
+.toolCard:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #00d4ff;
+}
+
+.centerCard {
+    grid-column: 2;
+    border-color: #a855f7;
+    box-shadow: 0 20px 60px rgba(168, 85, 247, 0.1);
+}
+
+.toolName {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+/* ===== DATA SECTION ===== */
+.dataColumn {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 32px;
+    padding: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dataHeader {
+    font-family: 'Montserrat', sans-serif;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.metricBar {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dataBefore .metricFill {
+    background: linear-gradient(90deg, #f43f5e, #be123c);
+}
+
+.dataAfter .metricFill {
+    background: linear-gradient(90deg, #10b981, #047857);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    background: #040810;
+    padding: 6rem 8vw 3rem;
+}
+
+.footerLogo {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+}
+
+.footerDivider {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ===== ANIMATIONS ===== */
+.reveal,
+.revealLeft,
+.revealRight {
+    opacity: 0;
+    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.visible {
+    opacity: 1;
+    transform: translate(0, 0) !important;
+}
+
+.reveal {
+    transform: translateY(50px);
+}
+
+.revealLeft {
+    transform: translateX(-50px);
+}
+
+.revealRight {
+    transform: translateX(50px);
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1000px) {
+
+    .hero,
+    .neuroGrid,
+    .meditationHero,
+    .thoughtsLayout,
+    .dataGrid {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+
+    .heroTitle {
+        font-size: 3.5rem;
+    }
+
+    .toolsGrid,
+    .toolsRow2 {
+        grid-template-columns: 1fr;
+    }
+
+    .centerCard {
+        grid-column: auto;
+    }
+}

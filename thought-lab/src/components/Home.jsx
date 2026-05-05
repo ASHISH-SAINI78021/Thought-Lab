@@ -1,112 +1,247 @@
-import heroImage from "../assets/calm-women.png";
 import styles from "./Home.module.css";
-import "../styles/Home.css";
 import { Link } from "react-router-dom";
-import Features from "./Features";
 import About from "./About";
+import Team from "./Team/Team";
 import Testimonials from "./Testimonials";
 import Footer from "./Footer/Footer";
 import TopPerformers from "./TopPerformers/TopPerformers";
+import { useEffect, useRef, useState } from "react";
+import SplashCursor from "./react-bits/SplashCursor";
+
+const FEATURES = [
+  {
+    icon: "🧘",
+    title: "Meditation & Sadhna",
+    desc: "Guided sessions, breathing timers, and daily wellness rituals built for RTU students.",
+    link: "/meditation-timer",
+    color: "#00d4ff",
+  },
+  {
+    icon: "📅",
+    title: "Events & Activities",
+    desc: "Stay updated with Thought Lab workshops, seminars, and campus wellness drives.",
+    link: "/all-events",
+    color: "#a855f7",
+  },
+  {
+    icon: "🪪",
+    title: "Facial Attendance",
+    desc: "Biometric face-recognition powered attendance — secure, fast, and effortless.",
+    link: "/attendance",
+    color: "#10b981",
+  },
+];
+
+const STATS = [
+  { value: "500+", label: "RTU Students" },
+  { value: "50+", label: "Events Hosted" },
+  { value: "100+", label: "Wellness Sessions" },
+  { value: "98%", label: "Satisfaction" },
+];
+
+const QUICK_LINKS = [
+  { label: "Intro", link: "/intro", icon: "✨" },
+  { label: "Tracker", link: "/meditation-tracker", icon: "📊" },
+  { label: "Blogs", link: "/blogs", icon: "✍️" },
+  { label: "Courses", link: "/courses", icon: "📚" },
+  { label: "Leaderboard", link: "/leaderboard", icon: "🏆" },
+  { label: "QRT", link: "/quick-response-team", icon: "⚡" },
+  { label: "Tasks", link: "/task-dashboard", icon: "✅" },
+  { label: "Devices", link: "/devices", icon: "🧠" },
+];
 
 const Home = () => {
+  const canvasRef = useRef(null);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User ${outcome === 'accepted' ? 'accepted' : 'dismissed'} the install prompt`);
+    setDeferredPrompt(null);
+  };
+
+  /* ── Animated dot-grid canvas ── */
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let animFrameId;
+    let t = 0;
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const COLS = 24;
+    const ROWS = 14;
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const w = canvas.width;
+      const h = canvas.height;
+      const colGap = w / COLS;
+      const rowGap = h / ROWS;
+
+      for (let c = 0; c <= COLS; c++) {
+        for (let r = 0; r <= ROWS; r++) {
+          const x = c * colGap;
+          const y = r * rowGap;
+          const wave = Math.sin(t * 0.9 + c * 0.4 + r * 0.3);
+          const alpha = 0.08 + wave * 0.06;
+          const radius = 1.5 + wave * 0.8;
+          ctx.beginPath();
+          ctx.arc(x, y, Math.max(0.5, radius), 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(0, 212, 255, ${alpha})`;
+          ctx.fill();
+        }
+      }
+      t += 0.018;
+      animFrameId = requestAnimationFrame(draw);
+    };
+    draw();
+
+    return () => {
+      cancelAnimationFrame(animFrameId);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
   return (
     <>
+      <SplashCursor />
       <TopPerformers />
 
-      <div className={styles.container}>
-        {/* ── Hero ── */}
-        <section className={styles.heroSection}>
-          <div className={styles.heroContent}>
-            {/* Image side */}
-            <div className={styles.heroImageContainer}>
-              <img
-                src={heroImage}
-                className={styles.heroImage}
-                alt="Calm Lady Breathing"
-                loading="eager"
-              />
+      <div className={styles.page}>
+        {/* ══════════════════ HERO ══════════════════ */}
+        <section className={styles.hero}>
+          {/* Dot-grid canvas */}
+          <canvas ref={canvasRef} className={styles.dotCanvas} />
+
+          {/* Neon orbs */}
+          <div className={styles.orbTeal} />
+          <div className={styles.orbViolet} />
+
+          <div className={styles.heroInner}>
+            {/* RTU badge */}
+            <div className={styles.rtiBadge}>
+              <span className={styles.rtiBadgeDot} />
+              🏛️ Rajasthan Technical University, Kota &nbsp;·&nbsp; Official Mental Wellness Platform
             </div>
 
-            {/* Text side */}
-            <div className={styles.heroText}>
-              <span className={styles.heroEyebrow}>Mental Wellness Platform</span>
+            {/* Main heading */}
+            <h1 className={styles.heroHeading}>
+              <span className={styles.heroLine1}>Find Your</span>
+              <span className={styles.heroAccent}>Inner Peace.</span>
+              <span className={styles.heroLine3}>Rise Together.</span>
+            </h1>
 
-              <h1 className={styles.heading}>
-                Pause.{" "}
-                <span className={styles.accent}>Breathe.</span>{" "}
-                Heal.
-              </h1>
+            {/* Subtext */}
+            <p className={styles.heroSub}>
+              Thought Lab is RTU's dedicated space for mental wellness, growth, and balance.
+              Explore meditation, events, courses, and community — all in one place.
+            </p>
 
-              <p className={styles.subtitle}>
-                Your safe space for mental wellness, growth, and balance. At
-                Thought Lab, we support you through life's challenges and
-                celebrate every victory — big and small.
-              </p>
+            {/* Primary CTAs */}
+            <div className={styles.heroCtas}>
+              <Link to="/register" className={styles.ctaPrimary}>
+                <span>✨ Get Started Free</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Link>
 
-              <div className={styles.buttonsContainer}>
-                <Link to="/register" className={styles.primaryButton}>
-                  ✨ Get Started
-                </Link>
-                <Link to="/all-events" className={styles.secondaryButton}>
-                  Events
-                </Link>
-                <Link to="/quick-response-team" className={styles.secondaryButton}>
-                  QRT
-                </Link>
-                <Link to="/meditation-tracker" className={styles.secondaryButton}>
-                  Meditation
-                </Link>
-                <Link to="/attendance" className={styles.secondaryButton}>
-                  Facial ID
-                </Link>
-                <Link to="/meditation-timer" className={styles.secondaryButton}>
-                  Sadhna
-                </Link>
-                <Link to="/courses" className={styles.secondaryButton}>
-                  Courses
-                </Link>
-                <a
-                  href="https://ashish-portfoliov1.netlify.app/"
-                  className={styles.secondaryButton}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Developer
-                </a>
-              </div>
+              {deferredPrompt && (
+                <button onClick={handleInstallClick} className={styles.ctaInstall}>
+                  <span>📱 Install App</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                  </svg>
+                </button>
+              )}
+
+              <Link to="/intro" className={styles.ctaGhost}>
+                Welcome Intro
+              </Link>
+              <Link to="/meditation-tracker" className={styles.ctaGhost}>
+                Meditation Tracker
+              </Link>
+              <Link to="/all-events" className={styles.ctaGhost}>
+                View Events
+              </Link>
             </div>
+
+            {/* Quick link pills */}
+            <div className={styles.quickLinks}>
+              {QUICK_LINKS.map((q) => (
+                <Link key={q.label} to={q.link} className={styles.quickPill}>
+                  {q.icon} {q.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Scroll hint */}
+          <div className={styles.scrollHint}>
+            <span />
           </div>
         </section>
 
-        {/* ── Stats Strip ── */}
-        <div className={styles.statsStrip}>
-          <div className={styles.statsInner}>
-            <div className={styles.statItem}>
-              <div className={styles.statNumber}>100+</div>
-              <div className={styles.statLabel}>Students</div>
+        {/* ══════════════════ STATS ══════════════════ */}
+        <div className={styles.statsBar}>
+          {STATS.map((s, i) => (
+            <div key={i} className={styles.statCell}>
+              <div className={styles.statVal}>{s.value}</div>
+              <div className={styles.statLbl}>{s.label}</div>
             </div>
-            <div className={styles.statItem}>
-              <div className={styles.statNumber}>50+</div>
-              <div className={styles.statLabel}>Events</div>
-            </div>
-            <div className={styles.statItem}>
-              <div className={styles.statNumber}>100+</div>
-              <div className={styles.statLabel}>Sessions</div>
-            </div>
-            <div className={styles.statItem}>
-              <div className={styles.statNumber}>98%</div>
-              <div className={styles.statLabel}>Satisfaction</div>
-            </div>
-          </div>
+          ))}
         </div>
-      </div>
 
-      <About />
-      {/* <Features /> */}
-      <Testimonials />
+        {/* ══════════════════ FEATURE CARDS ══════════════════ */}
+        <section className={styles.featuresSection}>
+          <p className={styles.sectionEyebrow}>What We Offer</p>
+          <h2 className={styles.sectionTitle}>
+            Everything you need for <span className={styles.glowWord}>holistic wellness</span>
+          </h2>
+          <div className={styles.featuresGrid}>
+            {FEATURES.map((f, i) => (
+              <Link to={f.link} key={i} className={styles.featureCard} style={{ "--accent": f.color }}>
+                <div className={styles.featureIcon}>{f.icon}</div>
+                <h3 className={styles.featureTitle}>{f.title}</h3>
+                <p className={styles.featureDesc}>{f.desc}</p>
+                <div className={styles.featureArrow}>Explore →</div>
+                <div className={styles.featureGlow} />
+              </Link>
+            ))}
+          </div>
+        </section>
 
-      <div className={styles.footer}>
-        <Footer />
+        {/* ══════════════════ ABOUT ══════════════════ */}
+        <About />
+
+        {/* ══════════════════ TEAM ══════════════════ */}
+        <Team />
+
+        {/* ══════════════════ TESTIMONIALS ══════════════════ */}
+        <Testimonials />
+
+        {/* ══════════════════ FOOTER ══════════════════ */}
+        <div className={styles.footerWrap}>
+          <Footer />
+        </div>
       </div>
     </>
   );

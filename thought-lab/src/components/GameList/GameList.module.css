@@ -1,156 +1,392 @@
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+/* ===== GameList — Dark Futuristic RTU Theme ===== */
+
+.page {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -5%, rgba(0, 212, 255, 0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 90% 60%, rgba(168, 85, 247, 0.1) 0%, transparent 65%),
+    #080d1a;
+  padding: 100px 20px 80px;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #e2e8f0;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* blob animations */
+.page::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: blobFloat 14s ease-in-out infinite alternate;
+}
+
+.page::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  right: -80px;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: blobFloat 18s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes blobFloat {
+  0% {
+    transform: translate(0, 0) scale(1);
   }
-  
-  .header {
-    text-align: center;
-    margin-bottom: 2.5rem;
+
+  100% {
+    transform: translate(50px, 40px) scale(1.1);
   }
-  
-  .header h2 {
-    font-size: 2rem;
-    color: #2d3748;
-    margin-bottom: 0.5rem;
+}
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 56px;
+  position: relative;
+  z-index: 1;
+  animation: fadeSlideDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
   }
-  
-  .subtitle {
-    color: #718096;
-    font-size: 1rem;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .loadingContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 200px;
-    gap: 1rem;
+}
+
+.heroEyebrow {
+  display: inline-flex;
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  backdrop-filter: blur(8px);
+  color: #00d4ff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 6px 20px;
+  border-radius: 40px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.15);
+}
+
+.heroTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(36px, 6vw, 68px);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 16px;
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+}
+
+.heroTitle span {
+  background: linear-gradient(135deg, #00d4ff, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.25));
+}
+
+.heroSub {
+  font-size: 16px;
+  color: #94a3b8;
+  max-width: 560px;
+  margin: 0 auto 28px;
+  line-height: 1.7;
+}
+
+.heroDivider {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #00d4ff, #a855f7);
+  border-radius: 4px;
+  margin: 0 auto;
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+}
+
+/* ── Game Grid ── */
+.gameGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Game Card ── */
+.gameCard {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease, border-color 0.3s ease;
+
+  opacity: 0;
+  animation: cardReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 100ms);
+}
+
+@keyframes cardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
   }
-  
-  .loadingSpinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    border-top: 4px solid #4299e1;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+}
+
+.gameCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 36px var(--glow, rgba(0, 212, 255, 0.2));
+  border-color: var(--accent, #00d4ff);
+}
+
+/* Card Header */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.iconWrap {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--accent, #00d4ff);
+  transition: all 0.3s;
+}
+
+.gameCard:hover .iconWrap {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 14px var(--glow, rgba(0, 212, 255, 0.3));
+}
+
+.gameTitle {
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+  transition: color 0.2s;
+}
+
+.gameCard:hover .gameTitle {
+  color: var(--accent, #00d4ff);
+}
+
+/* Description */
+.gameDescription {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.65;
+  margin: 0;
+  flex-grow: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* Details row */
+.gameDetails {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detailIcon {
+  color: var(--accent, #00d4ff);
+  font-size: 16px;
+}
+
+.prize {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fbbf24;
+  letter-spacing: 0.3px;
+}
+
+.formLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent, #00d4ff);
+  text-decoration: none;
+  transition: text-shadow 0.2s;
+}
+
+.formLink:hover {
+  text-shadow: 0 0 10px var(--glow, rgba(0, 212, 255, 0.5));
+}
+
+/* CTA Button */
+.joinButton {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--accent, #00d4ff), #a855f7);
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 4px 16px var(--glow, rgba(0, 212, 255, 0.25));
+}
+
+.joinButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(168, 85, 247, 0.45);
+}
+
+/* ── Empty State ── */
+.emptyState {
+  text-align: center;
+  padding: 60px 24px;
+  max-width: 480px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.emptyIcon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  animation: floatBounce 3s ease-in-out infinite;
+}
+
+@keyframes floatBounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
   }
-  
-  .emptyState {
-    text-align: center;
-    padding: 3rem;
-    background: #f8fafc;
-    border-radius: 8px;
-    color: #64748b;
+
+  50% {
+    transform: translateY(-12px);
   }
-  
+}
+
+.emptyState h3 {
+  font-size: 20px;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.emptyState p {
+  color: #94a3b8;
+  font-size: 15px;
+}
+
+/* ── Loading ── */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.loadingSpinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 4px solid rgba(0, 212, 255, 0.1);
+  border-top-color: #00d4ff;
+  border-right-color: #a855f7;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  font-size: 16px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .page {
+    padding: 80px 16px 60px;
+  }
+
   .gameGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
-  
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: clamp(32px, 10vw, 48px);
+  }
+
   .gameCard {
-    background: white;
-    border-radius: 10px;
-    padding: 1.75rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid #e2e8f0;
-    display: flex;
-    flex-direction: column;
+    padding: 22px 18px;
   }
-  
-  .gameCard:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  }
-  
-  .cardHeader {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1.25rem;
-  }
-  
-  .gameIcon {
-    font-size: 1.5rem;
-    color: #4299e1;
-    margin-right: 0.75rem;
-  }
-  
-  .gameTitle {
-    margin: 0;
-    font-size: 1.25rem;
-    color: #2d3748;
-  }
-  
-  .gameDescription {
-    color: #4a5568;
-    line-height: 1.5;
-    margin-bottom: 1.5rem;
-    font-size: 0.95rem;
-    flex-grow: 1;
-  }
-  
-  .gameDetails {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
-  }
-  
-  .detailItem {
-    display: flex;
-    align-items: center;
-  }
-  
-  .detailIcon {
-    margin-right: 0.5rem;
-    color: #718096;
-    font-size: 1rem;
-  }
-  
-  .prize {
-    color: #d69e2e;
-    font-weight: 600;
-  }
-  
-  .formLink {
-    color: #4299e1;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  
-  .formLink:hover {
-    color: #3182ce;
-    text-decoration: underline;
-  }
-  
-  .joinButton {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #FFC3A0;
-    color: black;
-    border: none;
-    border-radius: 6px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  
-  @media (max-width: 768px) {
-    .container {
-      padding: 1.5rem;
-    }
-    
-    .gameGrid {
-      grid-template-columns: 1fr;
-    }
-  }
+}

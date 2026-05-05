@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import { testimonials } from '../utils/Sources';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SpotlightCard from './react-bits/SpotlightCard';
+import TiltedCard from './react-bits/TiltedCard';
 import './Testimonials.css'; // Import the CSS file
 
 gsap.registerPlugin(ScrollTrigger);
@@ -37,21 +39,25 @@ const Testimonials = () => {
             <div className="testimonials-header">
                 <h2>What People Are Saying!</h2>
             </div>
-            
+
             {/* Mobile/Tablet Layout - Vertical Stack */}
             <div className="testimonials-grid">
                 {testimonials.map((item, index) => (
                     <div
                         key={index}
-                        className="test-card"
-                        style={{ backgroundColor: "#D5E8D4" }}
+                        className="test-card-wrapper"
                     >
-                        <p className="testimonial-text">{item.statement}</p>
-                        <div className="testimonial-author">
-                            <img src={item.image} className="author-image" alt={item.name} />
-                            <div className="author-info">
-                                <p className="author-name">{item.name}</p>
-                                <p className="author-age">{item.age}</p>
+                        <div className="test-card">
+                            <div className="quote-icon">“</div>
+                            <p className="testimonial-text">{item.statement}</p>
+                            <div className="testimonial-author">
+                                <div className="author-image-wrapper">
+                                    <img src={item.image} className="author-image" alt={item.name} />
+                                </div>
+                                <div className="author-info">
+                                    <p className="author-name">{item.name}</p>
+                                    <p className="author-age">{item.age}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -61,20 +67,25 @@ const Testimonials = () => {
             {/* Desktop Layout - Horizontal Scroll */}
             <div className="testimonials-horizontal">
                 {testimonials.map((item, index) => (
-                    <div
+                    <SpotlightCard
                         key={index}
-                        className="test-card"
-                        style={{ backgroundColor: "#D5E8D4" }}
+                        className="test-card-wrapper"
+                        spotlightColor="rgba(0, 212, 255, 0.15)"
                     >
-                        <p className="testimonial-text">{item.statement}</p>
-                        <div className="testimonial-author">
-                            <img src={item.image} className="author-image" alt={item.name} />
-                            <div className="author-info">
-                                <p className="author-name">{item.name}</p>
-                                <p className="author-age">{item.age}</p>
+                        <TiltedCard className="test-card">
+                            <div className="quote-icon">“</div>
+                            <p className="testimonial-text">{item.statement}</p>
+                            <div className="testimonial-author">
+                                <div className="author-image-wrapper">
+                                    <img src={item.image} className="author-image" alt={item.name} />
+                                </div>
+                                <div className="author-info">
+                                    <p className="author-name">{item.name}</p>
+                                    <p className="author-age">{item.age}</p>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </TiltedCard>
+                    </SpotlightCard>
                 ))}
             </div>
         </div>

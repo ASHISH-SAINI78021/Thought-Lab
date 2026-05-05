@@ -25,10 +25,10 @@ const New = ({ children }) => {
             )}
 
             <div className={`${styles.slider} ${sidebarOpen ? styles.sliderOpen : ''}`}>
-                <div className={styles.first}>
+                {/* <div className={styles.first}>
                     <img src={NIT_Logo} alt="" className={styles.logo} />
                     <p className={styles.p}>NIT KKR</p>
-                </div>
+                </div> */}
                 <div className={styles.navigation}>
                     <p className={`${styles.a} ${styles.b}`}>Navigation</p>
                     <div className={styles.second}>

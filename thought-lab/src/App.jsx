@@ -58,7 +58,9 @@ import Events from "./components/Events/events.jsx";
 import EventItem from "./components/Events/EventItem/EventItem.jsx";
 import UploadWinner from "./components/Winner/AdminAddWinner/AddWinner.jsx";
 import Winners from "./components/Winner/winners.jsx";
+import Devices from "./components/Devices/Devices.jsx";
 import io from "socket.io-client";
+import Intro from "./components/Intro/Intro.jsx";
 import { url } from "./url";
 import { getStudentProfile } from "./http";
 
@@ -143,6 +145,7 @@ const AppContent = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
+        <Route path="/intro" element={<Intro />} />
         <Route path="/about" element={<AboutMe />} />
         <Route path="/utter-your-thoughts" element={<UtterYourThoughts />} />
         <Route path="/leaderboard" element={<Table />} />
@@ -163,6 +166,7 @@ const AppContent = () => {
         <Route path="/events/:id" element={<EventItem />} />
         <Route path="/upload-winner" element={<UploadWinner />} />
         <Route path="/winners" element={<Winners />} />
+        <Route path="/devices" element={<Devices />} />
 
         {/* Authenticated Student Routes */}
         <Route

@@ -1,0 +1,498 @@
+/* ==========================================================
+   Devices.module.css — Dark Futuristic RTU Theme
+   Palette: Deep Space #080d1a, Neon Teal #00d4ff, Violet #a855f7
+   ========================================================== */
+
+.page {
+    background: #080d1a;
+    min-height: 100vh;
+    color: #e2e8f0;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+}
+
+/* ── HERO ───────────────────────────────────────────────── */
+.hero {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 2rem 80px;
+    background: radial-gradient(circle at 50% 50%, #101a33 0%, #080d1a 100%);
+    overflow: hidden;
+}
+
+.heroOrbTeal {
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 65%);
+    border-radius: 50%;
+    animation: orbFloat 14s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+.heroOrbViolet {
+    position: absolute;
+    bottom: -15%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 65%);
+    border-radius: 50%;
+    animation: orbFloat 18s ease-in-out infinite alternate-reverse;
+    pointer-events: none;
+}
+
+@keyframes orbFloat {
+    from {
+        transform: translate(0, 0) scale(1);
+    }
+
+    to {
+        transform: translate(40px, 40px) scale(1.1);
+    }
+}
+
+.heroContent {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+}
+
+.heroEyebrow {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #00d4ff;
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    padding: 8px 24px;
+    border-radius: 40px;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(8px);
+}
+
+.heroTitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: #ffffff;
+    margin: 0 0 1.5rem;
+}
+
+.heroAccent {
+    background: linear-gradient(135deg, #00d4ff 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.3));
+}
+
+.heroSubtitle {
+    font-size: 1.25rem;
+    color: #94a3b8;
+    line-height: 1.8;
+    max-width: 700px;
+    margin: 0 auto 3.5rem;
+}
+
+.heroStats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border-radius: 24px;
+    padding: 1.5rem 4rem;
+    width: fit-content;
+    margin: 0 auto;
+    backdrop-filter: blur(20px);
+}
+
+.heroStat span {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ffffff, #94a3b8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.heroStat small {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #64748b;
+    font-weight: 700;
+    margin-top: 6px;
+    display: block;
+}
+
+.heroStatDiv {
+    width: 1px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ── MAIN: Rows ─────────────────────────────────────────── */
+.main {
+    padding: 6rem 2rem 10rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12rem;
+}
+
+.deviceRow {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 6rem;
+    align-items: center;
+}
+
+.rowReverse {
+    grid-template-columns: 1fr 1.2fr;
+}
+
+.rowReverse .visualPanel {
+    order: 2;
+}
+
+.rowReverse .textPanel {
+    order: 1;
+    text-align: right;
+    align-items: flex-end;
+}
+
+/* ── Visual Panel ────────────────────────────────────────── */
+.visualPanel {
+    position: relative;
+    border-radius: 32px;
+    aspect-ratio: 4 / 3;
+    cursor: pointer;
+    perspective: 2000px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    animation: containerFloat 8s ease-in-out infinite;
+}
+
+@keyframes containerFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.panelBorder {
+    position: absolute;
+    inset: -15px;
+    border: 2px solid;
+    border-radius: 44px;
+    animation: borderPulse 4s infinite alternate;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+@keyframes borderPulse {
+    from {
+        transform: scale(1);
+        opacity: 0.2;
+    }
+
+    to {
+        transform: scale(1.03);
+        opacity: 0.5;
+    }
+}
+
+.flipInner {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.flipped {
+    transform: rotateY(180deg);
+}
+
+.flipFront,
+.flipBack {
+    position: absolute;
+    inset: 0;
+    border-radius: 32px;
+    backface-visibility: hidden;
+    overflow: hidden;
+}
+
+.flipFront {
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.deviceImage {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.visualPanel:hover .deviceImage {
+    transform: scale(1.05);
+}
+
+.imageOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8, 13, 26, 0.8), transparent);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.visualPanel:hover .imageOverlay {
+    opacity: 1;
+}
+
+.flipHintFront {
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+/* ── Card Back ─────────────────────────────────────────── */
+.flipBack {
+    transform: rotateY(180deg);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 1.5rem;
+    background: #ffffff;
+    color: #1e293b;
+}
+
+.backImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 1rem;
+    opacity: 0.8;
+}
+
+.backContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 1rem;
+}
+
+.specsTitle {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin: 0 0 1.5rem;
+    text-align: center;
+    letter-spacing: -0.5px;
+    color: #0f172a;
+}
+
+.specsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.specItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.8rem;
+}
+
+.specLabel {
+    color: #64748b;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+}
+
+.specValue {
+    font-weight: 800;
+}
+
+.flipHint {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.5;
+}
+
+/* ── Muse Waves ────────────────────────────────────────── */
+.museWaves {
+    margin-top: 1.5rem;
+    gap: 0.75rem;
+}
+
+.waveLabel {
+    width: 48px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #334155;
+    text-transform: uppercase;
+}
+
+.waveBarBg {
+    height: 10px;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 5px;
+}
+
+.waveBar {
+    background: linear-gradient(90deg, #00d4ff, #a855f7);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+}
+
+/* ── Text Panel ─────────────────────────────────────────── */
+.textPanel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.categoryBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    width: fit-content;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.categoryDot {
+    width: 10px;
+    height: 10px;
+    box-shadow: 0 0 10px currentColor;
+}
+
+.deviceName {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(2.5rem, 4.5vw, 3.8rem);
+    font-weight: 950;
+    color: #ffffff;
+    line-height: 1;
+    letter-spacing: -2px;
+}
+
+.deviceTagline {
+    font-size: 1.35rem;
+    background: linear-gradient(135deg, #00d4ff, #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.deviceDesc {
+    font-size: 1.15rem;
+    color: #94a3b8;
+    line-height: 1.8;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1100px) {
+
+    .deviceRow,
+    .rowReverse {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .rowReverse {
+        direction: ltr;
+        /* Reset to normal stack order */
+    }
+}
+
+@media (max-width: 600px) {
+    .hero {
+        padding: 100px 1.5rem 60px;
+    }
+
+    .heroTitle {
+        font-size: 3.5rem;
+    }
+
+    .heroStats {
+        flex-direction: column;
+        padding: 2rem;
+        width: 100%;
+        gap: 1.5rem;
+    }
+
+    .heroStatDiv {
+        width: 100%;
+        height: 1px;
+    }
+
+    .main {
+        gap: 8rem;
+    }
+
+    .visualPanel {
+        aspect-ratio: 1;
+    }
+
+    .flipBack {
+        padding: 2rem;
+    }
+
+    .deviceName {
+        font-size: 2.8rem;
+    }
+}

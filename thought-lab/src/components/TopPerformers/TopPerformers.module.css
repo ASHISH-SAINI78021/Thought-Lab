@@ -3,7 +3,7 @@
 .section {
     position: relative;
     padding: 80px 24px 100px;
-    background: linear-gradient(180deg, #faf2eb 0%, #fff5ef 60%, #faf2eb 100%);
+    background: #080d1a;
     overflow: hidden;
     text-align: center;
 }
@@ -37,22 +37,22 @@
     font-weight: 700;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: #FFC3A0;
+    color: #00d4ff;
     margin: 0 0 10px;
 }
 
 .title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(2.2rem, 5vw, 3.4rem);
     font-weight: 800;
-    color: #2f3d61;
+    color: #e2e8f0;
     margin: 0 0 14px;
     line-height: 1.1;
 }
 
 .subtitle {
     font-size: 16px;
-    color: #6b7280;
+    color: rgba(226, 232, 240, 0.55);
     max-width: 480px;
     margin: 0 auto 60px;
     line-height: 1.6;
@@ -78,11 +78,26 @@
     flex: 1;
     max-width: 240px;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, filter 0.4s ease;
+
+    /* Top Notch Gradient Border */
+    border: 1.5px solid transparent;
+    border-bottom: none;
+    border-radius: 20px 20px 0 0;
+
+    /* Gradient Background + Gradient Border */
+    background:
+        linear-gradient(to bottom, #0c1222 0%, #080d1a 100%) padding-box,
+        linear-gradient(135deg, var(--medal-color) 0%, rgba(255, 255, 255, 0.05) 40%, transparent 100%) border-box;
+
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    padding-top: 24px;
 }
 
 .card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.15), 0 20px 40px var(--glow);
+    filter: brightness(1.1);
 }
 
 .emptyCard {
@@ -159,7 +174,7 @@
 .name {
     font-size: 15px;
     font-weight: 700;
-    color: #1f2937;
+    color: #e2e8f0;
     margin: 0 0 2px;
     white-space: nowrap;
     overflow: hidden;
@@ -176,8 +191,8 @@
 /* ── Podium block ── */
 .podium {
     width: 100%;
-    border-radius: 14px 14px 0 0;
-    background: linear-gradient(160deg, #2f3d61 0%, #1a2540 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -229,21 +244,21 @@
     margin-top: 48px;
     padding: 12px 28px;
     border-radius: 9999px;
-    background: #2f3d61;
-    color: white;
+    background: rgba(255, 255, 255, 0.05);
+    color: #00d4ff;
+    border: 1px solid rgba(0, 212, 255, 0.3);
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.5px;
     text-decoration: none;
     transition: all 0.25s ease;
-    box-shadow: 0 4px 16px rgba(47, 61, 97, 0.25);
 }
 
 .viewAll:hover {
-    background: #FFC3A0;
-    color: #2f3d61;
+    background: rgba(0, 212, 255, 0.1);
+    border-color: #00d4ff;
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(255, 195, 160, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 212, 255, 0.25);
 }
 
 /* ── Skeleton loader ── */
@@ -261,7 +276,7 @@
     max-width: 200px;
     height: 260px;
     border-radius: 14px;
-    background: linear-gradient(110deg, #ecdfc5 30%, #f5ede0 50%, #ecdfc5 70%);
+    background: linear-gradient(110deg, rgba(255, 255, 255, 0.02) 30%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.02) 70%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite linear;
 }

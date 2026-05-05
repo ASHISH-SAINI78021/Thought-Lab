@@ -1,0 +1,19 @@
+.spotlight-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: inherit;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.spotlight-effect {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    transition: opacity 0.3s ease;
+}
+
+.spotlight-card>*:not(.spotlight-effect) {
+    position: relative;
+    z-index: 1;
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Blog.module.css";
 import { useNavigate } from "react-router-dom";
 import { getAllBlogs } from "../../http";
+import SplashCursor from "../react-bits/SplashCursor";
 
 /* Skeleton card placeholder */
 const SkeletonCard = () => (
@@ -64,6 +65,7 @@ const Blog = () => {
     if (loading) {
         return (
             <div className={styles.pageWrapper}>
+                <SplashCursor />
                 <div className={styles.heroHeader}>
                     <span className={styles.heroLabel}>Thought Lab</span>
                     <h1 className={styles.heroTitle}>
@@ -84,6 +86,7 @@ const Blog = () => {
     if (error) {
         return (
             <div className={styles.pageWrapper}>
+                <SplashCursor />
                 <div className={styles.errorContainer}>
                     <div className={styles.errorIcon}>😕</div>
                     <p className={styles.errorMessage}>{error}</p>
@@ -102,6 +105,7 @@ const Blog = () => {
     if (blogs.length === 0) {
         return (
             <div className={styles.pageWrapper}>
+                <SplashCursor />
                 <div className={styles.emptyContainer}>
                     <div className={styles.emptyIcon}>📝</div>
                     <h2 className={styles.emptyTitle}>No posts yet</h2>
@@ -124,6 +128,7 @@ const Blog = () => {
     /* ── Blog Listing ── */
     return (
         <div className={styles.pageWrapper}>
+            <SplashCursor />
             {/* Hero header */}
             <div className={styles.heroHeader}>
                 <span className={styles.heroLabel}>Thought Lab</span>

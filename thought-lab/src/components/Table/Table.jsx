@@ -1,169 +1,275 @@
 import React, { useEffect, useState } from "react";
-import { Pagination, Dropdown, Button, Space, Spin } from "antd";
 import { url } from "../../url";
 import styles from "./Table.module.css";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import { useAuth } from "../../Context/auth";
+import SplashCursor from "../react-bits/SplashCursor";
+import { Search, Trophy, Crown, Medal, ChevronDown } from "lucide-react";
 
 const socket = io(`${url}`);
 
-const rowsOptions = [
-  { label: "5", key: "5" },
-  { label: "8", key: "8" },
-  { label: "20", key: "20" },
-];
+const getProfileImage = (path) => {
+  if (!path || path === 'null' || path === 'undefined' || path === 'fallback-avatar.png') return null;
+  if (path.startsWith('http') || path.startsWith('data:')) return path;
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  return `${url}/${cleanPath}`;
+};
 
-const Table = ({ screen }) => {
+const rowOptions = [5, 8, 20];
+
+/* ── rank medal helper ── */
+const RankBadge = ({ rank }) => {
+  if (rank === 1) return <span className={styles.rankGold}><Crown size={14} /> 1</span>;
+  if (rank === 2) return <span className={styles.rankSilver}><Medal size={14} /> 2</span>;
+  if (rank === 3) return <span className={styles.rankBronze}><Medal size={14} /> 3</span>;
+  return <span className={styles.rankNum}>{rank}</span>;
+};
+
+const Table = () => {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(20);
-  const [auth, setAuth] = useAuth();
+  const [auth] = useAuth();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // WebSocket initiation
+  /* ── socket live data ── */
   useEffect(() => {
     setLoading(true);
     socket.emit("get-initial-leaderboard");
 
-    // Initial load
     socket.on("leaderboard-data", (leaderboard) => {
       setData(leaderboard);
       setLoading(false);
     });
 
-    // Listen for leaderboard updates
     socket.on("leaderboard-update", (leaderboard) => {
       setData(leaderboard);
-      setLoading(false);
     });
 
-    // Handle connection errors
-    socket.on("connect_error", () => {
-      console.log("Connection error");
-      setLoading(false);
-    });
+    socket.on("connect_error", () => setLoading(false));
 
-    // Set timeout to stop loading if no response
-    const timeoutId = setTimeout(() => {
-      if (loading) {
-        setLoading(false);
-        console.log("Loading timeout");
-      }
-    }, 10000);
+    const timeout = setTimeout(() => setLoading(false), 10000);
 
     return () => {
       socket.off("leaderboard-data");
       socket.off("leaderboard-update");
       socket.off("connect_error");
-      clearTimeout(timeoutId);
+      clearTimeout(timeout);
     };
   }, []);
 
-  // Filter based on user details
-  const filteredData = data?.filter((item) => {
+  /* ── current user rank ── */
+  const currentUserId = auth?.user?._id || auth?.user?.id;
+  const myRankIndex = data.findIndex(
+    (item) => item.user?._id === currentUserId || item.user?.id === currentUserId
+  );
+  const myRank = myRankIndex !== -1 ? myRankIndex + 1 : null;
+  const myEntry = myRankIndex !== -1 ? data[myRankIndex] : null;
+
+  /* ── filter & paginate ── */
+  const filteredData = data.filter((item) => {
     const name = item?.user?.name || "";
-    const rollNumber = item?.user?.rollNumber || "";
+    const roll = item?.user?.rollNumber || "";
     return (
       name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      rollNumber.toLowerCase().includes(searchTerm.toLowerCase())
+      roll.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
-  // Pagination
-  const paginatedData = filteredData?.slice(
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const paginatedData = filteredData.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
 
-  const handleMenuClick = (e) => {
-    setRowsPerPage(parseInt(e.key));
-    setCurrentPage(1);
-  };
+  /* ── top 3 podium ── */
+  const topThree = data.slice(0, 3);
+
+  const podiumOrder = [
+    topThree[1] && { ...topThree[1], rank: 2 },
+    topThree[0] && { ...topThree[0], rank: 1 },
+    topThree[2] && { ...topThree[2], rank: 3 },
+  ].filter(Boolean);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.toolbar}>
-        <input
-          type="text"
-          placeholder="Search name or roll no."
-          className={styles.search}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          disabled={loading}
-        />
+    <div className={styles.page}>
+      <SplashCursor />
+
+      {/* ── Hero ── */}
+      <div className={styles.hero}>
+        <span className={styles.heroEyebrow}>Live Rankings</span>
+        <h1 className={styles.heroTitle}>
+          <Trophy size={36} /> <span>Leaderboard</span>
+        </h1>
+        <p className={styles.heroSub}>Real-time rankings updated live via WebSocket</p>
       </div>
 
-      <div className={styles.tableWrapper}>
-        {loading ? (
-          <div className={styles.loadingContainer}>
-            <Spin size="large" />
-            <p>Loading leaderboard data...</p>
-          </div>
-        ) : (
-          <table className={styles.table}>
-            <thead>
-              <tr className={styles.head}>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Roll Number</th>
-                <th className={styles.hideOnMobile}>Branch</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody className={styles.tbody}>
-              {paginatedData?.length > 0 ? (
-                paginatedData?.map((item, index) => (
-                  <tr
-                    key={item._id}
-                    onClick={() => navigate(`/leaderboard/${item.user?._id}`)}
-                    className={styles.tableRow}
-                  >
-                    <td data-label="ID">{(currentPage - 1) * rowsPerPage + index + 1}</td>
-                    <td data-label="Name">{item.user?.name || "-"}</td>
-                    <td data-label="Roll Number">{item.user?.rollNumber || "-"}</td>
-                    <td data-label="Branch" className={styles.hideOnMobile}>{item.user?.branch || "-"}</td>
-                    <td data-label="Score" className={styles.scoreColumn}>{item.score}</td>
-                  </tr>
-                ))
+      {/* ── Current User Rank Card (LeetCode-style) ── */}
+      {myEntry && !loading && (
+        <div className={styles.myRankCard}>
+          <div className={styles.myRankLeft}>
+            <div className={styles.myAvatar}>
+              {myEntry.user?.profilePicture ? (
+                <img src={getProfileImage(myEntry.user.profilePicture)} alt={myEntry.user.name} className={styles.avatarImg} />
               ) : (
-                <tr>
-                  <td colSpan={20} style={{ textAlign: "center" }}>
-                    {searchTerm ? "No matching records found." : "No data available."}
-                  </td>
-                </tr>
+                myEntry.user?.name?.[0]?.toUpperCase() || "?"
               )}
-            </tbody>
-          </table>
-        )}
-      </div>
-
-      {!loading && (
-        <div className={styles.footer}>
-          <div className={styles.rows}>
-            <Dropdown menu={{ items: rowsOptions, onClick: handleMenuClick }}>
-              <Button className={styles.rowsButton} disabled={filteredData?.length === 0}>
-                <Space style={{color : "black"}}>
-                  Rows per page: {rowsPerPage}
-                </Space>
-              </Button>
-            </Dropdown>
+            </div>
+            <div>
+              <p className={styles.myName}>{myEntry.user?.name}</p>
+              <p className={styles.myMeta}>{myEntry.user?.rollNumber} · {myEntry.user?.branch}</p>
+            </div>
           </div>
-          <div className={styles.pagination}>
-            <Pagination
-              current={currentPage}
-              total={filteredData?.length}
-              pageSize={rowsPerPage}
-              onChange={(page) => setCurrentPage(page)}
-              showSizeChanger={false}
-              responsive={true}
-              size="small"
-              disabled={filteredData?.length === 0}
-            />
+          <div className={styles.myRankRight}>
+            <div className={styles.myRankStat}>
+              <span className={styles.myRankValue}>#{myRank}</span>
+              <span className={styles.myRankLabel}>Your Rank</span>
+            </div>
+            <div className={styles.myRankDivider} />
+            <div className={styles.myRankStat}>
+              <span className={styles.myScoreValue}>{myEntry.score}</span>
+              <span className={styles.myRankLabel}>Score</span>
+            </div>
           </div>
         </div>
+      )}
+
+      {loading ? (
+        <div className={styles.loadingContainer}>
+          <div className={styles.loadingSpinner} />
+          <p className={styles.loadingText}>Loading leaderboard…</p>
+        </div>
+      ) : (
+        <>
+          {/* ── Podium Top 3 ── */}
+          {topThree.length >= 3 && !searchTerm && (
+            <div className={styles.podium}>
+              {podiumOrder.map(({ user, score, rank }) => (
+                <div
+                  key={rank}
+                  className={`${styles.podiumCard} ${styles[`podium${rank}`]}`}
+                  onClick={() => navigate(`/leaderboard/${user?._id}`)}
+                >
+                  <div className={styles.podiumAvatar}>
+                    {user?.profilePicture ? (
+                      <img src={getProfileImage(user.profilePicture)} alt={user.name} className={styles.avatarImg} />
+                    ) : (
+                      user?.name?.[0]?.toUpperCase() || "?"
+                    )}
+                  </div>
+                  <div className={styles.podiumMedal}>
+                    {rank === 1 ? "🥇" : rank === 2 ? "🥈" : "🥉"}
+                  </div>
+                  <p className={styles.podiumName}>{user?.name}</p>
+                  <p className={styles.podiumScore}>{score} pts</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* ── Search bar ── */}
+          <div className={styles.toolbar}>
+            <div className={styles.searchBox}>
+              <Search size={16} className={styles.searchIcon} />
+              <input
+                type="text"
+                placeholder="Search name or roll no…"
+                className={styles.searchInput}
+                value={searchTerm}
+                onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+              />
+            </div>
+            <div className={styles.rowsSelect}>
+              <span>Rows:</span>
+              <select
+                value={rowsPerPage}
+                onChange={(e) => { setRowsPerPage(Number(e.target.value)); setCurrentPage(1); }}
+                className={styles.select}
+              >
+                {rowOptions.map(n => <option key={n} value={n}>{n}</option>)}
+              </select>
+              <ChevronDown size={14} />
+            </div>
+          </div>
+
+          {/* ── Table ── */}
+          <div className={styles.tableWrap}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Player</th>
+                  <th className={styles.hideOnMobile}>Roll No.</th>
+                  <th className={styles.hideOnMobile}>Branch</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedData.length > 0 ? (
+                  paginatedData.map((item, index) => {
+                    const globalRank = (currentPage - 1) * rowsPerPage + index + 1;
+                    const isMe = item.user?._id === currentUserId || item.user?.id === currentUserId;
+                    return (
+                      <tr
+                        key={item._id}
+                        onClick={() => navigate(`/leaderboard/${item.user?._id}`)}
+                        className={`${styles.row} ${isMe ? styles.myRow : ""}`}
+                      >
+                        <td><RankBadge rank={globalRank} /></td>
+                        <td>
+                          <div className={styles.playerCell}>
+                            <div className={styles.playerAvatar}>
+                              {item.user?.profilePicture ? (
+                                <img src={getProfileImage(item.user.profilePicture)} alt={item.user.name} className={styles.avatarImg} />
+                              ) : (
+                                item.user?.name?.[0]?.toUpperCase() || "?"
+                              )}
+                            </div>
+                            <span className={styles.playerName}>
+                              {item.user?.name || "—"}
+                              {isMe && <span className={styles.meTag}>You</span>}
+                            </span>
+                          </div>
+                        </td>
+                        <td className={styles.hideOnMobile}>{item.user?.rollNumber || "—"}</td>
+                        <td className={styles.hideOnMobile}>{item.user?.branch || "—"}</td>
+                        <td className={styles.scoreCell}>{item.score}</td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan={5} className={styles.emptyCell}>
+                      {searchTerm ? "No matching students found." : "No data available."}
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* ── Pagination ── */}
+          {totalPages > 1 && (
+            <div className={styles.pagination}>
+              <button
+                className={styles.pageBtn}
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(p => p - 1)}
+              >← Prev</button>
+              <span className={styles.pageInfo}>
+                {currentPage} / {totalPages}
+              </span>
+              <button
+                className={styles.pageBtn}
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(p => p + 1)}
+              >Next →</button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

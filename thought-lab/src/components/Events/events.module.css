@@ -1,178 +1,328 @@
-/* ✅ Base body reset */
-body {
-  margin: 0;
-  padding: 0;
+/* ===== Events — Dark Futuristic RTU Theme ===== */
+
+.page {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -5%, rgba(0, 212, 255, 0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 90% 60%, rgba(168, 85, 247, 0.1) 0%, transparent 65%),
+    #080d1a;
+  padding: 100px 20px 80px;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #e2e8f0;
+  position: relative;
   overflow-x: hidden;
 }
 
-/* 🌌 Main container with spline background */
-.eventsContainer {
-   position: relative;
-  width: 100%;
-  background-color: var(--dark-1);
-  overflow: hidden;
-}
-
-/* 🔮 Fixed spline background (kept same as your second version) */
-.splineBackground {
-  position: fixed;
-  left: 0;
-  width: 100%;
-  height: 100dvh;
-  z-index: 1;
-  overflow: hidden;
+/* blob decorations */
+.page::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 60%);
+  border-radius: 50%;
   pointer-events: none;
-  cursor: none !important;
+  z-index: 0;
+  animation: blobFloat 14s ease-in-out infinite alternate;
 }
 
-.splineBackground canvas,
-.splineBackground > div,
-.splineBackground > * {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover;
-  display: block;
+.page::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  right: -80px;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: blobFloat 18s ease-in-out infinite alternate-reverse;
 }
 
-/* 🔼 Foreground content stays on top */
-.eventsContent {
+@keyframes blobFloat {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate(50px, 40px) scale(1.1);
+  }
+}
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 60px;
   position: relative;
-  z-index: 2;
-  padding: 4rem 1.5rem;
-  background-color: var(--background);
-  color: var(--light);
-  border-top: 2px solid rgba(255, 255, 255, 0.1);
-  margin-top: 100dvh;
+  z-index: 1;
+  animation: fadeSlideDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* ✅ Event List (centered layout, matches first design) */
-.eventList {
-  max-width: 900px;
-  margin: auto;
-  padding: 2rem;
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* ✅ Event Card — styled like the first version */
+.heroEyebrow {
+  display: inline-flex;
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  backdrop-filter: blur(8px);
+  color: #00d4ff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 6px 20px;
+  border-radius: 40px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.15);
+}
+
+.heroTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(36px, 6vw, 68px);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 16px;
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+}
+
+.heroTitle span {
+  background: linear-gradient(135deg, #00d4ff, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.25));
+}
+
+.heroSub {
+  font-size: 16px;
+  color: #94a3b8;
+  max-width: 600px;
+  margin: 0 auto 28px;
+  line-height: 1.7;
+}
+
+.heroDivider {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #00d4ff, #a855f7);
+  border-radius: 4px;
+  margin: 0 auto;
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+}
+
+/* ── Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Event Card ── */
 .eventCard {
-  display: flex;
-  gap: 1rem;
-  background: linear-gradient(145deg, #0f0f0f, #1a1a1a, #2c2c2c);
-  align-items: center;
-  padding: 1rem;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease, border-color 0.3s ease;
+
+  /* stagger animation */
+  opacity: 0;
+  animation: cardReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 120ms);
+}
+
+@keyframes cardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .eventCard:hover {
-  transform: scale(1.02);
+  transform: translateY(-10px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 36px var(--glow, rgba(0, 212, 255, 0.2));
+  border-color: var(--accent, #00d4ff);
 }
 
-/* ✅ Image styling (matches first version) */
-.bannerImage {
-  width: 300px;
-  height: 170px;
+/* Banner */
+.cardBanner {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.bannerImg {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 5px;
-  background-color: #eee;
-  flex-shrink: 0;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  display: block;
 }
 
-/* ✅ Card details */
-.details h2 {
+.eventCard:hover .bannerImg {
+  transform: scale(1.06);
+}
+
+.bannerOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, #080d1a 105%);
+}
+
+.datePill {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  color: var(--accent, #00d4ff);
+  border: 1px solid var(--accent, rgba(0, 212, 255, 0.4));
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+/* Body */
+.cardBody {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cardTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
   margin: 0;
-  font-size: 1.4rem;
-  font-family: "BBH Sans Bartle", sans-serif;
-  font-weight:700;
-  background: rgb(229, 9, 20);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  line-height: 1.3;
+  transition: color 0.2s;
 }
 
-.details p {
-  margin: 0.2rem 0;
-  color: whitesmoke;
+.eventCard:hover .cardTitle {
+  color: var(--accent, #00d4ff);
 }
 
-.description {
-  font-size: 0.95rem;
-  margin-top: 0.5rem;
-  color: whitesmoke;
+.cardExcerpt {
+  font-size: 13.5px;
+  color: #94a3b8;
+  line-height: 1.65;
+  margin: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
-/* ✅ Register link animation (same as first version) */
-.registerLink a {
-  color: #b38600;
-  animation: glowPulse 1.5s ease-in-out infinite;
+/* Footer */
+.cardFooter {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
 }
 
-@keyframes glowPulse {
-  0% {
-    color: #b38600;
-    text-shadow: 0 0 0px rgba(255, 215, 0, 0);
-  }
-  50% {
-    color: #ffd700;
-    text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
-  }
-  100% {
-    color: #b38600;
-    text-shadow: 0 0 0px rgba(255, 215, 0, 0);
-  }
+.viewBtn,
+.registerBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s;
 }
 
-/* ✅ Responsive behavior (matches first version’s responsiveness) */
+.viewBtn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}
+
+.viewBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent, #00d4ff);
+  color: var(--accent, #00d4ff);
+}
+
+.viewBtn span {
+  transition: transform 0.2s;
+}
+
+.viewBtn:hover span {
+  transform: translateX(4px);
+}
+
+.registerBtn {
+  background: linear-gradient(135deg, var(--accent, #00d4ff), #a855f7);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 16px var(--glow, rgba(0, 212, 255, 0.25));
+}
+
+.registerBtn:hover {
+  box-shadow: 0 8px 24px var(--glow, rgba(168, 85, 247, 0.4));
+  transform: translateY(-2px);
+}
+
+/* ── Responsive ── */
 @media (max-width: 768px) {
-  .eventsContent {
-    margin-top: 100dvh;
-    padding: 3rem 1rem;
-   
+  .page {
+    padding: 80px 16px 60px;
   }
 
-  .eventCard {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 90%;       /* ✅ slightly less than full width */
-    max-width: 500px; /* optional: prevent super wide cards on tablets */
-    margin: 1em auto; /* center the card with some vertical spacing */
-    
-    
+  .grid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    gap: 24px;
   }
 
-  .bannerImage {
-    width: 95%;
-    height: auto;
-    max-width: none;
-    border-radius: 10px;
+  .cardBanner {
+    height: 200px;
   }
-
-  .details {
-    width: 80%;
-    padding-top: 1rem;
-    font-size: 1rem;
-  }
-
-  .details h2 {
-    font-size: 5rem;
-  }
-
-  .description {
-    font-size: 3.5rem;
-  }
-
-  .registerLink a {
-    font-size: 4rem;
-  }
-
-  .eventList {
-    padding: 1rem;
-  }
-  .date{
-    font-size: 3.5rem;
-  }
-
-  
 }
 
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: clamp(32px, 10vw, 48px);
+  }
+
+  .cardFooter {
+    flex-direction: column;
+  }
+}

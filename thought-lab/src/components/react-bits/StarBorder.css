@@ -1,0 +1,54 @@
+.star-border-container {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+}
+
+.star-border-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    /* Border thickness */
+    background: rgba(255, 255, 255, 0.08);
+    /* Default static border */
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    transition: background 0.3s ease;
+}
+
+.star-border-animator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    animation: star-border-spin linear infinite;
+    opacity: 0.8;
+}
+
+.star-border-inner {
+    position: relative;
+    z-index: 1;
+    background: inherit;
+    border-radius: inherit;
+    height: 100%;
+    width: 100%;
+}
+
+@keyframes star-border-spin {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}

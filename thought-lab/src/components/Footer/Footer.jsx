@@ -95,17 +95,23 @@ const Footer = () => {
             <h3>Contact</h3>
             <div className="contact-item">
               <i className="icon-location"></i>
-              <p>NIT Kurukshetra, Haryana, India</p>
+              <p>RTU, Kota, Rajasthan – 324010, India</p>
             </div>
             <div className="contact-item">
               <i className="icon-email"></i>
               <p>
-                <a href="mailto:12214078@nitkkr.ac.in">12214078@nitkkr.ac.in</a>
+                <a href="mailto:thoughtlab@rtu.ac.in">thoughtlab@rtu.ac.in</a>
               </p>
             </div>
             <div className="contact-item">
               <i className="icon-phone"></i>
               <p>+91 8708645252</p>
+            </div>
+            <div className="contact-item">
+              <i className="icon-location"></i>
+              <p>
+                <a href="https://www.rtu.ac.in" target="_blank" rel="noopener noreferrer">www.rtu.ac.in</a>
+              </p>
             </div>
           </div>
 

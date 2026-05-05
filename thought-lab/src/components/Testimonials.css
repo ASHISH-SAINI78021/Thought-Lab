@@ -4,10 +4,11 @@
     padding: 0 1rem;
     top: 0;
     padding-top: 10vh;
-    font-family: sans-serif;
+    font-family: 'Inter', sans-serif;
     justify-content: center;
     height: auto;
-    background-color: #faf2eb;
+    background-color: #080d1a;
+    color: #e2e8f0;
 }
 
 .testimonials-header {
@@ -19,11 +20,12 @@
 }
 
 .testimonials-header h2 {
-    font-family: display;
+    font-family: 'Space Grotesk', sans-serif;
     text-align: center;
     font-size: 2.5rem;
     line-height: 1.1;
     padding: 0 1rem;
+    color: #e2e8f0;
     width: fit-content;
 }
 
@@ -41,18 +43,40 @@
 }
 
 .test-card {
-    border-radius: 15px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+
+    /* Top Notch Glassmorphism */
+    border: 1px solid transparent;
+    background:
+        linear-gradient(145deg, rgba(16, 21, 35, 0.8) 0%, rgba(8, 13, 26, 0.95) 100%) padding-box,
+        linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(255, 255, 255, 0) 100%) border-box;
+
+    backdrop-filter: blur(20px);
+    box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.1), 0 15px 35px -10px rgba(0, 0, 0, 0.5);
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-height: 280px;
 }
 
+.quote-icon {
+    font-size: 4rem;
+    font-family: Georgia, serif;
+    color: rgba(0, 212, 255, 0.2);
+    line-height: 0;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
 .testimonial-text {
     text-align: justify;
-    font-size: 0.875rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: rgba(226, 232, 240, 0.8);
+    position: relative;
+    z-index: 2;
 }
 
 .testimonial-author {
@@ -61,10 +85,30 @@
     align-items: center;
 }
 
-.author-image {
-    width: 3rem;
-    height: 3rem;
+.author-image-wrapper {
+    width: 3.5rem;
+    height: 3.5rem;
     border-radius: 50%;
+    margin-right: 0.75rem;
+    padding: 2px;
+    background: linear-gradient(135deg, #00d4ff, #a855f7);
+}
+
+.author-image-wrapper {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    padding: 2px;
+    background: linear-gradient(135deg, #00d4ff, #a855f7);
+}
+
+.author-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #080d1a;
 }
 
 .author-info {
@@ -79,6 +123,7 @@
 
 .author-age {
     font-size: 0.8125rem;
+    color: rgba(226, 232, 240, 0.6);
 }
 
 /* Tablet Styles */
@@ -97,9 +142,12 @@
         gap: 1.5rem;
     }
 
-    .test-card {
+    .test-card-wrapper {
         min-height: 320px;
-        padding: 1.5rem;
+    }
+
+    .test-card {
+        padding: 2rem;
     }
 
     .testimonial-text {
@@ -135,49 +183,71 @@
         margin-top: 1.875rem;
     }
 
+    .test-card-wrapper {
+        min-width: 25vw;
+        min-height: 340px;
+    }
+
     .test-card {
-        min-width: 17vw;
-        min-height: 320px;
-        padding: 1.5625rem;
+        padding: 2rem;
     }
 
     .testimonial-text {
         font-size: 1rem;
     }
 
-    .author-image {
-        width: 3.125rem;
-        height: 3.125rem;
+    .author-image-wrapper {
+        width: 4rem;
+        height: 4rem;
     }
 }
 
-/* Large Desktop Styles */
+/* Mobile Styles */
 @media (max-width: 500px) {
-    .testimonials-header h2 {
-        font-size: 7rem;
-    }
-
-    .testimonial-text {
-        font-size: 5rem;
-    }
-
-    .author-image {
-        width: 30%;
+    .testimonials-section {
+        padding-top: 4rem;
         height: auto;
     }
 
-    .author-age,
+    .testimonials-header h2 {
+        font-size: 4rem;
+    }
+
+    .testimonial-text {
+        font-size: 2.5rem;
+        line-height: 1.6;
+    }
+
+    .quote-icon {
+        font-size: 8rem;
+    }
+
+    .author-image-wrapper {
+        width: 8rem;
+        height: 8rem;
+    }
+
+    .author-age {
+        font-size: 2rem;
+    }
+
     .author-name {
-        font-size: 3rem;
+        font-size: 2.5rem;
+    }
+
+    .testimonials-grid {
+        gap: 1rem;
+        padding: 1rem 0;
     }
 
     .test-card {
-        padding: 3rem;
-        margin: 3rem;
+        padding: 2.5rem;
+        justify-content: flex-start;
+        min-height: auto;
+        margin-bottom: 0.5rem;
     }
 
-    .testimonials-section {
-        margin-top: -30vh;
-        margin-bottom: 8vh;
+    .testimonial-author {
+        margin-top: 2rem;
     }
 }

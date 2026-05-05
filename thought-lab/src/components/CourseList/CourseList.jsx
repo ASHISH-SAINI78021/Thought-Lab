@@ -4,6 +4,7 @@ import { PlayCircle, Clock, Search, Edit, BookOpen } from 'lucide-react';
 import { getAllCourses } from '../../http';
 import './CourseList.css';
 import { useAuth } from '../../Context/auth';
+import SplashCursor from '../react-bits/SplashCursor';
 
 /* ── Skeleton card for loading state ─────────────────────────── */
 const SkeletonCard = () => (
@@ -87,6 +88,7 @@ const CourseList = () => {
     if (loading) {
         return (
             <div className="course-list-page">
+                <SplashCursor />
                 <div className="course-hero">
                     <p className="hero-eyebrow">Browse &amp; Learn</p>
                     <h1 className="hero-title">Our <span>Courses</span></h1>
@@ -103,6 +105,7 @@ const CourseList = () => {
     if (error) {
         return (
             <div className="course-list-page">
+                <SplashCursor />
                 <div className="course-list-error">
                     <div className="no-courses-icon">⚠️</div>
                     <p>{error}</p>
@@ -114,7 +117,7 @@ const CourseList = () => {
 
     return (
         <div className="course-list-page">
-
+            <SplashCursor />
             {/* ── Hero ── */}
             <div className="course-hero">
                 <p className="hero-eyebrow">Browse &amp; Learn</p>
