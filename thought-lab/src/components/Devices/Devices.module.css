@@ -443,36 +443,56 @@
 }
 
 /* ── Responsive ─────────────────────────────────────────── */
+
+/* Tablet: stack columns */
 @media (max-width: 1100px) {
+    .main {
+        gap: 7rem;
+        padding: 5rem 2rem 8rem;
+    }
 
     .deviceRow,
     .rowReverse {
         grid-template-columns: 1fr;
-        gap: 4rem;
-        max-width: 600px;
+        gap: 2.5rem;
+        max-width: 580px;
         margin: 0 auto;
     }
 
-    .rowReverse {
-        direction: ltr;
-        /* Reset to normal stack order */
+    .rowReverse .visualPanel {
+        order: initial;
+    }
+
+    .rowReverse .textPanel {
+        order: initial;
+        text-align: left;
+        align-items: flex-start;
     }
 }
 
-@media (max-width: 600px) {
+/* Mobile: completely flatten the 3D flip card */
+@media (max-width: 768px) {
     .hero {
-        padding: 100px 1.5rem 60px;
+        padding: 90px 1.25rem 50px;
+        min-height: auto;
     }
 
     .heroTitle {
-        font-size: 3.5rem;
+        font-size: clamp(2rem, 8vw, 2.8rem);
+        letter-spacing: -1px;
+    }
+
+    .heroSubtitle {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
     }
 
     .heroStats {
         flex-direction: column;
-        padding: 2rem;
+        padding: 1.25rem 1.5rem;
         width: 100%;
-        gap: 1.5rem;
+        gap: 1.25rem;
+        border-radius: 16px;
     }
 
     .heroStatDiv {
@@ -480,19 +500,127 @@
         height: 1px;
     }
 
+    .heroStat span {
+        font-size: 1.8rem;
+    }
+
     .main {
-        gap: 8rem;
+        gap: 4rem;
+        padding: 3rem 1.25rem 5rem;
     }
 
+    .deviceRow,
+    .rowReverse {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        max-width: 100%;
+        margin: 0;
+    }
+
+    /* ── Disable 3D flip on mobile, show as simple card ── */
     .visualPanel {
-        aspect-ratio: 1;
+        aspect-ratio: auto;
+        height: auto;
+        perspective: none;
+        animation: none;
+        border-radius: 20px 20px 0 0;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: none;
+        box-shadow: none;
+        background: #ffffff;
+        overflow: hidden;
     }
 
+    .panelBorder {
+        display: none;
+    }
+
+    /* Always show front on mobile — no 3D flip */
+    .flipInner {
+        transform: none !important;
+        transform-style: flat;
+        transition: none;
+        height: auto;
+        position: static;
+    }
+
+    .flipFront {
+        position: static;
+        backface-visibility: visible;
+        border-radius: 20px 20px 0 0;
+        height: 220px;
+        background: #ffffff;
+    }
+
+    .deviceImage {
+        width: 80%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    /* Hide the flip back by default on mobile, or just make it static */
     .flipBack {
-        padding: 2rem;
+        display: none;
+    }
+
+    .imageOverlay {
+        display: none;
+    }
+
+    /* Text panel */
+    .textPanel {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-top: none;
+        border-radius: 0 0 20px 20px;
+        padding: 2rem 1.5rem;
+        gap: 0.75rem;
+        text-align: left !important;
+        align-items: flex-start !important;
+    }
+
+    .categoryBadge {
+        font-size: 0.7rem;
+        padding: 5px 14px;
     }
 
     .deviceName {
-        font-size: 2.8rem;
+        font-size: 1.8rem;
+        letter-spacing: -0.5px;
+        margin: 0;
+    }
+
+    .deviceTagline {
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .deviceDesc {
+        font-size: 1rem;
+        line-height: 1.65;
+        color: #94a3b8;
+    }
+}
+
+@media (max-width: 480px) {
+    .main {
+        gap: 3rem;
+    }
+
+    .flipFront {
+        height: 180px;
+    }
+
+    .deviceName {
+        font-size: 1.5rem;
+    }
+
+    .deviceTagline {
+        font-size: 0.9rem;
+    }
+
+    .deviceDesc {
+        font-size: 0.9rem;
     }
 }

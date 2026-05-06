@@ -92,6 +92,8 @@ const io = new Server(server, {
       "https://thought-labv2.netlify.app",
       "http://localhost:3000",
       "http://localhost:5173",
+      "https://thought-lab-rtu-v3.netlify.app",
+      "*"
     ],
     credentials: true,
   },
