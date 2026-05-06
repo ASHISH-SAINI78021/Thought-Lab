@@ -105,7 +105,7 @@ const Footer = () => {
             </div>
             <div className="contact-item">
               <i className="icon-phone"></i>
-              <p>+91 8708645252</p>
+              <p>+91 9460751359</p>
             </div>
             <div className="contact-item">
               <i className="icon-location"></i>
@@ -120,7 +120,7 @@ const Footer = () => {
             <h3>Follow Us</h3>
             <div className="social-icons">
               <a
-                href="https://github.com/Gurbajsingh1"
+                href="https://github.com/ASHISH-SAINI78021/"
                 aria-label="GitHub"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -130,7 +130,7 @@ const Footer = () => {
                 <span>GitHub</span>
               </a>
               <a
-                href="https://gurbaj-portfolio.netlify.app/"
+                href="https://ashish-portfoliov1.netlify.app/"
                 aria-label="Portfolio"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -140,7 +140,7 @@ const Footer = () => {
                 <span>Portfolio</span>
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/reel/DRzgvzPktBW/?igsh=aWh0bGFlZm9nc3ky"
                 aria-label="Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -149,7 +149,7 @@ const Footer = () => {
                 <FaInstagram />
                 <span>Instagram</span>
               </a>
-              <a
+              {/* <a
                 href="https://www.linkedin.com/in/gurbaj-singh-b71b81205"
                 aria-label="LinkedIn"
                 target="_blank"
@@ -158,7 +158,7 @@ const Footer = () => {
               >
                 <FaLinkedinIn />
                 <span>LinkedIn</span>
-              </a>
+              </a> */}
             </div>
           </div>
         </div>

@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { FaSpa } from 'react-icons/fa';
 import styles from './MeditationTracker.module.css';
 import toast from 'react-hot-toast';
-// import { url } from "../../url"; // Removed
 import { useAuth } from "../../Context/auth";
 import { Avatar } from 'antd';
-// Import Axios API functions
 import { getMeditationHistory, saveMeditationSession as apiSaveMeditationSession } from '../../http';
 import SplashCursor from '../react-bits/SplashCursor';
+import { getTier } from '../../utils/soulXp';
 
 const MeditationTracker = () => {
       const [selectedOption, setSelectedOption] = useState(null);
@@ -183,14 +182,16 @@ const MeditationTracker = () => {
                                     <FaSpa />
                               </div>
                               <h1>Meditation Tracker</h1>
-                              <p>Track your meditation practice and earn points</p>
+                              <p>Earn <strong style={{ color: getTier(totalScoreForDay).color }}>Soul XP</strong> ✨ and ascend your tier</p>
                         </div>
 
                         <div className={styles.content}>
-                              <div className={styles.todaySummary}>
-                                    <div className={styles.summaryLabel}>Today's Summary</div>
-                                    <div className={styles.summaryScore}>{totalScoreForDay}</div>
-                                    <div className={styles.summaryText}>Total Meditation Points Earned</div>
+                              <div className={styles.todaySummary} style={{ borderColor: getTier(totalScoreForDay).color }}>
+                                    <div className={styles.summaryLabel} style={{ color: getTier(totalScoreForDay).color }}>
+                                          {getTier(totalScoreForDay).emoji} {getTier(totalScoreForDay).title}
+                                    </div>
+                                    <div className={styles.summaryScore} style={{ color: getTier(totalScoreForDay).color }}>{totalScoreForDay}</div>
+                                    <div className={styles.summaryText}>Soul XP Earned Today</div>
                               </div>
                               <div className={styles.question}>Did you meditate today?</div>
 

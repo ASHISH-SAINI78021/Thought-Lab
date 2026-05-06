@@ -735,3 +735,99 @@
     margin-bottom: 4px;
   }
 }
+
+/* ─── Soul XP Ascension System ─── */
+.tierBadge {
+  margin-top: 8px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border: 1px solid;
+  text-align: center;
+  animation: tierPulse 3s ease-in-out infinite;
+}
+
+@keyframes tierPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.75;
+  }
+}
+
+.soulXpCard {
+  margin-top: 20px;
+  padding: 18px 22px;
+  border-radius: 16px;
+  border: 1px solid;
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-width: 260px;
+  transition: box-shadow 0.3s ease;
+}
+
+.soulXpHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.soulXpLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(226, 232, 240, 0.6);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.soulXpScore {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.soulXpTierName {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.soulXpBarTrack {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.soulXpBarFill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+}
+
+.soulXpBarFill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
+}
+
+.soulXpNext {
+  font-size: 12px;
+  color: rgba(226, 232, 240, 0.45);
+  font-weight: 500;
+}

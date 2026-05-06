@@ -6,6 +6,7 @@ import { getStudentProfile, updateUserProfile, getUserPointsHistory } from '../.
 import { useAuth } from '../../Context/auth';
 import { url } from '../../url';
 import SplashCursor from '../react-bits/SplashCursor';
+import { getTier, getXpProgress, getXpToNextTier } from '../../utils/soulXp';
 
 const StudentProfile = () => {
     const [auth, setAuth] = useAuth();
@@ -159,6 +160,12 @@ const StudentProfile = () => {
     const presentDays = studentData?.attendance?.filter(a => a.status === "Present").length || 0;
     const attendancePercentage = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
 
+    // Soul XP Tier
+    const soulXp = studentData?.points || 0;
+    const tier = getTier(soulXp);
+    const xpProgress = getXpProgress(soulXp);
+    const xpToNext = getXpToNextTier(soulXp);
+
     if (isLoading) {
         return (
             <div className={styles.container}>
@@ -191,7 +198,7 @@ const StudentProfile = () => {
             <div className={styles.profileCard}>
                 <div className={styles.header}>
                     <div className={styles.avatarSection}>
-                        <div className={styles.avatarWrapper}>
+                        <div className={styles.avatarWrapper} style={{ boxShadow: tier.shadow, outline: tier.border, outlineOffset: '3px' }}>
                             <img
                                 src={previewImage || getProfileImage(studentData.profilePicture)}
                                 alt={studentData.name}
@@ -208,6 +215,9 @@ const StudentProfile = () => {
                             )}
                         </div>
                         <div className={styles.roleBadge}>{studentData.role}</div>
+                        <div className={styles.tierBadge} style={{ color: tier.color, borderColor: tier.color, background: tier.aura }}>
+                            {tier.emoji} {tier.title}
+                        </div>
                     </div>
                     <div className={styles.userInfo}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -232,6 +242,24 @@ const StudentProfile = () => {
                                 <i className="fas fa-calendar-alt"></i>
                                 {studentData.year} Year
                             </span>
+                        </div>
+                    </div>
+
+                    {/* Soul XP Card */}
+                    <div className={styles.soulXpCard} style={{ background: tier.aura, borderColor: tier.color }}>
+                        <div className={styles.soulXpHeader}>
+                            <span className={styles.soulXpLabel}>{tier.emoji} Soul XP</span>
+                            <span className={styles.soulXpScore} style={{ color: tier.color }}>{soulXp} XP</span>
+                        </div>
+                        <div className={styles.soulXpTierName} style={{ color: tier.color }}>{tier.title}</div>
+                        <div className={styles.soulXpBarTrack}>
+                            <div
+                                className={styles.soulXpBarFill}
+                                style={{ width: `${xpProgress}%`, background: `linear-gradient(90deg, ${tier.color}99, ${tier.color})` }}
+                            />
+                        </div>
+                        <div className={styles.soulXpNext}>
+                            {xpToNext !== null ? `${xpToNext} XP to next tier` : '✨ Max Ascension Reached'}
                         </div>
                     </div>
                 </div>

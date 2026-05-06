@@ -7,6 +7,7 @@ import Footer from "./Footer/Footer";
 import TopPerformers from "./TopPerformers/TopPerformers";
 import { useEffect, useRef, useState } from "react";
 import SplashCursor from "./react-bits/SplashCursor";
+import Ashish from "../assets/Ashish.jpg";
 
 const FEATURES = [
   {
@@ -237,6 +238,60 @@ const Home = () => {
 
         {/* ══════════════════ TESTIMONIALS ══════════════════ */}
         <Testimonials />
+
+        {/* ══════════════════ CREATOR ══════════════════ */}
+        <section className={styles.creatorSection}>
+          <div className={styles.creatorInner}>
+
+            {/* Left: Image */}
+            <div className={styles.creatorLeft}>
+              <div className={styles.creatorImageRing}>
+                <img src={Ashish} alt="Ashish Saini" className={styles.creatorImage} />
+              </div>
+              <div className={styles.creatorOrb1} />
+              <div className={styles.creatorOrb2} />
+            </div>
+
+            {/* Right: Info */}
+            <div className={styles.creatorRight}>
+              <span className={styles.creatorBadge}>⚡ Built by</span>
+              <h2 className={styles.creatorName}>Ashish Saini</h2>
+              <p className={styles.creatorRole}>Full-Stack Engineer · NIT Kurukshetra</p>
+
+              <p className={styles.creatorBio}>
+                Thought Lab exists because of <strong>one developer's obsession</strong> with blending neuroscience, real-time tech, and student wellness. Architected with WebSockets, face recognition, and a full MERN backbone — to serve thousands of RTU students daily.
+              </p>
+
+              {/* Stats inline */}
+              <div className={styles.creatorStats}>
+
+                <div className={styles.cStatDiv} />
+                <div className={styles.cStat}><span className={styles.cStatNum}>1000+</span><span className={styles.cStatLbl}>GitHub Contributions</span></div>
+                <div className={styles.cStatDiv} />
+                <div className={styles.cStat}><span className={styles.cStatNum}>1000+</span><span className={styles.cStatLbl}>Active Users</span></div>
+              </div>
+
+              {/* Achievement chips */}
+              <div className={styles.creatorAchievements}>
+                {["🏆 SIH College Winner", "🎯 Excalibur Top 7/60", "📦 Flipkart Grid Semifinalist"].map((a) => (
+                  <span key={a} className={styles.achieveChip}>{a}</span>
+                ))}
+              </div>
+
+              {/* CTAs */}
+              <div className={styles.creatorCtas}>
+                <a href="https://ashish-portfoliov1.netlify.app/" target="_blank" rel="noopener noreferrer" className={styles.ctaPrimary}>
+                  <span>View Portfolio</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></svg>
+                </a>
+                <a href="https://github.com/ASHISH-SAINI78021" target="_blank" rel="noopener noreferrer" className={styles.creatorGhostBtn}>
+                  GitHub Profile
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </section>
 
         {/* ══════════════════ FOOTER ══════════════════ */}
         <div className={styles.footerWrap}>

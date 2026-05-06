@@ -4,6 +4,7 @@ import { socket } from '../../App';
 import styles from './TopPerformers.module.css';
 import SpotlightCard from '../react-bits/SpotlightCard';
 import { url } from '../../url';
+import { getTier } from '../../utils/soulXp';
 
 const FALLBACK_AVATAR = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80';
 
@@ -33,17 +34,23 @@ const PerformerCard = ({ item, medal }) => {
         </div>
     );
 
+    const tier = getTier(item.score || 0);
+    const tierRingStyle = {
+        borderColor: tier.color,
+        boxShadow: tier.shadow,
+    };
+
     return (
         <SpotlightCard
             as={Link}
             to={`/leaderboard/${item.user?._id}`}
             className={styles.card}
-            spotlightColor={medal.glow}
-            style={{ '--glow': medal.glow, '--medal-color': medal.color, '--podium-h': medal.podiumHeight, '--order': medal.order }}
+            spotlightColor={tier.glow}
+            style={{ '--glow': tier.glow, '--medal-color': medal.color, '--podium-h': medal.podiumHeight, '--order': medal.order }}
         >
             <div className={styles.avatarShell}>
                 <span className={styles.medal}>{medal.label}</span>
-                <div className={styles.avatarRing} style={{ borderColor: medal.color }}>
+                <div className={styles.avatarRing} style={tierRingStyle}>
                     <img
                         src={getProfileImage(item.user?.profilePicture)}
                         alt={item.user?.name}
@@ -54,11 +61,11 @@ const PerformerCard = ({ item, medal }) => {
             </div>
             <div className={styles.nameBlock}>
                 <p className={styles.name}>{item.user?.name || 'Student'}</p>
-                <p className={styles.roll}>{item.user?.rollNumber || '—'}</p>
+                <p className={styles.roll} style={{ color: tier.color }}>{tier.emoji} {tier.title}</p>
             </div>
             <div className={styles.podium} style={{ height: medal.podiumHeight, boxShadow: `0 -4px 20px ${medal.glow}` }}>
                 <span className={styles.rankNum}>#{medal.rank}</span>
-                <span className={styles.score}>{item.score} <small>pts</small></span>
+                <span className={styles.score} style={{ color: tier.color }}>{item.score} <small>Soul XP</small></span>
             </div>
         </SpotlightCard>
     );

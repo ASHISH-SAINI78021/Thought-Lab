@@ -6,6 +6,7 @@ import io from "socket.io-client";
 import { useAuth } from "../../Context/auth";
 import SplashCursor from "../react-bits/SplashCursor";
 import { Search, Trophy, Crown, Medal, ChevronDown } from "lucide-react";
+import { getTier } from "../../utils/soulXp";
 
 const socket = io(`${url}`);
 
@@ -68,6 +69,7 @@ const Table = () => {
   );
   const myRank = myRankIndex !== -1 ? myRankIndex + 1 : null;
   const myEntry = myRankIndex !== -1 ? data[myRankIndex] : null;
+  const myTier = myEntry ? getTier(myEntry.score) : null;
 
   /* ── filter & paginate ── */
   const filteredData = data.filter((item) => {
@@ -109,9 +111,9 @@ const Table = () => {
 
       {/* ── Current User Rank Card (LeetCode-style) ── */}
       {myEntry && !loading && (
-        <div className={styles.myRankCard}>
+        <div className={styles.myRankCard} style={{ borderColor: myTier.color, boxShadow: myTier.shadow }}>
           <div className={styles.myRankLeft}>
-            <div className={styles.myAvatar}>
+            <div className={styles.myAvatar} style={{ boxShadow: myTier.shadow, borderColor: myTier.color }}>
               {myEntry.user?.profilePicture ? (
                 <img src={getProfileImage(myEntry.user.profilePicture)} alt={myEntry.user.name} className={styles.avatarImg} />
               ) : (
@@ -120,7 +122,9 @@ const Table = () => {
             </div>
             <div>
               <p className={styles.myName}>{myEntry.user?.name}</p>
-              <p className={styles.myMeta}>{myEntry.user?.rollNumber} · {myEntry.user?.branch}</p>
+              <p className={styles.myMeta}>
+                {myEntry.user?.rollNumber} · <span style={{ color: myTier.color, fontWeight: 'bold' }}>{myTier.emoji} {myTier.title}</span>
+              </p>
             </div>
           </div>
           <div className={styles.myRankRight}>
@@ -130,8 +134,8 @@ const Table = () => {
             </div>
             <div className={styles.myRankDivider} />
             <div className={styles.myRankStat}>
-              <span className={styles.myScoreValue}>{myEntry.score}</span>
-              <span className={styles.myRankLabel}>Score</span>
+              <span className={styles.myScoreValue} style={{ color: myTier.color }}>{myEntry.score}</span>
+              <span className={styles.myRankLabel}>Soul XP</span>
             </div>
           </div>
         </div>
@@ -147,26 +151,29 @@ const Table = () => {
           {/* ── Podium Top 3 ── */}
           {topThree.length >= 3 && !searchTerm && (
             <div className={styles.podium}>
-              {podiumOrder.map(({ user, score, rank }) => (
-                <div
-                  key={rank}
-                  className={`${styles.podiumCard} ${styles[`podium${rank}`]}`}
-                  onClick={() => navigate(`/leaderboard/${user?._id}`)}
-                >
-                  <div className={styles.podiumAvatar}>
-                    {user?.profilePicture ? (
-                      <img src={getProfileImage(user.profilePicture)} alt={user.name} className={styles.avatarImg} />
-                    ) : (
-                      user?.name?.[0]?.toUpperCase() || "?"
-                    )}
+              {podiumOrder.map(({ user, score, rank }) => {
+                const pTier = getTier(score);
+                return (
+                  <div
+                    key={rank}
+                    className={`${styles.podiumCard} ${styles[`podium${rank}`]}`}
+                    onClick={() => navigate(`/leaderboard/${user?._id}`)}
+                  >
+                    <div className={styles.podiumAvatar} style={{ outline: `2px solid ${pTier.color}`, boxShadow: pTier.shadow }}>
+                      {user?.profilePicture ? (
+                        <img src={getProfileImage(user.profilePicture)} alt={user.name} className={styles.avatarImg} />
+                      ) : (
+                        user?.name?.[0]?.toUpperCase() || "?"
+                      )}
+                    </div>
+                    <div className={styles.podiumMedal}>
+                      {rank === 1 ? "🥇" : rank === 2 ? "🥈" : "🥉"}
+                    </div>
+                    <p className={styles.podiumName}>{user?.name}</p>
+                    <p className={styles.podiumScore} style={{ color: pTier.color }}>{score} Soul XP</p>
                   </div>
-                  <div className={styles.podiumMedal}>
-                    {rank === 1 ? "🥇" : rank === 2 ? "🥈" : "🥉"}
-                  </div>
-                  <p className={styles.podiumName}>{user?.name}</p>
-                  <p className={styles.podiumScore}>{score} pts</p>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
 
@@ -203,8 +210,8 @@ const Table = () => {
                   <th>Rank</th>
                   <th>Player</th>
                   <th className={styles.hideOnMobile}>Roll No.</th>
-                  <th className={styles.hideOnMobile}>Branch</th>
-                  <th>Score</th>
+                  <th className={styles.hideOnMobile}>Tier</th>
+                  <th>Soul XP</th>
                 </tr>
               </thead>
               <tbody>
@@ -212,6 +219,7 @@ const Table = () => {
                   paginatedData.map((item, index) => {
                     const globalRank = (currentPage - 1) * rowsPerPage + index + 1;
                     const isMe = item.user?._id === currentUserId || item.user?.id === currentUserId;
+                    const tier = getTier(item.score);
                     return (
                       <tr
                         key={item._id}
@@ -221,7 +229,7 @@ const Table = () => {
                         <td><RankBadge rank={globalRank} /></td>
                         <td>
                           <div className={styles.playerCell}>
-                            <div className={styles.playerAvatar}>
+                            <div className={styles.playerAvatar} style={{ borderColor: tier.color, boxShadow: tier.shadow }}>
                               {item.user?.profilePicture ? (
                                 <img src={getProfileImage(item.user.profilePicture)} alt={item.user.name} className={styles.avatarImg} />
                               ) : (
@@ -235,8 +243,10 @@ const Table = () => {
                           </div>
                         </td>
                         <td className={styles.hideOnMobile}>{item.user?.rollNumber || "—"}</td>
-                        <td className={styles.hideOnMobile}>{item.user?.branch || "—"}</td>
-                        <td className={styles.scoreCell}>{item.score}</td>
+                        <td className={styles.hideOnMobile} style={{ color: tier.color, fontWeight: 'bold' }}>
+                          <span style={{ fontSize: '1.2em', marginRight: '4px' }}>{tier.emoji}</span> {tier.title}
+                        </td>
+                        <td className={styles.scoreCell} style={{ color: tier.color, textShadow: tier.shadow }}>{item.score}</td>
                       </tr>
                     );
                   })
