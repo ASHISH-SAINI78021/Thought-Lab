@@ -4,10 +4,10 @@
  * ═══════════════════════════════════════
  *
  * Tiers are based on accumulated score (Soul XP):
- *   0 – 2,499  → The Wanderer  (Grey aura)
- *   2,500 – 7,499  → The Stoic     (Cyan glow)
- *   7,500 – 14,999 → The Sage      (Violet pulse)
- *   15,000+    → The Enlightened (Gold glow)
+ *   0 – 799  → The Wanderer  (Grey aura)
+ *   800 – 2000 → The Stoic     (Cyan glow)
+ *   2001 – 5000 → The Sage      (Violet pulse)
+ *   5001+    → The Enlightened (Gold glow)
  */
 
 export const TIERS = [
@@ -16,7 +16,7 @@ export const TIERS = [
         title: 'The Wanderer',
         emoji: '🌫️',
         minXp: 0,
-        maxXp: 2499,
+        maxXp: 799,
         color: '#9ca3af',
         glow: 'rgba(156,163,175,0.35)',
         border: '1px solid rgba(156,163,175,0.4)',
@@ -28,8 +28,8 @@ export const TIERS = [
         id: 'stoic',
         title: 'The Stoic',
         emoji: '🌊',
-        minXp: 2500,
-        maxXp: 7499,
+        minXp: 800,
+        maxXp: 2000,
         color: '#00d4ff',
         glow: 'rgba(0,212,255,0.45)',
         border: '1px solid rgba(0,212,255,0.5)',
@@ -41,8 +41,8 @@ export const TIERS = [
         id: 'sage',
         title: 'The Sage',
         emoji: '🔮',
-        minXp: 7500,
-        maxXp: 14999,
+        minXp: 2001,
+        maxXp: 5000,
         color: '#a855f7',
         glow: 'rgba(168,85,247,0.45)',
         border: '1px solid rgba(168,85,247,0.5)',
@@ -54,7 +54,7 @@ export const TIERS = [
         id: 'enlightened',
         title: 'The Enlightened',
         emoji: '✨',
-        minXp: 15000,
+        minXp: 5001,
         maxXp: Infinity,
         color: '#FBBF24',
         glow: 'rgba(251,191,36,0.55)',
