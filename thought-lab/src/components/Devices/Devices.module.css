@@ -608,19 +608,48 @@
         gap: 3rem;
     }
 
+    .heroTitle {
+        font-size: 6rem;
+    }
+
+    .heroSubtitle {
+        font-size: 2rem;
+    }
+
+    .heroStat span {
+        font-size: 3rem;
+    }
+
+    .heroStat small {
+        font-size: 1.5rem;
+    }
+
+    .heroEyebrow {
+        font-size: 4rem;
+        padding: 6px 20px;
+        margin-bottom: 1.5rem;
+    }
+
     .flipFront {
         height: 180px;
     }
 
     .deviceName {
-        font-size: 1.5rem;
+        font-size: 4rem;
+    }
+
+    .textPanel {
+        padding-left: 9rem;
     }
 
     .deviceTagline {
-        font-size: 0.9rem;
+        font-size: 3rem;
     }
 
+    .categoryBadge,
     .deviceDesc {
-        font-size: 0.9rem;
+        font-size: 2rem;
     }
+
+
 }

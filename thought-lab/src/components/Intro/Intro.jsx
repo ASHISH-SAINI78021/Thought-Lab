@@ -382,25 +382,10 @@ const Intro = () => {
                         </div>
                     </div>
 
-                    <div className={`${styles.takeawayCard} ${styles.reveal}`}>
-                        <div className={styles.takeawayTitle}>The Takeaway</div>
-                        <p className={styles.takeawayText}>Meditation improves neural efficiency — the brain learns to accomplish more with less reactive effort. This is neuroplasticity in its most beautiful form.</p>
-                    </div>
+
                 </section>
 
-                {/* FOOTER */}
-                <footer className={styles.footer}>
-                    <div className={styles.footerLogo}>Thought<span className={styles.accentText}>Lab</span></div>
-                    <p className={styles.footerTagline}>Your brain is the most extraordinary tool you'll ever own.</p>
-                    <div className={styles.footerLinks}>
-                        <a href="#neuroplasticity" className={styles.footerLink}>Neuroplasticity</a>
-                        <a href="#meditation" className={styles.footerLink}>Meditation</a>
-                        <a href="#thoughts" className={styles.footerLink}>Thoughts</a>
-                        <a href="#tools" className={styles.footerLink}>Spiritual Tools</a>
-                    </div>
-                    <div className={styles.footerDivider}></div>
-                    <p className={styles.footerCopy}>© {new Date().getFullYear()} RTU Thought Lab — Rewire Your Brain, Reshape Your Destiny</p>
-                </footer>
+
             </div>
         </>
     );

@@ -573,28 +573,131 @@
 }
 
 /* ===== DATA SECTION ===== */
+.dataGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 4rem;
+}
+
 .dataColumn {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 32px;
     padding: 3rem;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    transition: transform 0.4s ease, border-color 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.dataColumn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.dataBefore::before {
+    background: linear-gradient(90deg, #f43f5e, #be123c);
+    box-shadow: 0 0 20px rgba(244, 63, 94, 0.5);
+}
+
+.dataAfter::before {
+    background: linear-gradient(90deg, #00d4ff, #10b981);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+.dataColumn:hover {
+    transform: translateY(-8px);
+}
+
+.dataBefore:hover {
+    border-color: rgba(244, 63, 94, 0.3);
+}
+
+.dataAfter:hover {
+    border-color: rgba(0, 212, 255, 0.3);
 }
 
 .dataHeader {
     font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.metric {
+    margin-bottom: 2rem;
+}
+
+.metricName {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.02em;
+}
+
+.metricName span:last-child {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 900;
+}
+
+.dataBefore .metricName span:last-child {
+    color: #f43f5e;
+}
+
+.dataAfter .metricName span:last-child {
+    color: #00d4ff;
 }
 
 .metricBar {
+    height: 8px;
     background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.metricFill {
+    height: 100%;
+    width: 0;
+    border-radius: 10px;
+    transition: width 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+}
+
+.metricFill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
 }
 
 .dataBefore .metricFill {
-    background: linear-gradient(90deg, #f43f5e, #be123c);
+    background: linear-gradient(90deg, #be123c, #f43f5e);
+    box-shadow: 0 0 10px rgba(244, 63, 94, 0.4);
 }
 
 .dataAfter .metricFill {
-    background: linear-gradient(90deg, #10b981, #047857);
+    background: linear-gradient(90deg, #10b981, #00d4ff);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
 }
 
 /* ===== FOOTER ===== */
@@ -650,7 +753,11 @@
 }
 
 /* ===== RESPONSIVE ===== */
+/* Tablet */
 @media (max-width: 1000px) {
+    .section {
+        padding: 6rem 5vw;
+    }
 
     .hero,
     .neuroGrid,
@@ -659,10 +766,15 @@
     .dataGrid {
         grid-template-columns: 1fr;
         gap: 4rem;
+        padding: 0 5vw;
+    }
+
+    .hero {
+        padding-top: 120px;
     }
 
     .heroTitle {
-        font-size: 3.5rem;
+        font-size: 4rem;
     }
 
     .toolsGrid,
@@ -672,5 +784,224 @@
 
     .centerCard {
         grid-column: auto;
+    }
+}
+
+/* Mobile (4x Font Scaling per User Request) */
+@media (max-width: 600px) {
+    .hero {
+        padding-top: 150px;
+        text-align: left;
+    }
+
+    /* 4x font sizes */
+    .heroEyebrow {
+        font-size: 4rem;
+        padding: 8px 0;
+        margin-bottom: 2rem;
+    }
+
+    .heroTitle {
+        font-size: 14rem;
+        line-height: 1;
+        margin-bottom: 3rem;
+    }
+
+    .heroSub {
+        font-size: 5.6rem;
+        line-height: 1.5;
+        margin-bottom: 4rem;
+    }
+
+    .btnPrimary,
+    .btnGhost {
+        font-size: 4rem;
+        padding: 2rem 4rem;
+        border-radius: 80px;
+    }
+
+    .heroCta {
+        gap: 3rem;
+    }
+
+    /* Sections */
+    .sectionTitle {
+        font-size: 12rem;
+        line-height: 1.1;
+    }
+
+    .sectionTag {
+        font-size: 3.6rem;
+        margin-bottom: 2rem;
+    }
+
+    .sectionDesc {
+        font-size: 4.8rem;
+        line-height: 1.6;
+    }
+
+    /* Neuroplasticity Cards */
+    .typeName,
+    .plasticityTitle,
+    .baHeading,
+    .toolName {
+        font-size: 6rem;
+    }
+
+    .typeDesc,
+    .baPoints li,
+    .plasticityList li {
+        font-size: 4rem;
+    }
+
+    .plasticityList li {
+        padding: 1rem 2rem;
+        border-radius: 60px;
+    }
+
+    /* Brain/Orbits Scale */
+    .brainCard {
+        width: 100%;
+        max-width: 800px;
+        height: auto;
+        aspect-ratio: 1;
+        margin-top: 4rem;
+    }
+
+    .brainEmoji {
+        font-size: 15rem;
+    }
+
+    .brainLabel {
+        font-size: 4rem;
+    }
+
+    .orbit1 {
+        width: 90%;
+        height: 90%;
+        top: 5%;
+        left: 5%;
+    }
+
+    .orbit2 {
+        width: 110%;
+        height: 110%;
+        top: -5%;
+        left: -5%;
+    }
+
+    /* Destiny visual */
+    .destinyQuote {
+        font-size: 6.5rem;
+        border-left-width: 12px;
+        padding-left: 4rem;
+        line-height: 1.4;
+    }
+
+    /* Nav */
+    .navLogo {
+        font-size: 6rem;
+    }
+
+    .navLink {
+        font-size: 3.6rem;
+    }
+
+    .nav {
+        padding: 2rem 5vw;
+    }
+
+    /* Supplementary Text / Icons */
+    .baPoints li::before {
+        font-size: 5rem;
+    }
+
+    .statNum {
+        font-size: 8rem;
+    }
+
+    .statLabel {
+        font-size: 3.2rem;
+    }
+
+    .baLabel {
+        font-size: 2.8rem;
+    }
+
+    .stepNumber {
+        font-size: 4rem;
+    }
+
+    .stepName {
+        font-size: 5rem;
+        margin: 1rem 0;
+    }
+
+    .stepDesc {
+        font-size: 4rem;
+        line-height: 1.5;
+        color: #94a3b8;
+    }
+
+    /* Data Grid Metrics */
+    .dataHeader {
+        font-size: 5rem;
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .metricName {
+        font-size: 3.6rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .metric {
+        margin-bottom: 3rem;
+    }
+
+    .metricBar {
+        height: 2rem;
+        border-radius: 10px;
+    }
+
+    .metricFill {
+        border-radius: 10px;
+    }
+
+    /* Remaining Bottom Elements */
+    .toolDesc,
+    .chainItem,
+    .choiceDesc,
+    .growthLabel,
+    .footerTagline {
+        font-size: 4rem;
+        line-height: 1.5;
+    }
+
+    .toolIcon,
+    .visualizationIcon {
+        font-size: 10rem;
+    }
+
+    .choiceTitle,
+    .footerLogo {
+        font-size: 6rem;
+    }
+
+    .growthEmoji {
+        font-size: 12rem;
+    }
+
+    .chainArrow {
+        font-size: 5rem;
+    }
+
+    .footerLink {
+        font-size: 3.6rem;
+    }
+
+    .footerCopy {
+        font-size: 3.2rem;
+        line-height: 1.6;
     }
 }

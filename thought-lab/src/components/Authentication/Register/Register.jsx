@@ -34,7 +34,7 @@ const Register = () => {
         'IIoT', 'IT', 'Production', 'MCA', 'Robotics', 'Other'
     ];
     const programmes = ['B.Tech', 'M.Tech', 'PhD', 'Other'];
-    const years = ['1st', '2nd', '3rd', '4th', '5th', 'Pass out'];
+    const years = ['1st', '2nd', '3rd', '4th', '5th', 'Faculty'];
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -222,7 +222,7 @@ const Register = () => {
                                         >
                                             <option value="" disabled>Select Year</option>
                                             {years.map(year => (
-                                                <option key={year} value={year}>{year} Year</option>
+                                                <option key={year} value={year}>{year} {year === 'Faculty' ? '' : 'Year'}</option>
                                             ))}
                                         </select>
                                         <ChevronDown size={18} className={styles.selectArrow} />
