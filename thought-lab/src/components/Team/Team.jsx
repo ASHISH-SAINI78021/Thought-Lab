@@ -7,8 +7,18 @@ import drLataImg from '../../assets/dr-lata-gidwani.jpg';
 import drBhagwaanImg from '../../assets/dr-bhagwaan-das-gidwani.jpg';
 import mrPradeepImg from '../../assets/mr-pradeep-gupta.jpg';
 import mrVinodImg from '../../assets/mr-vinod-gocher.jpg';
+import profNimitImg from '../../assets/prof-nimit-chowdhary.jpg';
 
 const teamMembers = [
+    {
+        name: "Prof. Nimit Chowdhary",
+        role: "Vice chancellor",
+        org: "Rajasthan Technical University, Kota",
+        initials: "NC",
+        color: "#2f3d61",
+        accent: "#ffc3a0bb",
+        image: profNimitImg,
+    },
     {
         name: "Dr. Lata Gidwani",
         role: "Chief Coordinator",
@@ -29,7 +39,7 @@ const teamMembers = [
     },
     {
         name: "Bk Pradeep Gupta",
-        role: "Faculty",
+        role: "Volunteer BK Faculty",
         org: "Thought Lab",
         initials: "PG",
         color: "#c06030",
