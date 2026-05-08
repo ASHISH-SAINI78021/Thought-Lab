@@ -253,28 +253,14 @@ const AppContent = () => {
           <Route path="tasks" element={<StudentDashboard />} />
         </Route>
 
-        {/* Blog Routes (Admin Protected) */}
-        <Route
-          path="/blogs"
-          element={
-            <PrivateRoute>
-              <Blog />
-            </PrivateRoute>
-          }
-        />
+        {/* Blog Routes (Public access allowed) */}
+        <Route path="/blogs" element={<Blog />} />
         <Route path="/meditation-timer" element={
           <PrivateRoute>
             <MeditationTimer />
           </PrivateRoute>
         } />
-        <Route
-          path="/blog/:id"
-          element={
-            <PrivateRoute>
-              <BlogItem />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/blog/:id" element={<BlogItem />} />
 
         <Route path="/meditation-tracker" element={
           <PrivateRoute>

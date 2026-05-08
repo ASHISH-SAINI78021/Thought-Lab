@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './BlogItem.module.css';
 import { url } from '../../../url';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../Context/auth';
 import SplashCursor from '../../react-bits/SplashCursor';
 
@@ -24,6 +24,7 @@ const BlogItem = () => {
   const [submitting, setSubmitting] = useState(false);
   const [auth] = useAuth();
   const { id } = useParams();
+  const navigate = useNavigate();
 
   /* ── Fetch blog ── */
   const fetchBlog = async () => {
@@ -57,6 +58,7 @@ const BlogItem = () => {
 
   /* ── Reaction ── */
   const handleReaction = async (type) => {
+    if (!auth?.token) { navigate('/login'); return; }
     try {
       const res = await fetch(`${url}/blog/${id}/react`, {
         method: 'POST',
@@ -78,6 +80,7 @@ const BlogItem = () => {
 
   /* ── Reaction details ── */
   const fetchReactionDetails = async () => {
+    if (!auth?.token) { navigate('/login'); return; }
     try {
       const res = await fetch(`${url}/blog/${id}/reactions`, {
         headers: { Authorization: auth?.token, 'Content-Type': 'application/json' },
@@ -96,6 +99,7 @@ const BlogItem = () => {
 
   /* ── Submit comment ── */
   const handleComment = async () => {
+    if (!auth?.token) { navigate('/login'); return; }
     if (!commentText.trim()) return;
     try {
       setSubmitting(true);
