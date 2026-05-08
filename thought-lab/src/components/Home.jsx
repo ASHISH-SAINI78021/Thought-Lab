@@ -280,7 +280,7 @@ const Home = () => {
 
               {/* CTAs */}
               <div className={styles.creatorCtas}>
-                <a href="https://ashish-portfoliov1.netlify.app/" target="_blank" rel="noopener noreferrer" className={styles.ctaPrimary}>
+                <a href="https://ashish-portfolio.ashu78021.workers.dev/" target="_blank" rel="noopener noreferrer" className={styles.ctaPrimary}>
                   <span>View Portfolio</span>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></svg>
                 </a>
