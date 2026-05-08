@@ -49,6 +49,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:5173",
       "https://thought-lab-rtu.netlify.app",
+      "https://thought-labv2.ashu78021.workers.dev",
       "*"
     ],
     credentials: true,
@@ -93,6 +94,7 @@ const io = new Server(server, {
       "http://localhost:3000",
       "http://localhost:5173",
       "https://thought-lab-rtu.netlify.app",
+      "https://thought-labv2.ashu78021.workers.dev",
       "*"
     ],
     credentials: true,
