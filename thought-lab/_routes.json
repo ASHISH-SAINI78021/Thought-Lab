@@ -3,5 +3,8 @@
     "include": [
         "/*"
     ],
-    "exclude": []
+    "exclude": [
+        "/api/*",
+        "/public/*"
+    ]
 }
