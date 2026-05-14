@@ -152,8 +152,10 @@ const Home = () => {
 
             {/* Subtext */}
             <p className={styles.heroSub}>
-              Thought Lab is RTU's dedicated space for mental wellness, growth, and balance.
-              Explore meditation, events, courses, and community — all in one place.
+              Thought and Innovation Centre, RTU Kota
+              A unique platform where Science meets Spirituality.
+              The centre is dedicated to promoting evidence-based learning, innovation, mental wellness, and value-based education through scientific understanding and spiritual wisdom. It works to develop clarity of thought, emotional balance, creativity, concentration, and positive leadership among students and professionals.
+              Through research-oriented activities, workshops, meditation sessions, brainwave awareness programs, and interactive discussions, the centre encourages holistic development by connecting modern science with inner consciousness and human values.
             </p>
 
             {/* Primary CTAs */}
