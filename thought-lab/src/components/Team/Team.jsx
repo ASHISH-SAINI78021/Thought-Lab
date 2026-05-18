@@ -4,7 +4,7 @@ import StarBorder from '../react-bits/StarBorder';
 import styles from './Team.module.css';
 
 import drLataImg from '../../assets/dr-lata-gidwani.jpg';
-import drBhagwaanImg from '../../assets/dr-bhagwaan-das-gidwani.jpg';
+// import drBhagwaanImg from '../../assets/dr-bhagwaan-das-gidwani.jpg';
 import mrPradeepImg from '../../assets/mr-pradeep-gupta.jpg';
 import mrVinodImg from '../../assets/mr-vinod-gocher.jpg';
 import profNimitImg from '../../assets/prof-nimit-chowdhary.jpg';
@@ -28,15 +28,15 @@ const teamMembers = [
         accent: "#FFC3A0",
         image: drLataImg,
     },
-    {
-        name: "Dr. Bhagwaan Das Gidwani",
-        role: "Coordinator",
-        org: "Thought & Innovation Centre, RTU Kota",
-        initials: "BG",
-        color: "#3d5088",
-        accent: "#ffb380",
-        image: drBhagwaanImg,
-    },
+    // {
+    //     name: "Dr. Bhagwaan Das Gidwani",
+    //     role: "Coordinator",
+    //     org: "Thought & Innovation Centre, RTU Kota",
+    //     initials: "BG",
+    //     color: "#3d5088",
+    //     accent: "#ffb380",
+    //     image: drBhagwaanImg,
+    // },
     {
         name: "Bk Pradeep Gupta",
         role: "Volunteer BK Faculty",
