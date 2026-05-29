@@ -464,19 +464,21 @@
 
 .milestoneGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
 }
 
 .milestoneCard {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
-  padding: 20px;
+  padding: 24px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .milestoneCard:hover {
@@ -689,40 +691,83 @@
     flex-direction: column;
   }
 
+  /* ─── BADGE / MILESTONE TRACKER ─── */
   .milestoneTracker {
-    padding: 24px 16px;
+    padding: 1.25rem 1rem;
+    border-radius: 16px;
+    margin-top: 1.5rem;
+  }
+
+  .milestoneTitle {
+    font-size: 3rem;
+    margin-bottom: 1.25rem;
   }
 
   .milestoneGrid {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
+  /* Horizontal layout: icon on left, info on right */
   .milestoneCard {
-    padding: 16px;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1rem;
+    border-radius: 16px;
+    text-align: left;
   }
 
+  /* Compact square icon — prominent but not oversized */
   .milestoneIcon {
-    font-size: 5.5rem;
-    width: 150px;
-    height: 150px;
+    font-size: 3.5rem;
+    width: clamp(64px, 18vw, 88px);
+    height: clamp(64px, 18vw, 88px);
+    border-radius: 14px;
+    flex-shrink: 0;
+    margin: 0;
   }
 
+  .milestoneInfo {
+    flex: 1;
+    min-width: 0;
+    /* prevent text overflow */
+    width: auto;
+  }
+
+  /* Large, readable title — 4x desktop (0.95rem → 3.8rem) */
   .milestoneName {
-    font-size: 3rem;
-    margin-bottom: 20px;
+    font-size: 3.8rem;
+    margin-bottom: 0.75rem;
+    text-align: left;
+    line-height: 1.2;
+    white-space: normal;
+    word-break: break-word;
   }
 
+  .progressRow {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Tall, easy-to-read progress bar */
   .miniBar {
-    height: 15px;
+    height: 14px;
+    border-radius: 100px;
   }
 
+  /* 4x desktop (0.8rem → 3.2rem) */
   .progressText {
-    font-size: 2.5rem;
+    font-size: 3.2rem;
+    white-space: nowrap;
   }
 
+  /* 4x desktop (0.75rem → 3.0rem) */
   .milestoneHint {
-    font-size: 2.2rem;
-    margin-top: 10px;
+    font-size: 3.0rem;
+    margin-top: 0.35rem;
   }
 }
 
