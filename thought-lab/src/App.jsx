@@ -42,6 +42,7 @@ import Developer from "./components/Developer/Developer";
 import Alumni from "./components/Alumni/Almuni";
 import StudentProfile from "./components/StudentProfile/StudentProfile";
 import MeditationTracker from "./components/MeditationTracker/MeditationTracker";
+import Badges from "./components/Badges/Badges";
 import AttendanceSuccess from "./components/Attendence/AttendanceSuccess/AttendanceSuccess";
 import TaskAssigner from "./components/Admin/TaskAssigner/TaskAssigner";
 import MentorAssignment from "./components/Admin/MentorAssignment/MentorAssignment";
@@ -141,8 +142,6 @@ const AppContent = () => {
       <Routes>
         <Route path="/developer" element={<Developer />} />
         <Route path='/almuni' element={<Alumni />} />
-      </Routes>
-      <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/intro" element={<Intro />} />
@@ -269,6 +268,16 @@ const AppContent = () => {
         } />
         <Route path="/attendance-success" element={<AttendanceSuccess />} />
         <Route path="/face-recognition-success" element={<FaceRecognitionSuccess />} />
+        <Route path="/badges" element={
+          <PrivateRoute>
+            <Badges />
+          </PrivateRoute>
+        } />
+        <Route path="/badges/:id" element={
+          <PrivateRoute>
+            <Badges />
+          </PrivateRoute>
+        } />
       </Routes >
     </>
   );

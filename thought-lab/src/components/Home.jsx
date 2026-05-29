@@ -5,6 +5,7 @@ import Team from "./Team/Team";
 import Testimonials from "./Testimonials";
 import Footer from "./Footer/Footer";
 import TopPerformers from "./TopPerformers/TopPerformers";
+import PetLeaderboard from "./FocusPet/PetLeaderboard";
 import { useEffect, useRef, useState } from "react";
 import SplashCursor from "./react-bits/SplashCursor";
 import Ashish from "../assets/Ashish.jpg";
@@ -49,6 +50,7 @@ const QUICK_LINKS = [
   { label: "QRT", link: "/quick-response-team", icon: "⚡" },
   { label: "Tasks", link: "/task-dashboard", icon: "✅" },
   { label: "Devices", link: "/devices", icon: "🧠" },
+  { label: "Badges", link: "/badges", icon: "🏅" },
 ];
 
 const Home = () => {
@@ -231,6 +233,9 @@ const Home = () => {
             ))}
           </div>
         </section>
+
+        {/* ══════════════════ PET LEADERBOARD ══════════════════ */}
+        <PetLeaderboard />
 
         {/* ══════════════════ ABOUT ══════════════════ */}
         <About />

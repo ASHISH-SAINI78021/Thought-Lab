@@ -295,6 +295,112 @@ class UserController {
             return res.status(500).json({ success: false, message: "Internal server error" });
         }
     }
+
+    async awardPetXP(req, res) {
+        try {
+            const userId = req.user.id || req.user._id;
+            const { actionType, duration } = req.body;
+            
+            const User = require('../Models/user-model.js');
+            const user = await User.findById(userId);
+            if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+            if (!user.focusPet) user.focusPet = { level: 1, xp: 0, petType: 'seed' };
+            if (!user.petStats) user.petStats = { blogsRead: 0, meditationsLogged: 0 };
+            if (!user.badges) user.badges = [];
+
+            // ── XP Calculation ──
+            let xpGained = 0;
+            if (actionType === 'READ_BLOG') {
+                xpGained = 15;
+                user.petStats.blogsRead += 1;
+            } else if (actionType === 'MEDITATE') {
+                xpGained = Math.max(1, parseInt(duration) || 0);
+                user.petStats.meditationsLogged += 1;
+            }
+            if (xpGained <= 0) return res.status(400).json({ success: false, message: "Invalid action or duration." });
+
+            const prevLevel = user.focusPet.level;
+            user.focusPet.xp += xpGained;
+            let leveledUp = false;
+            while (user.focusPet.xp >= (user.focusPet.level * 50)) {
+                user.focusPet.xp -= (user.focusPet.level * 50);
+                user.focusPet.level += 1;
+                leveledUp = true;
+            }
+            if (user.focusPet.level < 5) user.focusPet.petType = 'seed';
+            else if (user.focusPet.level < 10) user.focusPet.petType = 'sprout';
+            else user.focusPet.petType = 'plant';
+
+            // ── Badge Milestone Checks ──
+            const ALL_BADGES = [
+                { id: 'first_steps', name: 'First Steps', icon: '🐣', description: 'Awarded for nurturing your Focus Pet to Level 2 Mastery', condition: () => user.focusPet.level >= 2 },
+                { id: 'zen_seeker', name: 'Zen Seeker', icon: '🧘', description: 'Awarded for reaching Level 5 Enlightenment through mindfulness', condition: () => user.focusPet.level >= 5 },
+                { id: 'garden_master', name: 'Garden Master', icon: '🌳', description: 'Awarded for Level 10 Zenith – A master of your internal garden', condition: () => user.focusPet.level >= 10 },
+                { id: 'blog_maven', name: 'Blog Maven', icon: '📖', description: 'Awarded for wisdom gained through reading 5 educational blogs', condition: () => user.petStats.blogsRead >= 5 },
+                { id: 'meditation_monk', name: 'Meditation Monk', icon: '🙏', description: 'Awarded for deep focus and persistence in 10 meditation sessions', condition: () => user.petStats.meditationsLogged >= 10 },
+            ];
+
+            const existingBadgeIds = new Set(user.badges.map(b => b.id));
+            const newBadges = [];
+            for (const badge of ALL_BADGES) {
+                if (!existingBadgeIds.has(badge.id) && badge.condition()) {
+                    user.badges.push({ id: badge.id, name: badge.name, icon: badge.icon, description: badge.description, earnedAt: new Date() });
+                    newBadges.push({ id: badge.id, name: badge.name, icon: badge.icon, description: badge.description });
+                }
+            }
+
+            await user.save();
+
+            // Emit Live Pet Leaderboard Update
+            if (global.io) {
+                const User = require('../Models/user-model.js');
+                const petLeaders = await User.find({ "focusPet.level": { $exists: true } })
+                    .sort({ "focusPet.level": -1, "focusPet.xp": -1 })
+                    .limit(10)
+                    .select("name rollNumber profilePicture focusPet");
+                global.io.emit("pet-leaderboard-update", petLeaders);
+            }
+
+            return res.json({ 
+                success: true, 
+                message: `Focus Pet gained ${xpGained} XP!`, 
+                focusPet: user.focusPet,
+                leveledUp,
+                newBadges
+            });
+        } catch (error) {
+            console.error("Error awarding pet XP:", error);
+            return res.status(500).json({ success: false, message: "Internal server error" });
+        }
+    }
+
+    async getUserBadges(req, res) {
+        try {
+            const userId = req.params.id || req.user.id || req.user._id;
+            const User = require('../Models/user-model.js');
+            const user = await User.findById(userId).select('badges focusPet petStats name');
+            if (!user) return res.status(404).json({ success: false, message: "User not found" });
+            return res.json({ success: true, badges: user.badges || [], focusPet: user.focusPet, petStats: user.petStats || { blogsRead: 0, meditationsLogged: 0 }, name: user.name });
+        } catch (error) {
+            return res.status(500).json({ success: false, message: "Internal server error" });
+        }
+    }
+    async getPetLeaderboard(req, res) {
+        try {
+            const User = require('../Models/user-model.js');
+            const leaders = await User.find({ 'focusPet.level': { $gte: 1 } })
+                .select('name rollNumber profilePicture focusPet')
+                .sort({ 'focusPet.level': -1, 'focusPet.xp': -1 })
+                .limit(10);
+            return res.json({ success: true, leaders });
+        } catch (error) {
+            console.error("Error fetching pet leaderboard:", error);
+            return res.status(500).json({ success: false, message: "Internal server error" });
+        }
+    }
 }
 
 module.exports = new UserController();
+
+

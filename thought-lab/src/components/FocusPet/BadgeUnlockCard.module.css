@@ -1,0 +1,300 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+    animation: fadeIn 0.4s ease;
+}
+
+.modal {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.celebration {
+    text-align: center;
+}
+
+.confetti {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 8px;
+    animation: bounce 2s infinite;
+}
+
+.modalTitle {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #fff;
+    margin: 0;
+}
+
+.modalSub {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 4px 0 0;
+}
+
+/* ── BADGE CARD (Shared with Badges.jsx but local to modal) ── */
+.badgeCard {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    background: var(--badge-bg);
+    box-shadow: 0 12px 60px var(--badge-glow);
+    padding: 32px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.badgeCardBg {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.badgeIcon {
+    position: relative;
+    font-size: 4rem;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+}
+
+.badgeName {
+    position: relative;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #fff;
+    margin: 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.badgeSignificance {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 14px 18px;
+    border-radius: 14px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+}
+
+.significanceLabel {
+    display: block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #50e3a4;
+    margin-bottom: 6px;
+    font-weight: 800;
+}
+
+.badgeDesc {
+    position: relative;
+    font-size: 0.9rem;
+    color: #fff;
+    line-height: 1.5;
+    margin: 0;
+    font-weight: 500;
+}
+
+.badgeDate {
+    position: relative;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 5px 14px;
+    border-radius: 100px;
+}
+
+.badgeFooter {
+    position: relative;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* ── ACTIONS ── */
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.downloadBtn {
+    padding: 14px 28px;
+    border-radius: 14px;
+    border: none;
+    background: #50e3a4;
+    color: #080c14;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(80, 227, 164, 0.3);
+    transition: all 0.2s;
+}
+
+.downloadBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(80, 227, 164, 0.4);
+    filter: brightness(1.1);
+}
+
+.closeBtn {
+    padding: 12px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.closeBtn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ── SNAPSHOT OVERRIDES (for html2canvas) ── */
+.badgeCard[data-snapshot="true"] {
+    width: 400px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.badgeCard[data-snapshot="true"] * {
+    animation: none !important;
+    transition: none !important;
+    background-clip: initial !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+}
+
+/* ── MOBILE RESPONSIVENESS (3x-ish Total) ── */
+@media (max-width: 480px) {
+    .modal {
+        max-width: 100%;
+        gap: 30px;
+    }
+
+    .card[data-snapshot="true"] {
+        width: 400px;
+    }
+
+    .modalTitle {
+        font-size: 4.8rem;
+    }
+
+    .modalSub {
+        font-size: 2.4rem;
+    }
+
+    .badgeIcon {
+        font-size: 10rem;
+    }
+
+    .badgeCard[data-snapshot="true"] .badgeIcon {
+        font-size: 4rem;
+    }
+
+    .badgeName {
+        font-size: 3.8rem;
+    }
+
+    .badgeCard[data-snapshot="true"] .badgeName {
+        font-size: 1.4rem;
+    }
+
+    .significanceLabel {
+        font-size: 1.8rem;
+    }
+
+    .badgeCard[data-snapshot="true"] .significanceLabel {
+        font-size: 0.65rem;
+    }
+
+    .badgeDesc {
+        font-size: 2.2rem;
+    }
+
+    .badgeCard[data-snapshot="true"] .badgeDesc {
+        font-size: 0.9rem;
+    }
+
+    .badgeDate {
+        font-size: 1.8rem;
+    }
+
+    .badgeCard[data-snapshot="true"] .badgeDate {
+        font-size: 0.75rem;
+    }
+
+    .badgeFooter {
+        font-size: 1.5rem;
+    }
+
+    .badgeCard[data-snapshot="true"] .badgeFooter {
+        font-size: 0.7rem;
+    }
+
+    .downloadBtn {
+        font-size: 2.8rem;
+        padding: 28px;
+    }
+
+    .closeBtn {
+        font-size: 2rem;
+        padding: 22px;
+    }
+}

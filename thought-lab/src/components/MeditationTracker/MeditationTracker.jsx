@@ -6,7 +6,11 @@ import { useAuth } from "../../Context/auth";
 import { Avatar } from 'antd';
 import { getMeditationHistory, saveMeditationSession as apiSaveMeditationSession } from '../../http';
 import SplashCursor from '../react-bits/SplashCursor';
-import { getTier } from '../../utils/soulXp';
+import { getTier, getXpProgress, getXpToNextTier } from '../../utils/soulXp';
+import FocusPet from '../FocusPet/FocusPet';
+import LevelUpCard from '../FocusPet/LevelUpCard';
+import BadgeUnlockCard from '../FocusPet/BadgeUnlockCard';
+import { url } from '../../url';
 
 const MeditationTracker = () => {
       const [selectedOption, setSelectedOption] = useState(null);
@@ -22,7 +26,12 @@ const MeditationTracker = () => {
             return localISODate;
       });
       const [totalScoreForDay, setTotalScoreForDay] = useState(0);
-      const [auth] = useAuth(); // Destructuring only the state, not the setter
+      const [petData, setPetData] = useState(null);
+      const [petStats, setPetStats] = useState({ blogsRead: 0, meditationsLogged: 0 });
+      const [levelUpData, setLevelUpData] = useState(null);
+      const [unlockedBadge, setUnlockedBadge] = useState(null);
+      const [totalPoints, setTotalPoints] = useState(0); // Total Soul XP
+      const [auth] = useAuth();
 
       // Helper to format date for display
       const formatDate = (dateString) => {
@@ -146,6 +155,37 @@ const MeditationTracker = () => {
                         setHistory(syncedHistory);
                         const finalTotal = syncedHistory.reduce((acc, curr) => acc + (Number(curr.score) || 0), 0);
                         setTotalScoreForDay(finalTotal);
+
+                        // Trigger Focus Pet API concurrently
+                        if (score > 0) {
+                              fetch(`${url}/user/pet/award-xp`, {
+                                    method: 'POST',
+                                    headers: { Authorization: auth.token, 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ actionType: 'MEDITATE', duration: score })
+                              })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                          if (data.success) {
+                                                setPetData(data.focusPet);
+                                                setPetStats(prev => ({
+                                                      ...prev,
+                                                      meditationsLogged: prev.meditationsLogged + 1
+                                                }));
+                                                if (data.leveledUp) {
+                                                      setLevelUpData(data.focusPet);
+                                                } else {
+                                                      toast.success(data.message, { duration: 3000 });
+                                                }
+                                                (data.newBadges || []).forEach((b, idx) => {
+                                                      if (idx === 0) {
+                                                            setUnlockedBadge(b);
+                                                      }
+                                                      toast.success(`🏅 New Badge: ${b.icon} ${b.name}!`, { duration: 5000 });
+                                                });
+                                          }
+                                    })
+                                    .catch(err => console.error("Pet XP error:", err));
+                        }
                   } else {
                         toast.error(newSessionData.message || 'Failed to save your meditation session.');
                         setHistory(originalHistory);
@@ -173,9 +213,49 @@ const MeditationTracker = () => {
             return `Calculation: ${durationNum} minutes × 1 point = ${rawScore} points → Rounded to ${roundedScore}`;
       };
 
+      // Fetch Pet Data on load
+      useEffect(() => {
+            if (auth?.user?.id) {
+                  const fetchUser = async () => {
+                        try {
+                              const res = await fetch(`${url}/user/${auth.user.id}`, {
+                                    headers: auth?.token ? { Authorization: auth.token } : {}
+                              });
+                              const data = await res.json();
+                              if (data?.user?.focusPet) {
+                                    setPetData(data.user.focusPet);
+                              }
+                              if (data?.user?.petStats) {
+                                    setPetStats(data.user.petStats);
+                              }
+                              if (data?.user?.points !== undefined) {
+                                    setTotalPoints(data.user.points);
+                              }
+                              if (data?.success && !data?.user?.focusPet) {
+                                    setPetData({ level: 1, xp: 0, petType: 'seed' });
+                              }
+                        } catch (err) { }
+                  };
+                  fetchUser();
+            }
+      }, [auth?.user?.id, auth?.token]);
+
       return (
             <div className={styles.mainContainer}>
                   <SplashCursor />
+                  {levelUpData && (
+                        <LevelUpCard
+                              focusPet={levelUpData}
+                              userName={auth?.user?.name}
+                              onClose={() => setLevelUpData(null)}
+                        />
+                  )}
+                  {unlockedBadge && (
+                        <BadgeUnlockCard
+                              badge={unlockedBadge}
+                              onClose={() => setUnlockedBadge(null)}
+                        />
+                  )}
                   <div className={styles.container}>
                         <div className={styles.header}>
                               <div className={styles.meditationIcon}>
@@ -183,6 +263,10 @@ const MeditationTracker = () => {
                               </div>
                               <h1>Meditation Tracker</h1>
                               <p>Earn <strong style={{ color: getTier(totalScoreForDay).color }}>Soul XP</strong> ✨ and ascend your tier</p>
+
+                              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+                                    <FocusPet petData={petData} />
+                              </div>
                         </div>
 
                         <div className={styles.content}>
@@ -239,6 +323,97 @@ const MeditationTracker = () => {
                                     </div>
                                     <div className={styles.scoreDetails}>
                                           {getScoreCalculationText()}
+                                    </div>
+                              </div>
+
+                              {/* ── MILESTONE PROGRESS ── */}
+                              <div className={styles.milestoneTracker}>
+                                    <h3 className={styles.milestoneTitle}>🏆 Next Milestones</h3>
+                                    <div className={styles.milestoneGrid}>
+                                          {/* Leaderboard Ascension Badge */}
+                                          {totalPoints < 5001 && (
+                                                <div className={styles.milestoneCard}>
+                                                      <div className={styles.milestoneIcon}>
+                                                            {getTier(totalPoints + (getXpToNextTier(totalPoints) || 0)).emoji}
+                                                      </div>
+                                                      <div className={styles.milestoneInfo}>
+                                                            <span className={styles.milestoneName}>
+                                                                  Next Tier: {getTier(totalPoints + (getXpToNextTier(totalPoints) || 0)).title}
+                                                            </span>
+                                                            <div className={styles.progressRow}>
+                                                                  <div className={styles.miniBar}>
+                                                                        <div
+                                                                              className={`${styles.miniFill} ${styles[getTier(totalPoints + (getXpToNextTier(totalPoints) || 0)).id]}`}
+                                                                              style={{
+                                                                                    width: `${getXpProgress(totalPoints)}%`
+                                                                              }}
+                                                                        />
+                                                                  </div>
+                                                                  <span className={styles.progressText}>
+                                                                        {totalPoints} / {getTier(totalPoints + (getXpToNextTier(totalPoints) || 0)).minXp} XP
+                                                                  </span>
+                                                            </div>
+                                                            <p className={styles.milestoneHint} style={{ color: getTier(totalPoints + 1).color }}>
+                                                                  {getXpToNextTier(totalPoints)} Soul XP to ascend!
+                                                            </p>
+                                                      </div>
+                                                </div>
+                                          )}
+
+                                          {/* Pet Level Progress */}
+                                          {petData && (
+                                                <div className={styles.milestoneCard}>
+                                                      <div className={styles.milestoneIcon}>
+                                                            {petData.level < 2 ? '🐣' : petData.level < 5 ? '🧘' : '🌳'}
+                                                      </div>
+                                                      <div className={styles.milestoneInfo}>
+                                                            <span className={styles.milestoneName}>
+                                                                  Next Pet Badge: {petData.level < 2 ? 'First Steps' : petData.level < 5 ? 'Zen Seeker' : 'Garden Master'}
+                                                            </span>
+                                                            <div className={styles.progressRow}>
+                                                                  <div className={styles.miniBar}>
+                                                                        <div
+                                                                              className={styles.miniFill}
+                                                                              style={{
+                                                                                    width: `${(petData.xp / (petData.level * 50)) * 100}%`,
+                                                                                    background: '#34d399'
+                                                                              }}
+                                                                        />
+                                                                  </div>
+                                                                  <span className={styles.progressText}>
+                                                                        {petData.xp} / {petData.level * 50} XP
+                                                                  </span>
+                                                            </div>
+                                                            <p className={styles.milestoneHint}>
+                                                                  {(petData.level * 50) - petData.xp} Pet XP to Level {petData.level + 1}
+                                                            </p>
+                                                      </div>
+                                                </div>
+                                          )}
+
+                                          {/* Meditation Monk Progress */}
+                                          {petStats.meditationsLogged < 10 && (
+                                                <div className={styles.milestoneCard}>
+                                                      <div className={styles.milestoneIcon}>🙏</div>
+                                                      <div className={styles.milestoneInfo}>
+                                                            <span className={styles.milestoneName}>Meditation Monk</span>
+                                                            <div className={styles.progressRow}>
+                                                                  <div className={styles.miniBar}>
+                                                                        <div
+                                                                              className={styles.miniFill}
+                                                                              style={{ width: `${(petStats.meditationsLogged / 10) * 100}%` }}
+                                                                        />
+                                                                  </div>
+                                                                  <span className={styles.progressText}>
+                                                                        {petStats.meditationsLogged} / 10 sessions
+                                                                  </span>
+                                                            </div>
+                                                            <p className={styles.milestoneHint}>
+                                                                  {10 - petStats.meditationsLogged} sessions left to unlock!
+                                                            </p>
+                                                      </div>
+                                                </div>
+                                          )}
                                     </div>
                               </div>
 

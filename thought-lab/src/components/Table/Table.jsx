@@ -19,7 +19,6 @@ const getProfileImage = (path) => {
 
 const rowOptions = [5, 8, 20];
 
-/* ── rank medal helper ── */
 const RankBadge = ({ rank }) => {
   if (rank === 1) return <span className={styles.rankGold}><Crown size={14} /> 1</span>;
   if (rank === 2) return <span className={styles.rankSilver}><Medal size={14} /> 2</span>;
@@ -36,7 +35,6 @@ const Table = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  /* ── socket live data ── */
   useEffect(() => {
     setLoading(true);
     socket.emit("get-initial-leaderboard");
@@ -62,7 +60,6 @@ const Table = () => {
     };
   }, []);
 
-  /* ── current user rank ── */
   const currentUserId = auth?.user?._id || auth?.user?.id;
   const myRankIndex = data.findIndex(
     (item) => item.user?._id === currentUserId || item.user?.id === currentUserId
@@ -71,7 +68,6 @@ const Table = () => {
   const myEntry = myRankIndex !== -1 ? data[myRankIndex] : null;
   const myTier = myEntry ? getTier(myEntry.score) : null;
 
-  /* ── filter & paginate ── */
   const filteredData = data.filter((item) => {
     const name = item?.user?.name || "";
     const roll = item?.user?.rollNumber || "";
@@ -87,7 +83,6 @@ const Table = () => {
     currentPage * rowsPerPage
   );
 
-  /* ── top 3 podium ── */
   const topThree = data.slice(0, 3);
 
   const podiumOrder = [
@@ -100,7 +95,6 @@ const Table = () => {
     <div className={styles.page}>
       <SplashCursor />
 
-      {/* ── Hero ── */}
       <div className={styles.hero}>
         <span className={styles.heroEyebrow}>Live Rankings</span>
         <h1 className={styles.heroTitle}>
@@ -109,7 +103,6 @@ const Table = () => {
         <p className={styles.heroSub}>Real-time rankings updated live via WebSocket</p>
       </div>
 
-      {/* ── Current User Rank Card (LeetCode-style) ── */}
       {myEntry && !loading && (
         <div className={styles.myRankCard} style={{ borderColor: myTier.color, boxShadow: myTier.shadow }}>
           <div className={styles.myRankLeft}>
@@ -125,6 +118,12 @@ const Table = () => {
               <p className={styles.myMeta}>
                 {myEntry.user?.rollNumber} · <span style={{ color: myTier.color, fontWeight: 'bold' }}>{myTier.emoji} {myTier.title}</span>
               </p>
+              <button
+                className={styles.myBadgesLink}
+                onClick={(e) => navigate(`/badges`)}
+              >
+                🏅 View My Badges
+              </button>
             </div>
           </div>
           <div className={styles.myRankRight}>
@@ -148,7 +147,6 @@ const Table = () => {
         </div>
       ) : (
         <>
-          {/* ── Podium Top 3 ── */}
           {topThree.length >= 3 && !searchTerm && (
             <div className={styles.podium}>
               {podiumOrder.map(({ user, score, rank }) => {
@@ -171,13 +169,18 @@ const Table = () => {
                     </div>
                     <p className={styles.podiumName}>{user?.name}</p>
                     <p className={styles.podiumScore} style={{ color: pTier.color }}>{score} Soul XP</p>
+                    <button
+                      className={styles.podiumBadgeBtn}
+                      onClick={(e) => { e.stopPropagation(); navigate(`/badges/${user?._id}`); }}
+                    >
+                      🏅 Badges
+                    </button>
                   </div>
                 )
               })}
             </div>
           )}
 
-          {/* ── Search bar ── */}
           <div className={styles.toolbar}>
             <div className={styles.searchBox}>
               <Search size={16} className={styles.searchIcon} />
@@ -202,7 +205,6 @@ const Table = () => {
             </div>
           </div>
 
-          {/* ── Table ── */}
           <div className={styles.tableWrap}>
             <table className={styles.table}>
               <thead>
@@ -239,6 +241,16 @@ const Table = () => {
                             <span className={styles.playerName}>
                               {item.user?.name || "—"}
                               {isMe && <span className={styles.meTag}>You</span>}
+                              <button
+                                className={styles.rowBadgeLink}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/badges/${item.user?._id || item.user?.id}`);
+                                }}
+                                title="View Badges"
+                              >
+                                🏅
+                              </button>
                             </span>
                           </div>
                         </td>
@@ -261,7 +273,6 @@ const Table = () => {
             </table>
           </div>
 
-          {/* ── Pagination ── */}
           {totalPages > 1 && (
             <div className={styles.pagination}>
               <button

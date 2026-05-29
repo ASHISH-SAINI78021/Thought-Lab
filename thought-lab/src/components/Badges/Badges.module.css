@@ -1,0 +1,287 @@
+.page {
+    min-height: 100vh;
+    padding: 80px 24px 60px;
+    background: radial-gradient(ellipse at 20% 10%, rgba(76, 200, 130, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 90%, rgba(124, 111, 255, 0.08) 0%, transparent 50%),
+        #080c14;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #50e3a4;
+    margin-bottom: 8px;
+}
+
+.title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    color: #fff;
+    margin: 0 0 12px;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 28px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.skeletonGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 28px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.skeleton {
+    height: 320px;
+    border-radius: 20px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.badgeWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+/* ── BADGE CARD ── */
+.badgeCard {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    background: var(--badge-bg);
+    box-shadow: 0 8px 40px var(--badge-glow);
+    padding: 32px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.badgeCard:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 20px 60px var(--badge-glow);
+}
+
+.badgeCardBg {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+}
+
+.badgeIcon {
+    position: relative;
+    font-size: 3.5rem;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+    animation: floatIcon 3s ease-in-out infinite;
+}
+
+.badgeName {
+    position: relative;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 4px 0 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.badgeSignificance {
+    position: relative;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin: 8px 0;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.significanceLabel {
+    display: block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #50e3a4;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.badgeDesc {
+    position: relative;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.4;
+    margin: 0;
+    font-weight: 500;
+}
+
+.badgeDate {
+    position: relative;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(0, 0, 0, 0.25);
+    padding: 4px 12px;
+    border-radius: 100px;
+}
+
+.badgeFooter {
+    position: relative;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 4px;
+}
+
+.downloadBadgeBtn {
+    padding: 8px 22px;
+    border-radius: 100px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.downloadBadgeBtn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.04);
+}
+
+/* ── LOCKED STATE ── */
+.locked .badgeCard {
+    filter: grayscale(1) brightness(0.6);
+    box-shadow: none !important;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.lockOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px 20px;
+    border-radius: 100px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.85rem;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.lockedHint {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 600;
+}
+
+.badgeWrapper.locked:hover .badgeCard {
+    transform: none;
+}
+
+/* ── Empty State ── */
+.empty {
+    text-align: center;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.empty span {
+    font-size: 4rem;
+}
+
+.empty p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.4);
+    max-width: 400px;
+    line-height: 1.7;
+}
+
+@keyframes shimmer {
+    to {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes floatIcon {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 6rem;
+    }
+
+    .subtitle {
+        font-size: 3rem;
+    }
+
+    .badgeName {
+        font-size: 3.5rem;
+    }
+
+    .badgeDesc {
+        font-size: 2.8rem;
+    }
+
+    .significanceLabel {
+        font-size: 1.8rem;
+    }
+
+    .lockOverlay {
+        font-size: 3rem;
+        padding: 24px 48px;
+    }
+
+    .lockedHint {
+        font-size: 2.5rem;
+    }
+
+    .badgeDate {
+        font-size: 2.4rem;
+    }
+}

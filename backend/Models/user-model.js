@@ -19,6 +19,24 @@ const userSchema = new Schema({
         required: false,
         // get: (avatar) => avatar ? `${process.env.BASE_URL}/${avatar}` : avatar
     },
+    focusPet: {
+        level: { type: Number, default: 1 },
+        xp: { type: Number, default: 0 },
+        petType: { type: String, default: 'seed' }
+    },
+    badges: [
+        {
+            id: { type: String },
+            name: { type: String },
+            icon: { type: String },
+            description: { type: String },
+            earnedAt: { type: Date, default: Date.now }
+        }
+    ],
+    petStats: {
+        blogsRead: { type: Number, default: 0 },
+        meditationsLogged: { type: Number, default: 0 }
+    },
     attendance : [
         {
             date : String,

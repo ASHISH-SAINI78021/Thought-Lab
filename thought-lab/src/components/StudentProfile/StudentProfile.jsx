@@ -14,6 +14,7 @@ const StudentProfile = () => {
     const [isLoading, setIsLoading] = useState(true);
     const { id } = useParams();
     const [studentData, setStudentData] = useState({});
+    const [badges, setBadges] = useState([]);
 
     // Check if this is the logged-in user's own profile
     const isOwnProfile = auth?.user?.id === id;
@@ -52,8 +53,23 @@ const StudentProfile = () => {
             }
         };
 
+        const fetchBadges = async () => {
+            try {
+                const res = await fetch(`${url}/user/badges/${id}`, {
+                    headers: { Authorization: auth.token }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    setBadges(data.badges || []);
+                }
+            } catch (e) {
+                console.error("Fetch badges error:", e);
+            }
+        };
+
         fetchProfile();
-    }, [id]);
+        fetchBadges();
+    }, [id, auth?.token]);
 
     useEffect(() => {
         const fetchHistory = async () => {
@@ -283,6 +299,12 @@ const StudentProfile = () => {
                     >
                         <i className="fas fa-coins"></i> Points History
                     </button>
+                    <button
+                        className={`${styles.tab} ${activeTab === 'badges' ? styles.activeTab : ''}`}
+                        onClick={() => setActiveTab('badges')}
+                    >
+                        <i className="fas fa-medal"></i> Badges
+                    </button>
                 </div>
 
                 <div className={styles.tabContent}>
@@ -419,6 +441,31 @@ const StudentProfile = () => {
                                 </div>
                             )}
                         </div>
+                    ) : activeTab === 'badges' ? (
+                        <div className={styles.badgesSection}>
+                            <h3 className={styles.sectionTitle}>🏅 Achievement Collection</h3>
+                            {badges.length > 0 ? (
+                                <div className={styles.badgeGrid}>
+                                    {badges.map((badge) => (
+                                        <div key={badge.id} className={styles.badgeCard}>
+                                            <div className={styles.badgeIcon}>{badge.icon}</div>
+                                            <div className={styles.badgeInfo}>
+                                                <h4 className={styles.badgeName}>{badge.name}</h4>
+                                                <p className={styles.badgeDesc}>{badge.description}</p>
+                                                <span className={styles.badgeDate}>
+                                                    Earned {new Date(badge.earnedAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className={styles.emptyBadges}>
+                                    <span>🏅</span>
+                                    <p>This student hasn't earned any badges yet. Keep meditating!</p>
+                                </div>
+                            )}
+                        </div>
                     ) : (
                         <div className={styles.attendanceSection}>
                             <div className={styles.attendanceStats}>
@@ -444,7 +491,6 @@ const StudentProfile = () => {
                                     </div>
                                 </div>
                             </div>
-
                             <h3 className={styles.attendanceHistoryTitle}>Attendance History</h3>
                             <div className={styles.attendanceList}>
                                 {studentData?.attendance?.map((record) => (
@@ -459,8 +505,8 @@ const StudentProfile = () => {
                         </div>
                     )}
                 </div>
-            </div >
-        </div >
+            </div>
+        </div>
     );
 };
 

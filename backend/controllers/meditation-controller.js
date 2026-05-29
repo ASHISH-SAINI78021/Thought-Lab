@@ -82,6 +82,59 @@ class MeditationController {
             });
         }
     }
+
+    async resetUserMeditation(req, res) {
+        try {
+            const { id } = req.params; // userId
+            const User = require('../Models/user-model.js');
+            const Meditation = require('../Models/meditation-model.js');
+            const Leaderboard = require('../Models/leaderboard-modal.js');
+
+            // 1. Delete all meditation sessions
+            await Meditation.deleteMany({ user: id });
+
+            // 2. Reset Leaderboard score
+            await Leaderboard.findOneAndUpdate(
+                { user: id },
+                { score: 0 },
+                { upsert: true }
+            );
+
+            // 3. Reset User stats
+            await User.findByIdAndUpdate(id, {
+                'petStats.meditationsLogged': 0,
+                'focusPet.level': 1,
+                'focusPet.xp': 0
+            });
+
+            // 4. Emit live update
+            if (global.io) {
+                // Soul Leaderboard
+                const fullLeaderboard = await Leaderboard.find()
+                    .populate("user", "name rollNumber branch year")
+                    .sort({ score: -1 });
+                global.io.emit("leaderboard-update", fullLeaderboard);
+
+                // Pet Leaderboard
+                const petLeaders = await User.find({ "focusPet.level": { $exists: true } })
+                    .sort({ "focusPet.level": -1, "focusPet.xp": -1 })
+                    .limit(10)
+                    .select("name rollNumber profilePicture focusPet");
+                global.io.emit("pet-leaderboard-update", petLeaders);
+            }
+
+            return res.json({
+                success: true,
+                message: "Meditation data and leaderboard score have been successfully reset."
+            });
+        } catch (err) {
+            console.error("Error resetting meditation data:", err);
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            });
+        }
+    }
 }
 
 module.exports = new MeditationController();

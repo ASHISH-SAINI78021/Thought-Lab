@@ -1,0 +1,309 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+/* ── THE CARD ── */
+.card {
+    position: relative;
+    width: 360px;
+    border-radius: 24px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0d1b2a 0%, #1a1040 50%, #0a2a1f 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 60px rgba(76, 200, 130, 0.3), 0 0 120px rgba(100, 80, 220, 0.2);
+}
+
+.cardBg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(80, 200, 140, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 80%, rgba(100, 80, 220, 0.15) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.cardOrb1 {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(76, 200, 130, 0.35), transparent 70%);
+    border-radius: 50%;
+}
+
+.cardOrb2 {
+    position: absolute;
+    bottom: -60px;
+    left: -60px;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(130, 80, 240, 0.3), transparent 70%);
+    border-radius: 50%;
+}
+
+.cardInner {
+    position: relative;
+    z-index: 1;
+    padding: 32px 28px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.platform {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+}
+
+.petIcon {
+    font-size: 5rem;
+    animation: floatPet 3s ease-in-out infinite;
+    margin: 8px 0;
+    filter: drop-shadow(0 0 20px rgba(76, 200, 130, 0.6));
+}
+
+.levelUpText {
+    font-size: 2rem;
+    font-weight: 900;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background: linear-gradient(90deg, #50e3a4, #7c6fff, #50e3a4);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
+}
+
+.levelBadge {
+    padding: 6px 22px;
+    background: linear-gradient(135deg, #4CAF50, #7c6fff);
+    border-radius: 100px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(76, 200, 130, 0.4);
+}
+
+.userName {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 4px 0 0;
+}
+
+.subText {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.xpBar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.xpFill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #7c6fff);
+    border-radius: 100px;
+    transition: width 0.6s ease;
+}
+
+.xpLabel {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+}
+
+.cardFooter {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.1em;
+    margin-top: 8px;
+}
+
+/* ── ACTIONS ── */
+.actions {
+    display: flex;
+    gap: 12px;
+}
+
+.downloadBtn {
+    padding: 10px 24px;
+    border-radius: 100px;
+    border: none;
+    background: linear-gradient(135deg, #4CAF50, #7c6fff);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(76, 200, 130, 0.35);
+}
+
+.downloadBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(76, 200, 130, 0.5);
+}
+
+.closeBtn {
+    padding: 10px 24px;
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.closeBtn:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Animations ── */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes floatPet {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes shine {
+    to {
+        background-position: 200% center;
+    }
+}
+
+/* ── SNAPSHOT OVERRIDES (for html2canvas) ── */
+.card[data-snapshot="true"] {
+    width: 400px;
+    height: auto;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transform: none !important;
+}
+
+.card[data-snapshot="true"] * {
+    animation: none !important;
+    transition: none !important;
+}
+
+.card[data-snapshot="true"] .levelUpText {
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    color: #50e3a4 !important;
+    text-shadow: 0 4px 15px rgba(80, 227, 164, 0.5);
+}
+
+/* ── MOBILE RESPONSIVENESS (3x Total) ── */
+@media (max-width: 480px) {
+    .card {
+        width: 100%;
+        padding: 50px 28px;
+    }
+
+    .card[data-snapshot="true"] {
+        padding: 32px 28px 24px;
+        width: 400px;
+    }
+
+    .petIcon {
+        font-size: 13rem;
+    }
+
+    .card[data-snapshot="true"] .petIcon {
+        font-size: 6rem;
+    }
+
+    .levelUpText {
+        font-size: 5rem;
+    }
+
+    .card[data-snapshot="true"] .levelUpText {
+        font-size: 2.2rem;
+    }
+
+    .levelBadge {
+        font-size: 2.5rem;
+        padding: 14px 40px;
+    }
+
+    .card[data-snapshot="true"] .levelBadge {
+        font-size: 1rem;
+        padding: 6px 22px;
+    }
+
+    .userName {
+        font-size: 2.8rem;
+    }
+
+    .card[data-snapshot="true"] .userName {
+        font-size: 1.2rem;
+    }
+
+    .subText {
+        font-size: 1.8rem;
+    }
+
+    .card[data-snapshot="true"] .subText {
+        font-size: 0.85rem;
+    }
+
+    .xpLabel {
+        font-size: 1.6rem;
+    }
+
+    .card[data-snapshot="true"] .xpLabel {
+        font-size: 0.8rem;
+    }
+
+    .downloadBtn,
+    .closeBtn {
+        font-size: 2.22rem;
+        padding: 22px 50px;
+    }
+}

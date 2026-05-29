@@ -443,6 +443,124 @@
   border-top: 1px dashed rgba(255, 255, 255, 0.07);
 }
 
+/* ── MILESTONE TRACKER ── */
+.milestoneTracker {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  width: 100%;
+}
+
+.milestoneTitle {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  letter-spacing: 0.05em;
+}
+
+.milestoneGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.milestoneCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+}
+
+.milestoneCard:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(80, 227, 164, 0.3);
+  transform: translateY(-2px);
+}
+
+.milestoneIcon {
+  font-size: 2.2rem;
+  background: rgba(0, 0, 0, 0.2);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+}
+
+.milestoneInfo {
+  flex: 1;
+  text-align: left;
+}
+
+.milestoneName {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 8px;
+}
+
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.miniBar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.miniFill {
+  height: 100%;
+  background: linear-gradient(90deg, #50e3a4, #7c6fff);
+  border-radius: 100px;
+  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.progressText {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #50e3a4;
+  white-space: nowrap;
+}
+
+.milestoneHint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Tier Specific Progress Golds */
+.miniFill.stoic {
+  background: linear-gradient(90deg, #00d4ff, #008ebf);
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.miniFill.sage {
+  background: linear-gradient(90deg, #a855f7, #7e22ce);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+
+.miniFill.enlightened {
+  background: linear-gradient(90deg, #FBBF24, #D97706);
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
 /* ── Avatar Override ── */
 .historyMain :global(.ant-avatar) {
   width: clamp(32px, 8vw, 48px) !important;
@@ -569,6 +687,42 @@
   .filterControls {
     width: 100%;
     flex-direction: column;
+  }
+
+  .milestoneTracker {
+    padding: 24px 16px;
+  }
+
+  .milestoneGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .milestoneCard {
+    padding: 16px;
+  }
+
+  .milestoneIcon {
+    font-size: 5.5rem;
+    width: 150px;
+    height: 150px;
+  }
+
+  .milestoneName {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+
+  .miniBar {
+    height: 15px;
+  }
+
+  .progressText {
+    font-size: 2.5rem;
+  }
+
+  .milestoneHint {
+    font-size: 2.2rem;
+    margin-top: 10px;
   }
 }
 

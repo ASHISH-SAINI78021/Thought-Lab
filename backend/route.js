@@ -29,6 +29,10 @@ router.get('/auth-status', isLogin, (req, res) => {
 
 // user routes 
 router.get('/user/:id', AuthController.getUser);
+router.post('/user/pet/award-xp', isLogin, UserController.awardPetXP);
+router.get('/user/badges/me', isLogin, UserController.getUserBadges);
+router.get('/user/badges/:id', isLogin, UserController.getUserBadges);
+router.get('/users/pet-leaderboard', UserController.getPetLeaderboard);
 router.put('/api/increment-year', UserController.incrementYear); // middleware
 router.get('/users', isLogin, isAdmin, UserController.getAllUsers); // Get all users for admin
 router.put('/profile/update', isLogin, upload.single('profilePicture'), UserController.updateProfile);
@@ -64,6 +68,7 @@ router.delete('/delete-game/:id', isLogin, isAdmin, GameController.deleteGame); 
 // meditation routes
 router.get('/meditation-history', MeditationController.meditationHistory);
 router.post('/meditation-session/:id', isLogin, MeditationController.meditationSession);
+router.delete('/admin/user/:id/meditation', isLogin, isSuperAdmin, MeditationController.resetUserMeditation);
 
 // courses routes
 router.get('/courses', CourseController.getAllCourses);

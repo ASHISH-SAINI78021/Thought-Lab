@@ -4,6 +4,10 @@ import { url } from '../../../url';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../Context/auth';
 import SplashCursor from '../../react-bits/SplashCursor';
+import FocusPet from '../../FocusPet/FocusPet';
+import LevelUpCard from '../../FocusPet/LevelUpCard';
+import BadgeUnlockCard from '../../FocusPet/BadgeUnlockCard';
+import toast from 'react-hot-toast';
 
 /* Helper: first letter of a name as avatar */
 const Avatar = ({ name, className }) => {
@@ -22,6 +26,10 @@ const BlogItem = () => {
   const [reactionDetails, setReactionDetails] = useState({ likes: [], dislikes: [] });
   const [commentText, setCommentText] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [petData, setPetData] = useState(null);
+  const [xpAwarded, setXpAwarded] = useState(false);
+  const [levelUpData, setLevelUpData] = useState(null);
+  const [unlockedBadge, setUnlockedBadge] = useState(null);
   const [auth] = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -124,6 +132,64 @@ const BlogItem = () => {
     }
   };
 
+  /* ── Pet Data ── */
+  useEffect(() => {
+    if (auth?.user?.id) {
+      const fetchUser = async () => {
+        try {
+          const res = await fetch(`${url}/user/${auth.user.id}`, {
+            headers: auth?.token ? { Authorization: auth.token } : {}
+          });
+          const data = await res.json();
+          if (data?.user?.focusPet) {
+            setPetData(data.user.focusPet);
+          } else if (data?.success) {
+            setPetData({ level: 1, xp: 0, petType: 'seed' });
+          }
+        } catch (err) { }
+      };
+      fetchUser();
+    }
+  }, [auth?.user?.id, auth?.token]);
+
+  useEffect(() => {
+    let readTimer = 0;
+    if (!auth?.token || xpAwarded || !blog) return;
+
+    const interval = setInterval(() => {
+      readTimer += 1;
+      if (readTimer >= 30) {
+        clearInterval(interval);
+        awardBlogXP();
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [auth?.token, xpAwarded, blog]);
+
+  const awardBlogXP = async () => {
+    try {
+      const res = await fetch(`${url}/user/pet/award-xp`, {
+        method: 'POST',
+        headers: { Authorization: auth.token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ actionType: 'READ_BLOG' })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPetData(data.focusPet);
+        setXpAwarded(true);
+        if (data.leveledUp) {
+          setLevelUpData(data.focusPet);
+        } else {
+          toast.success(data.message || 'Focus Pet gained XP for reading!', { duration: 3000 });
+        }
+        (data.newBadges || []).forEach((b, idx) => {
+          if (idx === 0) setUnlockedBadge(b);
+          toast.success(`🏅 New Badge: ${b.icon} ${b.name}!`, { duration: 5000 });
+        });
+      }
+    } catch (e) { }
+  };
+
   /* ── States ── */
   if (loading) {
     return (
@@ -170,6 +236,19 @@ const BlogItem = () => {
   return (
     <div className={styles.shell}>
       <SplashCursor />
+      {levelUpData && (
+        <LevelUpCard
+          focusPet={levelUpData}
+          userName={auth?.user?.name}
+          onClose={() => setLevelUpData(null)}
+        />
+      )}
+      {unlockedBadge && (
+        <BadgeUnlockCard
+          badge={unlockedBadge}
+          onClose={() => setUnlockedBadge(null)}
+        />
+      )}
       {/* ── Hero ── */}
       {blog.thumbnail ? (
         <div className={styles.heroBanner}>
@@ -245,6 +324,10 @@ const BlogItem = () => {
           <button className={styles.showReactionsBtn} onClick={fetchReactionDetails}>
             👥 Who reacted
           </button>
+
+          <div style={{ marginLeft: 'auto' }}>
+            <FocusPet petData={petData} />
+          </div>
         </div>
 
         {/* Comments card */}

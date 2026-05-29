@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 import { useAuth } from "../../../Context/auth";
 import { url } from '../../../url'
 import { socket } from "../../../App";
+import { Search, RefreshCcw, User as UserIcon } from 'lucide-react';
 
 
 const AdminPanel = () => {
@@ -13,6 +14,13 @@ const AdminPanel = () => {
   const [liveUsers, setLiveUsers] = useState({ count: 0, users: [] });
   const [events, setEvents] = useState(0);
   const [dashboardData, setDashboardData] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [targetUser, setTargetUser] = useState(null);
+  const [searching, setSearching] = useState(false);
+  const [resetting, setResetting] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
     if (!socket) return;
@@ -95,12 +103,75 @@ const AdminPanel = () => {
       }
     };
 
+    const init4 = async () => {
+      if (auth?.user?.role !== 'superAdmin') return;
+      try {
+        const res = await fetch(`${url}/users`, {
+          headers: { Authorization: auth?.token }
+        });
+        const data = await res.json();
+        if (data.success) {
+          setAllUsers(data.users || []);
+        }
+      } catch (error) {
+        console.error("Error fetching all users for search:", error);
+      }
+    };
+
     init();
     init2();
     if (auth?.token) {
       init3();
+      init4();
     }
-  }, [auth?.token]);
+  }, [auth?.token, auth?.user?.role]);
+
+  // Live search effect
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredUsers([]);
+      setShowResults(false);
+      return;
+    }
+    const filtered = allUsers.filter(u =>
+      u.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      u.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      u.rollNumber?.toLowerCase().includes(searchQuery.toLowerCase())
+    ).slice(0, 8); // Limit to top 8 results
+    setFilteredUsers(filtered);
+    setShowResults(true);
+  }, [searchQuery, allUsers]);
+
+  const handleSelectUser = (user) => {
+    setTargetUser(user);
+    setSearchQuery("");
+    setShowResults(false);
+  };
+
+  const handleResetMeditation = async () => {
+    if (!targetUser) return;
+    if (!window.confirm(`Are you absolutely sure you want to RESET meditation history and leaderboard score for ${targetUser.name}? This cannot be undone.`)) return;
+
+    setResetting(true);
+    try {
+      const res = await fetch(`${url}/admin/user/${targetUser._id || targetUser.id}/meditation`, {
+        method: 'DELETE',
+        headers: { Authorization: auth?.token }
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(data.message);
+        setTargetUser(null);
+        setSearchQuery("");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error("Reset failed");
+    } finally {
+      setResetting(false);
+    }
+  };
 
   return (
     <div>
@@ -136,6 +207,74 @@ const AdminPanel = () => {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Super Admin Section */}
+      {auth?.user?.role === 'superAdmin' && (
+        <div className={styles.liveUsersList} style={{ marginTop: '2rem', border: '1px solid #fee2e2', background: '#fff' }}>
+          <h3 className={styles.listTitle} style={{ color: '#ef4444' }}>Super Admin Tools</h3>
+          <p style={{ padding: '0 1rem', fontSize: '0.9rem', color: '#666' }}>Reset meditation records and leaderboard scores.</p>
+
+          <div style={{ padding: '1rem', position: 'relative' }}>
+            <div style={{ position: 'relative' }}>
+              <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#999' }} />
+              <input
+                type="text"
+                placeholder="Search by name, roll no or email..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => searchQuery && setShowResults(true)}
+                style={{ width: '100%', padding: '0.8rem 0.8rem 0.8rem 2.5rem', borderRadius: '8px', border: '1px solid #ddd', outline: 'none' }}
+              />
+
+              {showResults && filteredUsers.length > 0 && (
+                <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: '#fff', border: '1px solid #ddd', borderRadius: '8px', marginTop: '4px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', zIndex: 100, maxHeight: '300px', overflowY: 'auto' }}>
+                  {filteredUsers.map(u => (
+                    <div
+                      key={u._id || u.id}
+                      onClick={() => handleSelectUser(u)}
+                      style={{ padding: '0.8rem 1rem', cursor: 'pointer', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '0.8rem' }}
+                      onMouseEnter={(e) => e.target.style.background = '#f8fafc'}
+                      onMouseLeave={(e) => e.target.style.background = '#fff'}
+                    >
+                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                        {(u.name || 'A').charAt(0).toUpperCase()}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>{u.name}</span>
+                        <span style={{ fontSize: '0.75rem', color: '#64748b' }}>{u.rollNumber} · {u.email}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {targetUser && (
+            <div style={{ margin: '1rem', padding: '1rem', background: '#f8fafc', borderRadius: '12px', border: '1px dotted #cbd5e1' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <UserIcon size={20} color="#64748b" />
+                  </div>
+                  <div>
+                    <p style={{ fontWeight: 'bold', margin: 0 }}>{targetUser.name}</p>
+                    <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0 }}>{targetUser.rollNumber} · {targetUser.email}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleResetMeditation}
+                  disabled={resetting}
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', background: '#ef4444', color: '#fff', border: 'none', borderRadius: '6px', cursor: resetting ? 'not-allowed' : 'pointer', fontSize: '0.9rem', fontWeight: 'bold' }}
+                >
+                  <RefreshCcw size={16} className={resetting ? 'animate-spin' : ''} />
+                  {resetting ? 'Resetting...' : 'Reset Meditation Data'}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
