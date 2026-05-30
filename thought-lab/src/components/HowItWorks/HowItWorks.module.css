@@ -994,7 +994,8 @@
     }
 
     .sectionTitle {
-        font-size: 1.5rem;
+        font-size: 3.75rem;
+        /* 1.5rem * 2.5 */
     }
 
     .section {
@@ -1002,8 +1003,203 @@
     }
 
     .earnSection,
+    .portalSection,
     .badgesSection {
         border-radius: 20px;
         margin: 0 -4px;
     }
+
+    /* ──── 3.75x Font Scaling for Mobile ──── */
+    .heroBadge {
+        font-size: 3rem;
+    }
+
+    .heroTitle {
+        font-size: 7.5rem;
+        line-height: 1.1;
+    }
+
+    .heroSub {
+        font-size: 3.75rem;
+        line-height: 1.4;
+    }
+
+    .heroStatNum {
+        font-size: 7.125rem;
+    }
+
+    .heroStatLbl {
+        font-size: 2.8125rem;
+    }
+
+    .sectionTag {
+        font-size: 2.925rem;
+    }
+
+    .sectionDesc {
+        font-size: 3.375rem;
+        line-height: 1.4;
+    }
+
+    .featureTag {
+        font-size: 2.55rem;
+    }
+
+    .featureTitle {
+        font-size: 3.9375rem;
+    }
+
+    .featureDesc {
+        font-size: 3.28125rem;
+        line-height: 1.4;
+    }
+
+    .featureIcon {
+        font-size: 7.5rem;
+    }
+
+    .featureArrow {
+        font-size: 3.075rem;
+    }
+
+    .portalHighlightTitle {
+        font-size: 3.75rem;
+    }
+
+    .portalHighlightSub {
+        font-size: 3.1875rem;
+        line-height: 1.4;
+    }
+
+    .portalCode {
+        font-size: 3.075rem;
+    }
+
+    .portalCardIcon {
+        font-size: 5.25rem;
+    }
+
+    .portalCardTitle {
+        font-size: 3.5625rem;
+    }
+
+    .portalCardDesc {
+        font-size: 3.075rem;
+        line-height: 1.4;
+    }
+
+    .earnIcon {
+        font-size: 7.5rem;
+    }
+
+    .earnAction {
+        font-size: 3.75rem;
+    }
+
+    .earnDetail {
+        font-size: 3.15rem;
+        line-height: 1.4;
+    }
+
+    .earnRewardNum {
+        font-size: 4.6875rem;
+    }
+
+    .earnRewardType {
+        font-size: 2.625rem;
+    }
+
+    .infoBoxIcon {
+        font-size: 5.25rem;
+    }
+
+    .infoBox p {
+        font-size: 3.3rem;
+        line-height: 1.4;
+    }
+
+    .formulaIcon {
+        font-size: 7.5rem;
+    }
+
+    .formulaTitle {
+        font-size: 3.375rem;
+    }
+
+    .formulaDesc {
+        font-size: 3.075rem;
+        line-height: 1.4;
+    }
+
+    .petEmoji {
+        font-size: 11.25rem;
+    }
+
+    .petName {
+        font-size: 4.125rem;
+    }
+
+    .petRange {
+        font-size: 2.925rem;
+    }
+
+    .petDesc {
+        font-size: 3.15rem;
+        line-height: 1.4;
+    }
+
+    .badgeIcon {
+        font-size: 8.25rem;
+    }
+
+    .badgeName {
+        font-size: 3.5625rem;
+    }
+
+    .badgeDesc {
+        font-size: 2.925rem;
+        line-height: 1.4;
+    }
+
+    .badgeCondition {
+        font-size: 2.7rem;
+    }
+
+    .stepNum {
+        font-size: 2.7rem;
+    }
+
+    .stepIcon {
+        font-size: 9rem;
+    }
+
+    .stepTitle {
+        font-size: 3.75rem;
+    }
+
+    .stepDesc {
+        font-size: 3.15rem;
+        line-height: 1.4;
+    }
+
+    .ctaTitle {
+        font-size: 5.625rem;
+    }
+
+    .ctaSub {
+        font-size: 3.75rem;
+        line-height: 1.4;
+    }
+
+    .ctaPrimary {
+        font-size: 3.5625rem;
+        padding: 20px;
+    }
+
+    .ctaSecondary {
+        font-size: 3.375rem;
+        padding: 20px;
+    }
+
+    /* ────────────────────────────────────── */
 }
