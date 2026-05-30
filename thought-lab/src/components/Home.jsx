@@ -43,6 +43,8 @@ const STATS = [
 
 const QUICK_LINKS = [
   { label: "Intro", link: "/intro", icon: "✨" },
+  { label: "How It Works", link: "/how-it-works", icon: "💡" },
+  { label: "Habits", link: "/student", icon: "🌱" },
   { label: "Tracker", link: "/meditation-tracker", icon: "📊" },
   { label: "Blogs", link: "/blogs", icon: "✍️" },
   { label: "Courses", link: "/courses", icon: "📚" },

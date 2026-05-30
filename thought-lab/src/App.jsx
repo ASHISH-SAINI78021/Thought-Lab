@@ -62,6 +62,7 @@ import Winners from "./components/Winner/winners.jsx";
 import Devices from "./components/Devices/Devices.jsx";
 import io from "socket.io-client";
 import Intro from "./components/Intro/Intro.jsx";
+import HowItWorks from "./components/HowItWorks/HowItWorks.jsx";
 import { url } from "./url";
 import { getStudentProfile } from "./http";
 
@@ -145,6 +146,7 @@ const AppContent = () => {
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/intro" element={<Intro />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/about" element={<AboutMe />} />
         <Route path="/utter-your-thoughts" element={<UtterYourThoughts />} />
         <Route path="/leaderboard" element={<Table />} />
