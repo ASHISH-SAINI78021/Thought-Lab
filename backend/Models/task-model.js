@@ -19,7 +19,14 @@ const taskSchema = new Schema({
         text: { type: String, required: true },
         mentorId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         createdAt: { type: Date, default: Date.now }
-    }]
+    }],
+    taskType: { 
+        type: String, 
+        enum: ['GENERAL', 'COURSE', 'VIDEO'], 
+        default: 'GENERAL' 
+    },
+    linkedCourse: { type: Schema.Types.ObjectId, ref: 'Course', default: null },
+    linkedVideo: { type: Schema.Types.ObjectId, default: null }
 }, {
     timestamps: true
 });

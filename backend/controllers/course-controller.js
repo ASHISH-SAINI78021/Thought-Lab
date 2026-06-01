@@ -15,7 +15,11 @@ class CourseController {
     // Get single course by ID
     async getCourseById(req, res) {
         try {
-            const course = await Course.findById(req.params.id);
+            const course = await Course.findById(req.params.id)
+                .populate({
+                    path: 'videos.views',
+                    select: 'name profilePicture role'
+                });
             
             if (!course) {
                 return res.status(404).json({ message: 'Course not found' });
@@ -244,6 +248,66 @@ class CourseController {
             res.json(course);
         } catch (error) {
             res.status(400).json({ message: 'Error removing video', error: error.message });
+        }
+    }
+
+    // Mark video as viewed
+    async markVideoViewed(req, res) {
+        try {
+            const { courseId, videoId } = req.params;
+            const userId = req.user._id;
+            
+            const course = await Course.findById(courseId);
+            if (!course) {
+                return res.status(404).json({ message: 'Course not found' });
+            }
+            
+            const video = course.videos.id(videoId);
+            if (!video) {
+                return res.status(404).json({ message: 'Video not found' });
+            }
+            
+            if (!video.views.includes(userId)) {
+                video.views.push(userId);
+                await course.save();
+            }
+            
+            res.json({ success: true, viewsCount: video.views.length });
+        } catch (error) {
+            res.status(500).json({ message: 'Error updating views', error: error.message });
+        }
+    }
+
+    // Toggle video completion
+    async toggleVideoCompletion(req, res) {
+        try {
+            const { courseId, videoId } = req.params;
+            const userId = req.user._id;
+            
+            const course = await Course.findById(courseId);
+            if (!course) {
+                return res.status(404).json({ message: 'Course not found' });
+            }
+            
+            const video = course.videos.id(videoId);
+            if (!video) {
+                return res.status(404).json({ message: 'Video not found' });
+            }
+            
+            const index = video.completedBy.indexOf(userId);
+            let isCompleted = false;
+            
+            if (index === -1) {
+                video.completedBy.push(userId);
+                isCompleted = true;
+            } else {
+                video.completedBy.splice(index, 1);
+            }
+            
+            await course.save();
+            res.json({ success: true, isCompleted });
+        } catch (error) {
+            res.status(500).json({ message: 'Error toggling completion', error: error.message });
         }
     }
 

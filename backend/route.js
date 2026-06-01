@@ -79,6 +79,8 @@ router.get('/courses/status/:status', CourseController.getCoursesByStatus);
 
 router.post('/courses', isLogin, CourseController.createCourse);
 router.post('/courses/:id/videos', isLogin, CourseController.addVideoToCourse);
+router.post('/courses/:courseId/videos/:videoId/view', isLogin, CourseController.markVideoViewed);
+router.post('/courses/:courseId/videos/:videoId/toggle-completion', isLogin, CourseController.toggleVideoCompletion);
 
 // Admin-only routes
 router.put('/courses/:id', isLogin, isAdmin, CourseController.updateCourse);

@@ -6,7 +6,8 @@ import {
   completeTask,
   failTask,
   deleteTask,
-  getAllUsers
+  getAllUsers,
+  getAllCourses
 } from '../../../http';
 import toast from 'react-hot-toast';
 import UserSearch from './UserSearch';
@@ -22,8 +23,12 @@ function TaskAssigner() {
     description: '',
     scoreReward: '',
     scorePenalty: '',
-    deadline: ''
+    deadline: '',
+    taskType: 'GENERAL',
+    linkedCourse: '',
+    linkedVideo: ''
   });
+  const [courses, setCourses] = useState([]);
   const [selectedBidder, setSelectedBidder] = useState(''); // New state
   const [assignEmail, setAssignEmail] = useState(''); // New state for email assignment
 
@@ -38,6 +43,11 @@ function TaskAssigner() {
       const tasksResponse = await getAllTasks();
       if (tasksResponse.data.success) {
         setTasks(tasksResponse.data.tasks);
+      }
+
+      const coursesResponse = await getAllCourses();
+      if (coursesResponse.data) {
+        setCourses(coursesResponse.data);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -57,7 +67,7 @@ function TaskAssigner() {
       const { data } = await createTask(newTask);
       if (data.success) {
         toast.success('Task created successfully');
-        setNewTask({ title: '', description: '', scoreReward: '', scorePenalty: '', deadline: '' });
+        setNewTask({ title: '', description: '', scoreReward: '', scorePenalty: '', deadline: '', taskType: 'GENERAL', linkedCourse: '', linkedVideo: '' });
         setShowTaskForm(false);
         fetchData(); // Changed to fetchData
       }
@@ -235,6 +245,53 @@ function TaskAssigner() {
               />
             </div>
 
+            <div className="form-group">
+              <label>Task Type</label>
+              <select
+                value={newTask.taskType}
+                onChange={(e) => setNewTask({ ...newTask, taskType: e.target.value, linkedCourse: '', linkedVideo: '' })}
+                style={{ width: '100%', padding: '0.9rem', border: '1px solid #e2e8f0', borderRadius: '12px', fontSize: '0.95rem' }}
+              >
+                <option value="GENERAL">General</option>
+                <option value="COURSE">Watch Full Course</option>
+                <option value="VIDEO">Watch Specific Video</option>
+              </select>
+            </div>
+
+            {newTask.taskType !== 'GENERAL' && (
+              <div className="form-group">
+                <label>Select Course</label>
+                <select
+                  value={newTask.linkedCourse}
+                  onChange={(e) => setNewTask({ ...newTask, linkedCourse: e.target.value, linkedVideo: '' })}
+                  required
+                  style={{ width: '100%', padding: '0.9rem', border: '1px solid #e2e8f0', borderRadius: '12px', fontSize: '0.95rem' }}
+                >
+                  <option value="">-- Choose Course --</option>
+                  {courses.map(course => (
+                    <option key={course._id} value={course._id}>{course.title}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {newTask.taskType === 'VIDEO' && newTask.linkedCourse && (
+              <div className="form-group">
+                <label>Select Video</label>
+                <select
+                  value={newTask.linkedVideo}
+                  onChange={(e) => setNewTask({ ...newTask, linkedVideo: e.target.value })}
+                  required
+                  style={{ width: '100%', padding: '0.9rem', border: '1px solid #e2e8f0', borderRadius: '12px', fontSize: '0.95rem' }}
+                >
+                  <option value="">-- Choose Video --</option>
+                  {courses.find(c => c._id === newTask.linkedCourse)?.videos.map(v => (
+                    <option key={v._id} value={v._id}>{v.title}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+
             <button type="submit" className="btn-submit">Create Task</button>
           </form>
         </div>
@@ -259,6 +316,31 @@ function TaskAssigner() {
                 <span>⚠️ -{task.scorePenalty}</span>
                 <span>📅 {new Date(task.deadline).toLocaleDateString()}</span>
               </div>
+
+              {task.taskType && task.taskType !== 'GENERAL' && task.linkedCourse && (
+                <div className="task-linked-data" style={{ marginTop: '15px', fontSize: '13px', backgroundColor: '#eef2f6', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
+                  <strong>Linked to:</strong> {task.taskType === 'COURSE' ? 'Course: ' : 'Video: '} {task.linkedCourse.title}
+
+                  {task.status === 'ASSIGNED' && task.assignedTo && (
+                    <div className="task-progress" style={{ marginTop: '10px', fontSize: '14px' }}>
+                      {(() => {
+                        let total = task.linkedCourse.videos?.length || 0;
+                        if (task.taskType === 'COURSE') {
+                          let completed = task.linkedCourse.videos?.filter(v => v.completedBy?.includes(task.assignedTo._id)).length || 0;
+                          return <span><strong>Progress:</strong> {completed} / {total} Videos Watched {completed === total && total > 0 ? '✅' : '⏳'}</span>;
+                        } else if (task.taskType === 'VIDEO') {
+                          let video = task.linkedCourse.videos?.find(v => v._id === task.linkedVideo);
+                          if (video) {
+                            let isCompleted = video.completedBy?.includes(task.assignedTo._id);
+                            return <span><strong>Status:</strong> {isCompleted ? 'Watched ✅' : 'Not Watched Yet ❌'}</span>;
+                          }
+                          return <span>Video not found</span>;
+                        }
+                      })()}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {task.status === 'OPEN' && (
                 <div className="bidders-section">

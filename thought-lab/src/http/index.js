@@ -82,6 +82,15 @@ export const removeVideoFromCourse = (courseId, videoId) => {
     return api.delete(`/courses/${courseId}/videos/${videoId}`);
 };
 
+export const markVideoViewed = (courseId, videoId) => {
+    return api.post(`/courses/${courseId}/videos/${videoId}/view`);
+};
+
+export const toggleVideoCompletion = (courseId, videoId) => {
+    return api.post(`/courses/${courseId}/videos/${videoId}/toggle-completion`);
+};
+
+
 export const getAllCourses = () => api.get('/courses');
 
 // Existing endpoints (keep these)

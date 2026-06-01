@@ -18,7 +18,15 @@ const videoSchema = new mongoose.Schema({
     order: {
         type: Number,
         default: 0
-    }
+    },
+    views: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    completedBy: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 }, { _id: true });
 
 const courseSchema = new mongoose.Schema({

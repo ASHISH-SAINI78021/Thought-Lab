@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { PlayCircle, Clock, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
-import { getCourse } from '../../http';
+import { PlayCircle, Clock, ChevronLeft, ChevronRight, BookOpen, CheckCircle, Circle, Eye } from 'lucide-react';
+import { getCourse, markVideoViewed, toggleVideoCompletion } from '../../http';
 import './CoursePlayer.css';
 import SplashCursor from '../react-bits/SplashCursor';
 
@@ -13,7 +13,64 @@ const CoursePlayer = () => {
     const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
     const videoRef = useRef(null);
 
+    const currentUser = JSON.parse(localStorage.getItem('auth') || '{}')?.user;
+    const currentUserId = currentUser?._id;
+    const role = currentUser?.role;
+    const isAdminUser = role === 'admin' || role === 'superAdmin';
+
     useEffect(() => { fetchCourse(); }, [courseId]);
+
+    // Automatic view tracking
+    useEffect(() => {
+        if (!course || !course.videos || !course.videos.length) return;
+        const video = course.videos[currentVideoIndex];
+
+        const hasViewed = video.views?.some(v => (v._id || v) === currentUserId);
+
+        if (currentUserId && video && (!video.views || !hasViewed)) {
+            markVideoViewed(course._id, video._id).then((res) => {
+                if (res.data.success) {
+                    setCourse(prev => {
+                        const newCourse = { ...prev };
+                        const targetVideo = newCourse.videos[currentVideoIndex];
+                        if (!targetVideo.views) targetVideo.views = [];
+
+                        const alreadyExists = targetVideo.views.some(v => (v._id || v) === currentUserId);
+                        if (!alreadyExists) {
+                            targetVideo.views.push({ _id: currentUserId, name: currentUser.name });
+                        }
+                        return newCourse;
+                    });
+                }
+            }).catch(console.error);
+        }
+    }, [currentVideoIndex, course, currentUserId]);
+
+    const handleToggleCompletion = async (videoIndex, e) => {
+        if (e) e.stopPropagation();
+        try {
+            const video = course.videos[videoIndex];
+            const res = await toggleVideoCompletion(course._id, video._id);
+            if (res.data.success) {
+                setCourse(prev => {
+                    const newCourse = { ...prev };
+                    const targetVideo = newCourse.videos[videoIndex];
+                    if (!targetVideo.completedBy) targetVideo.completedBy = [];
+
+                    if (res.data.isCompleted) {
+                        if (!targetVideo.completedBy.includes(currentUserId)) {
+                            targetVideo.completedBy.push(currentUserId);
+                        }
+                    } else {
+                        targetVideo.completedBy = targetVideo.completedBy.filter(id => id !== currentUserId);
+                    }
+                    return newCourse;
+                });
+            }
+        } catch (err) {
+            console.error('Error toggling completion', err);
+        }
+    };
 
     const fetchCourse = async () => {
         try {
@@ -126,6 +183,11 @@ const CoursePlayer = () => {
                                 <span>•</span>
                                 <Clock size={13} />
                                 <span>{currentVideo.duration || '—'} min</span>
+                                <span>•</span>
+                                <Eye size={13} />
+                                <span title={isAdminUser ? (currentVideo.views?.map(u => u.name || 'Unknown').join(', ') || 'No views') : undefined}>
+                                    {currentVideo.views?.length || 0} views
+                                </span>
                             </div>
                             <div className="video-navigation">
                                 <button onClick={handlePrevVideo} disabled={currentVideoIndex === 0} className="nav-button">
@@ -167,25 +229,41 @@ const CoursePlayer = () => {
                         <div className="video-playlist">
                             <h3>Course Content</h3>
                             <div className="playlist-items">
-                                {course.videos.map((video, index) => (
-                                    <div
-                                        key={video._id || index}
-                                        className={`playlist-item ${index === currentVideoIndex ? 'active' : ''}`}
-                                        onClick={() => handleVideoSelect(index)}
-                                    >
-                                        <div className="video-number">{index + 1}</div>
-                                        <div className="video-details">
-                                            <h4>{video.title}</h4>
-                                            <div className="video-meta-small">
-                                                <Clock size={10} />
-                                                <span>{video.duration || '—'}</span>
+                                {course.videos.map((video, index) => {
+                                    const isCompleted = video.completedBy?.includes(currentUserId);
+                                    return (
+                                        <div
+                                            key={video._id || index}
+                                            className={`playlist-item ${index === currentVideoIndex ? 'active' : ''}`}
+                                            onClick={() => handleVideoSelect(index)}
+                                        >
+                                            <div
+                                                className={`video-completion-toggle ${isCompleted ? 'completed' : ''}`}
+                                                onClick={(e) => handleToggleCompletion(index, e)}
+                                                title={isCompleted ? "Mark as unread" : "Mark as completed"}
+                                                style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginRight: '8px' }}
+                                            >
+                                                {isCompleted ? <CheckCircle size={16} style={{ color: '#10b981' }} /> : <Circle size={16} />}
+                                            </div>
+                                            <div className="video-number">{index + 1}</div>
+                                            <div className="video-details" style={{ marginLeft: '8px' }}>
+                                                <h4>{video.title}</h4>
+                                                <div className="video-meta-small">
+                                                    <Clock size={10} />
+                                                    <span>{video.duration || '—'}</span>
+                                                    <span style={{ margin: '0 4px' }}>•</span>
+                                                    <Eye size={10} />
+                                                    <span title={isAdminUser ? (video.views?.map(u => u.name || 'Unknown').join(', ') || 'No views') : undefined}>
+                                                        {video.views?.length || 0}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="video-play-icon">
+                                                <PlayCircle size={14} />
                                             </div>
                                         </div>
-                                        <div className="video-play-icon">
-                                            <PlayCircle size={14} />
-                                        </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </div>
 

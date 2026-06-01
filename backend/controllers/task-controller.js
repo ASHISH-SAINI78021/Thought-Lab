@@ -7,14 +7,17 @@ class TaskController {
     // Create a new task
     async createTask(req, res) {
         try {
-            const { title, description, scoreReward, scorePenalty, deadline } = req.body;
+            const { title, description, scoreReward, scorePenalty, deadline, taskType, linkedCourse, linkedVideo } = req.body;
             
             const task = await Task.create({
                 title,
                 description,
                 scoreReward,
                 scorePenalty,
-                deadline
+                deadline,
+                taskType: taskType || 'GENERAL',
+                linkedCourse: linkedCourse || null,
+                linkedVideo: linkedVideo || null
             });
 
             // Broadcast new task notification
@@ -45,6 +48,7 @@ class TaskController {
             const tasks = await Task.find(query)
                 .populate('assignedTo', 'name email rollNumber')
                 .populate('bidders', 'name email rollNumber')
+                .populate('linkedCourse', 'title videos')
                 .sort({ createdAt: -1 });
 
             return res.json({ success: true, tasks });
