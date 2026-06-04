@@ -64,7 +64,16 @@ const blogSchema = new mongoose.Schema({
         default: 0 
     },
     reactions: [reactionSchema],
-    comments: [commentSchema]
+    comments: [commentSchema],
+    series: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'BlogSeries',
+        default: null
+    },
+    chapterNumber: { 
+        type: Number,
+        default: null
+    }
 });
 
 module.exports = mongoose.model("Blog", blogSchema);

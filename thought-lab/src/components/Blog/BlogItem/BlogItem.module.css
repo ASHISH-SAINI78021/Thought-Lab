@@ -150,8 +150,57 @@
   line-height: 1.85;
 }
 
+/* Quill Text Alignments */
+.content .ql-align-center {
+  text-align: center;
+}
+
+.content .ql-align-center img {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.content .ql-align-justify {
+  text-align: justify;
+  text-justify: inter-word;
+  text-align-last: justify;
+}
+
+.content .ql-align-right {
+  text-align: right;
+}
+
+.content .ql-align-right img {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* Quill Font Sizes */
+.content .ql-size-small {
+  font-size: 0.75em;
+}
+
+.content .ql-size-large {
+  font-size: 1.5em;
+}
+
+.content .ql-size-huge {
+  font-size: 2.5em;
+}
+
+.content h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 2.5rem 0 1.2rem;
+}
+
 .content p {
   margin-bottom: 1.5rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .content h2 {
@@ -168,6 +217,16 @@
   font-weight: 700;
   color: #00d4ff;
   margin: 1.8rem 0 0.8rem;
+}
+
+.content h4,
+.content h5,
+.content h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin: 1.5rem 0 0.8rem;
 }
 
 .content ul,
@@ -207,7 +266,8 @@
 .content img {
   max-width: 100%;
   border-radius: 12px;
-  margin: 1.5rem 0;
+  margin: 1.5rem auto;
+  display: block;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -794,6 +854,28 @@
   font-weight: 500;
 }
 
+/* Series Nav texts base */
+.seriesTitlePrefix {
+  font-size: 0.8rem;
+}
+
+.seriesProgressText {
+  font-size: 0.85rem;
+}
+
+.seriesNavMainText {
+  font-size: 0.85rem;
+}
+
+.seriesNavSubtitle {
+  font-size: 0.75rem;
+  color: #90cdf4;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .heroBanner {
@@ -836,5 +918,33 @@
   .showReactionsBtn {
     width: 100%;
     justify-content: center;
+  }
+
+  /* Prev / Next chapter buttons */
+  .seriesNavBtn {
+    padding: 1.8rem 2.2rem !important;
+  }
+
+  .seriesNavMainText {
+    font-size: 2.5rem !important;
+  }
+
+  .seriesTitlePrefix {
+    font-size: 2.4rem !important;
+  }
+
+  .chapterSelect {
+    font-size: 2.5rem !important;
+    padding: 1.2rem 1.5rem !important;
+  }
+
+  .seriesNavSubtitle {
+    font-size: 2.25rem !important;
+  }
+
+  /* Delete Blog button */
+  .deleteBlogBtn {
+    font-size: 2.5em !important;
+    padding: 0.6rem 1.2rem !important;
   }
 }

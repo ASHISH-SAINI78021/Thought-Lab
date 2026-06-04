@@ -134,6 +134,15 @@ export const getBlogById = (blogId) => api.get(`/all-blogs/${blogId}`);
 export const reactToBlog = (blogId, type) => api.post(`/blog/${blogId}/react`, { type });
 export const getBlogReactions = (blogId) => api.get(`/blog/${blogId}/reactions`);
 export const addComment = (blogId, content) => api.post(`/blog/${blogId}/comment`, { content });
+
+// Blog Series API
+export const createBlogSeries = (data) => api.post('/blog-series', data);
+export const getAllBlogSeries = () => api.get('/blog-series');
+export const getBlogSeriesById = (id) => api.get(`/blog-series/${id}`);
+export const updateBlogSeries = (id, data) => api.put(`/blog-series/${id}`, data);
+export const deleteBlogSeries = (id) => api.delete(`/blog-series/${id}`);
+export const deleteBlog = (id) => api.delete(`/blog/${id}`);
+
 export const saveMeditationSession = (userId, sessionData)=> api.post(`/meditation-session/${userId}`, sessionData);
 export const getMeditationHistory = (date) => api.get(`/meditation-history${date ? `?date=${date}` : ''}`);
 export const getStudentProfile = (id) => api.get(`/user/${id}`);

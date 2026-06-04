@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { Upload, message } from "antd";
 import { useBlog } from "../../../Context/blog";
 import { useAuth } from "../../../Context/auth";
-import { addBlog } from "../../../http";
+import { addBlog, getAllBlogSeries } from "../../../http";
 
 const { Dragger } = Upload;
 
@@ -23,13 +23,29 @@ const BlogEditor = ({ check }) => {
   const navigate = useNavigate();
   const quill = useRef();
   const [auth, setAuth] = useAuth();
+  const [seriesList, setSeriesList] = useState([]);
+
+  // Fetch series on mount
+  useEffect(() => {
+    const fetchSeries = async () => {
+      try {
+        const response = await getAllBlogSeries();
+        if (response.data && response.data.success) {
+          setSeriesList(response.data.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch blog series:", error);
+      }
+    };
+    fetchSeries();
+  }, []);
 
   // Handle thumbnail changes and create preview URL
   useEffect(() => {
     if (blog.thumbnail && blog.thumbnail instanceof File) {
       const objectUrl = URL.createObjectURL(blog.thumbnail);
       setThumbnailPreviewUrl(objectUrl);
-      
+
       // Clean up the object URL when component unmounts or thumbnail changes
       return () => {
         URL.revokeObjectURL(objectUrl);
@@ -70,7 +86,7 @@ const BlogEditor = ({ check }) => {
     input.setAttribute("type", "file");
     input.setAttribute("accept", "image/*");
     input.click();
-  
+
     input.onchange = () => {
       const file = input.files[0];
       // Validate file type
@@ -78,15 +94,15 @@ const BlogEditor = ({ check }) => {
         message.error('You can only upload image files!');
         return;
       }
-      
+
       const reader = new FileReader();
-  
+
       reader.onload = () => {
         const imageUrl = reader.result;
         const quillEditor = quill.current.getEditor();
         const range = quillEditor.getSelection(true);
         quillEditor.insertEmbed(range.index, "image", imageUrl, "user");
-  
+
         // Delay required for the image to be rendered
         setTimeout(() => {
           const img = quillEditor.container.querySelector(`img[src="${imageUrl}"]`);
@@ -98,11 +114,11 @@ const BlogEditor = ({ check }) => {
           }
         }, 100);
       };
-  
+
       reader.readAsDataURL(file);
     };
   }, []);
-  
+
 
   const modules = useMemo(
     () => ({
@@ -160,60 +176,69 @@ const BlogEditor = ({ check }) => {
       message.error("Title and content are required!");
       return;
     }
-    
+
     const formData = new FormData();
     formData.append("title", blog.title);
     formData.append("tags", blog.tags);
-    
+
     // Only append thumbnail if it's a File object
     if (blog.thumbnail instanceof File) {
       formData.append("thumbnail", blog.thumbnail);
     }
-    
+
+    if (blog.series) {
+      formData.append("series", blog.series);
+    }
+    if (blog.chapterNumber) {
+      formData.append("chapterNumber", blog.chapterNumber);
+    }
+
     formData.append("content", blog.value);
-  
+
     try {
       setLoading(true);
       message.loading({ content: "Publishing blog...", key: "updatable" });
 
       // Use the API function with axios - token is automatically handled by interceptor
       const response = await addBlog(formData);
-      
+
       if (response.success) {
-        message.success({ 
-          content: "Blog published successfully!", 
-          key: "updatable", 
-          duration: 2 
+        message.success({
+          content: "Blog published successfully!",
+          key: "updatable",
+          duration: 2
         });
-        
+
         // Clear the form after successful submission
         setBlog({
           title: "",
           tags: "",
+          series: "",
+          chapterNumber: "",
           thumbnail: null,
           value: ""
         });
         localStorage.removeItem("blog");
-        
+
         // Optional: Redirect after success
         // setTimeout(() => navigate("/blogs"), 2000);
       } else {
-        message.error({ 
-          content: response.message || "Failed to publish blog.", 
-          key: "updatable", 
-          duration: 2 
+        message.error({
+          content: response.message || "Failed to publish blog.",
+          key: "updatable",
+          duration: 2
         });
       }
     } catch (error) {
       console.error("Submit error:", error);
-      
+
       // 401 errors are automatically handled by the interceptor
       // Only show message for other errors
       if (error.response?.status !== 401) {
-        message.error({ 
-          content: error.response?.data?.message || "An error occurred while publishing the blog.", 
-          key: "updatable", 
-          duration: 2 
+        message.error({
+          content: error.response?.data?.message || "An error occurred while publishing the blog.",
+          key: "updatable",
+          duration: 2
         });
       }
     } finally {
@@ -257,9 +282,34 @@ const BlogEditor = ({ check }) => {
         className={styles.input}
         type="text"
         placeholder="Tags (comma separated)"
-        value={blog.tags}
+        value={blog.tags || ""}
         onChange={(e) => handleChange("tags", e.target.value)}
       />
+
+      <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+        <select
+          className={styles.input}
+          style={{ flex: 1 }}
+          value={blog.series || ""}
+          onChange={(e) => handleChange("series", e.target.value)}
+        >
+          <option value="">No Series (Standalone Blog)</option>
+          {seriesList.map(s => (
+            <option key={s._id} value={s._id}>{s.title}</option>
+          ))}
+        </select>
+
+        {blog.series && (
+          <input
+            className={styles.input}
+            style={{ flex: 1 }}
+            type="number"
+            placeholder="Chapter Number"
+            value={blog.chapterNumber || ""}
+            onChange={(e) => handleChange("chapterNumber", e.target.value)}
+          />
+        )}
+      </div>
 
       <Dragger {...props}>
         <p className="ant-upload-drag-icon">
@@ -276,7 +326,7 @@ const BlogEditor = ({ check }) => {
       {thumbnailPreviewUrl && (
         <div className={styles.thumbnailPreview}>
           <img src={thumbnailPreviewUrl} alt="Thumbnail preview" />
-          <button 
+          <button
             onClick={() => {
               handleChange("thumbnail", null);
               setThumbnailPreviewUrl("");

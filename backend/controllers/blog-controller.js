@@ -24,6 +24,8 @@ class BlogController {
                 title: req.body.title,
                 content: req.body.content,
                 tags: req.body.tags,
+                series: req.body.series || null,
+                chapterNumber: req.body.chapterNumber ? parseInt(req.body.chapterNumber) : null,
                 thumbnail: req.file.path,
                 thumbnailPublicId: req.file.filename // Cloudinary public_id
             };

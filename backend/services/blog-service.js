@@ -13,7 +13,7 @@ class BlogService {
 
     async blog(id) {
         try {
-            return await Blog.findById(id);
+            return await Blog.findById(id).populate('series', 'title description');
         } catch (error) {
             throw error;
         }
@@ -21,7 +21,7 @@ class BlogService {
 
     async allBlogs() {
         try {
-            return await Blog.find().sort({ createdAt: -1 });
+            return await Blog.find().populate('series', 'title').sort({ createdAt: -1 });
         } catch (error) {
             throw error;
         }

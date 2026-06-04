@@ -8,6 +8,7 @@ import FocusPet from '../../FocusPet/FocusPet';
 import LevelUpCard from '../../FocusPet/LevelUpCard';
 import BadgeUnlockCard from '../../FocusPet/BadgeUnlockCard';
 import toast from 'react-hot-toast';
+import { getBlogSeriesById, deleteBlog } from '../../../http';
 
 /* Helper: first letter of a name as avatar */
 const Avatar = ({ name, className }) => {
@@ -30,6 +31,7 @@ const BlogItem = () => {
   const [xpAwarded, setXpAwarded] = useState(false);
   const [levelUpData, setLevelUpData] = useState(null);
   const [unlockedBadge, setUnlockedBadge] = useState(null);
+  const [seriesData, setSeriesData] = useState(null);
   const [auth] = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -52,6 +54,12 @@ const BlogItem = () => {
         setLikes(data.blog.likes || 0);
         setDislikes(data.blog.dislikes || 0);
         setUserReaction(data.userReaction || null);
+
+        if (data.blog.series) {
+          // series can be a populated object OR a raw ObjectId string
+          const seriesId = data.blog.series._id || data.blog.series;
+          fetchSeriesData(seriesId);
+        }
       } else {
         throw new Error('Blog not found');
       }
@@ -59,6 +67,18 @@ const BlogItem = () => {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchSeriesData = async (seriesId) => {
+    try {
+      const response = await getBlogSeriesById(seriesId);
+      if (response.data && response.data.success) {
+        // Store the inner payload: { series, blogs }
+        setSeriesData({ series: response.data.series, blogs: response.data.blogs });
+      }
+    } catch (e) {
+      console.error("Failed to fetch series data", e);
     }
   };
 
@@ -129,6 +149,26 @@ const BlogItem = () => {
       console.error(err);
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  /* ── Delete Blog ── */
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete this blog? This action cannot be undone.")) return;
+    try {
+      setLoading(true);
+      const res = await deleteBlog(id);
+      if (res.data && res.data.success) {
+        toast.success("Blog deleted successfully");
+        navigate("/blogs");
+      } else {
+        toast.error(res.data?.message || "Failed to delete blog");
+      }
+    } catch (err) {
+      toast.error("Error deleting blog");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -232,6 +272,104 @@ const BlogItem = () => {
 
   const tags = blog.tags ? blog.tags.split(',').map(t => t.trim()) : [];
 
+  /* ── Render Series Navigation ── */
+  const renderSeriesNav = (isTop = false) => {
+    if (!seriesData || !seriesData.blogs) return null;
+    const chapters = seriesData.blogs;
+    const currentIdx = chapters.findIndex(b => b._id === blog._id);
+    const prevChapter = currentIdx > 0 ? chapters[currentIdx - 1] : null;
+    const nextChapter = currentIdx < chapters.length - 1 ? chapters[currentIdx + 1] : null;
+
+    return (
+      <div style={{
+        marginTop: isTop ? '0' : '2rem',
+        marginBottom: isTop ? '2rem' : '0',
+        padding: '1.25rem 1.5rem',
+        background: 'linear-gradient(135deg, #1a365d 0%, #2a4a7f 100%)',
+        borderRadius: '12px',
+        border: '1px solid #3182ce',
+      }}>
+        {/* Series title + dropdown */}
+        <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
+          <span className={styles.seriesTitlePrefix} style={{ color: '#90cdf4', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            📚 {seriesData.series.title}
+          </span>
+          <div style={{ marginTop: '0.6rem' }}>
+            <select
+              value={blog._id}
+              onChange={(e) => navigate(`/blog/${e.target.value}`)}
+              className={styles.chapterSelect}
+              style={{
+                background: 'rgba(0,0,0,0.3)',
+                color: '#e2e8f0',
+                border: '1px solid rgba(74, 144, 217, 0.4)',
+                padding: '0.5rem 0.8rem',
+                borderRadius: '6px',
+                fontSize: '0.85rem',
+                cursor: 'pointer',
+                maxWidth: '100%',
+                outline: 'none',
+              }}
+            >
+              {chapters.map((ch, i) => (
+                <option key={ch._id} value={ch._id} style={{ background: '#080d1a', color: '#e2e8f0' }}>
+                  Chapter {ch.chapterNumber ?? i + 1} of {chapters.length}: {ch.title}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Prev / Next buttons */}
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'space-between', alignItems: 'center' }}>
+          <button
+            onClick={() => prevChapter && navigate(`/blog/${prevChapter._id}`)}
+            disabled={!prevChapter}
+            className={styles.seriesNavBtn}
+            style={{
+              flex: 1, padding: '0.6rem 1rem',
+              background: prevChapter ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.04)',
+              color: prevChapter ? '#e2e8f0' : '#718096',
+              border: '1px solid ' + (prevChapter ? '#4a90d9' : '#2d3748'),
+              borderRadius: '8px', cursor: prevChapter ? 'pointer' : 'not-allowed',
+              transition: 'background 0.2s',
+              textAlign: 'left',
+            }}
+            onMouseEnter={e => prevChapter && (e.currentTarget.style.background = 'rgba(49,130,206,0.3)')}
+            onMouseLeave={e => e.currentTarget.style.background = prevChapter ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.04)'}
+          >
+            <div className={styles.seriesNavMainText}>
+              ← Prev{prevChapter ? `: Ch ${prevChapter.chapterNumber}` : ''}
+            </div>
+            {prevChapter && <div className={styles.seriesNavSubtitle}>{prevChapter.title}</div>}
+          </button>
+
+          <button
+            onClick={() => nextChapter && navigate(`/blog/${nextChapter._id}`)}
+            disabled={!nextChapter}
+            className={styles.seriesNavBtn}
+            style={{
+              flex: 1, padding: '0.6rem 1rem',
+              background: nextChapter ? 'rgba(49,130,206,0.25)' : 'rgba(255,255,255,0.04)',
+              color: nextChapter ? '#e2e8f0' : '#718096',
+              border: '1px solid ' + (nextChapter ? '#4a90d9' : '#2d3748'),
+              borderRadius: '8px', cursor: nextChapter ? 'pointer' : 'not-allowed',
+              transition: 'background 0.2s',
+              textAlign: 'right',
+            }}
+            onMouseEnter={e => nextChapter && (e.currentTarget.style.background = 'rgba(49,130,206,0.5)')}
+            onMouseLeave={e => e.currentTarget.style.background = nextChapter ? 'rgba(49,130,206,0.25)' : 'rgba(255,255,255,0.04)'}
+          >
+            <div className={styles.seriesNavMainText}>
+              Next{nextChapter ? `: Ch ${nextChapter.chapterNumber}` : ''} →
+            </div>
+            {nextChapter && <div className={styles.seriesNavSubtitle}>{nextChapter.title}</div>}
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   /* ── Render ── */
   return (
     <div className={styles.shell}>
@@ -270,13 +408,33 @@ const BlogItem = () => {
             </div>
             <h1 className={styles.heroTitle}>{blog.title}</h1>
           </div>
+          {(auth?.user?.role === 'admin' || auth?.user?.role === 'superAdmin') && (
+            <button
+              onClick={handleDelete}
+              className={styles.deleteBlogBtn}
+              style={{ position: 'absolute', top: '20px', right: '20px', background: 'red', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', zIndex: 10, fontWeight: 'bold' }}
+            >
+              Delete Blog
+            </button>
+          )}
         </div>
       ) : (
         <div className={styles.noThumbnailHeader}>
           {tags.length > 0 && (
             <span className={styles.noThumbnailLabel}>{tags[0]}</span>
           )}
-          <h1 className={styles.noThumbnailTitle}>{blog.title}</h1>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h1 className={styles.noThumbnailTitle}>{blog.title}</h1>
+            {(auth?.user?.role === 'admin' || auth?.user?.role === 'superAdmin') && (
+              <button
+                onClick={handleDelete}
+                className={styles.deleteBlogBtn}
+                style={{ background: 'red', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}
+              >
+                Delete
+              </button>
+            )}
+          </div>
           {formattedDate && (
             <p className={styles.noThumbnailDate}>{formattedDate}</p>
           )}
@@ -288,6 +446,8 @@ const BlogItem = () => {
 
         {/* Content card */}
         <div className={styles.contentCard}>
+          {renderSeriesNav(true)}
+
           <div
             className={styles.content}
             dangerouslySetInnerHTML={{ __html: blog.content }}
@@ -301,6 +461,9 @@ const BlogItem = () => {
               ))}
             </div>
           )}
+
+          {/* Series Navigation (Bottom) */}
+          {renderSeriesNav(false)}
         </div>
 
         {/* Reactions bar */}

@@ -60,6 +60,10 @@ const New = ({ children }) => {
                         <p onClick={() => goTo("/admin/create-blog")}>Create New Blog</p>
                     </div>
                     <div className={styles.second}>
+                        <p className={styles.b}><FullscreenOutlined /></p>
+                        <p onClick={() => goTo("/admin/create-blog-series")}>Create Blog Series</p>
+                    </div>
+                    <div className={styles.second}>
                         <p className={styles.b}><FullscreenExitOutlined /></p>
                         <p>All Blogs</p>
                     </div>

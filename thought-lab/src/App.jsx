@@ -11,6 +11,7 @@ import AdminLayout from "./components/Admin/AdminLayout/AdminLayout";
 import AdminPanel from "./components/Admin/AdminPanel/AdminPanel";
 import Table from "./components/Table/Table";
 import BlogEditor from "./components/Admin/BlogEditor/BlogEditor";
+import BlogSeriesEditor from "./components/Admin/BlogSeriesEditor/BlogSeriesEditor";
 import Blog from "./components/Blog/Blog";
 import GameScoreUpdater from "./components/Admin/Game/GameScoreUpdater/GameScoreUpdater";
 import RegisterStudent from "./components/Attendence/Login/RegisterStudent";
@@ -216,6 +217,7 @@ const AppContent = () => {
           <Route path="assign-mentor" element={<MentorAssignment />} />
           <Route path="system-tasks" element={<SystemTasks />} />
           <Route path="create-blog" element={<BlogEditor />} />
+          <Route path="create-blog-series" element={<BlogSeriesEditor />} />
           <Route path="create-blog/full-screen" element={<BlogEditor check="true" />} />
           <Route path="game-score-updater" element={<GameScoreUpdater />} />
           <Route path="appointments" element={<ApproveAppointment />} />

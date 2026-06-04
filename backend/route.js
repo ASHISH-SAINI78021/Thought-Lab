@@ -5,6 +5,7 @@ const UserController = require("./controllers/user-controller.js");
 const attendanceController = require('./controllers/attendance-controller.js');
 const upload = require("./middlewares/upload-middleware.js");
 const BlogController = require('./controllers/blog-controller.js');
+const BlogSeriesController = require('./controllers/blog-series-controller.js');
 const CounsellorController = require('./controllers/counsellor-controller.js');
 const GameController = require('./controllers/game-controller.js');
 const MeditationController = require('./controllers/meditation-controller.js');
@@ -49,9 +50,17 @@ router.get('/all-blogs', BlogController.allBlogs);
 router.get('/all-blogs/:id', BlogController.blog);
 router.post("/add-blog", upload.single("thumbnail"), isLogin, isAdmin, BlogController.addBlog);
 router.put("/blog/:id", isLogin, isAdmin, BlogController.updateBlog);
+router.delete("/blog/:id", isLogin, isAdmin, BlogController.deleteBlog);
 router.post('/blog/:id/react', isLogin, BlogController.reactToBlog);
 router.get('/blog/:id/reactions', isLogin, BlogController.getReactions);
 router.post('/blog/:blogId/comment', isLogin, BlogController.comment);
+
+// blog series routes
+router.post('/blog-series', isLogin, isAdmin, BlogSeriesController.createSeries);
+router.get('/blog-series', BlogSeriesController.getAllSeries);
+router.get('/blog-series/:id', BlogSeriesController.getSeriesById);
+router.put('/blog-series/:id', isLogin, isAdmin, BlogSeriesController.updateSeries);
+router.delete('/blog-series/:id', isLogin, isAdmin, BlogSeriesController.deleteSeries);
 
 // counsellor routes
 router.post("/counsellor/create-appointment", isLogin, CounsellorController.createAppointment);
