@@ -854,7 +854,12 @@
   font-weight: 500;
 }
 
-/* Series Nav texts base */
+/* ── Series Nav texts base ── */
+.seriesNavBtn {
+  min-width: 0;
+  overflow: hidden;
+}
+
 .seriesTitlePrefix {
   font-size: 0.8rem;
 }
@@ -874,6 +879,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
 }
 
 /* ── Responsive ── */

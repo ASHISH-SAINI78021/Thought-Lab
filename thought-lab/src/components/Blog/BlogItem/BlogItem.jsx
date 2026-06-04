@@ -328,6 +328,7 @@ const BlogItem = () => {
             className={styles.seriesNavBtn}
             style={{
               flex: 1, padding: '0.6rem 1rem',
+              minWidth: 0, overflow: 'hidden',
               background: prevChapter ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.04)',
               color: prevChapter ? '#e2e8f0' : '#718096',
               border: '1px solid ' + (prevChapter ? '#4a90d9' : '#2d3748'),
@@ -350,6 +351,7 @@ const BlogItem = () => {
             className={styles.seriesNavBtn}
             style={{
               flex: 1, padding: '0.6rem 1rem',
+              minWidth: 0, overflow: 'hidden',
               background: nextChapter ? 'rgba(49,130,206,0.25)' : 'rgba(255,255,255,0.04)',
               color: nextChapter ? '#e2e8f0' : '#718096',
               border: '1px solid ' + (nextChapter ? '#4a90d9' : '#2d3748'),
