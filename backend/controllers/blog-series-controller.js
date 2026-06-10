@@ -51,15 +51,21 @@ class BlogSeriesController {
     async getSeriesById(req, res) {
         try {
             const { id } = req.params;
+            const { fullContent } = req.query;
             const series = await BlogSeries.findById(id);
             if (!series) {
                 return res.status(404).json({ message: "Blog series not found" });
             }
 
             // Fetch the blogs linked to this series
-            const blogs = await Blog.find({ series: id })
-                .select('_id title thumbnail tags createdAt chapterNumber likes comments reactions') // don't return full content
-                .sort({ chapterNumber: 1 });
+            let blogQuery = Blog.find({ series: id });
+            
+            // If fullContent is true, do not exclude content; otherwise, use the standard projection
+            if (fullContent !== 'true') {
+                blogQuery = blogQuery.select('_id title thumbnail tags createdAt chapterNumber likes comments reactions');
+            }
+            
+            const blogs = await blogQuery.sort({ chapterNumber: 1 });
 
             res.status(200).json({ success: true, series, blogs });
         } catch (error) {

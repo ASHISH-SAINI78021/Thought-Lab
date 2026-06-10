@@ -138,7 +138,7 @@ export const addComment = (blogId, content) => api.post(`/blog/${blogId}/comment
 // Blog Series API
 export const createBlogSeries = (data) => api.post('/blog-series', data);
 export const getAllBlogSeries = () => api.get('/blog-series');
-export const getBlogSeriesById = (id) => api.get(`/blog-series/${id}`);
+export const getBlogSeriesById = (id, fullContent = false) => api.get(`/blog-series/${id}${fullContent ? '?fullContent=true' : ''}`);
 export const updateBlogSeries = (id, data) => api.put(`/blog-series/${id}`, data);
 export const deleteBlogSeries = (id) => api.delete(`/blog-series/${id}`);
 export const deleteBlog = (id) => api.delete(`/blog/${id}`);

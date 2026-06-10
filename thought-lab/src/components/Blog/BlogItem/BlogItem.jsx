@@ -9,6 +9,7 @@ import LevelUpCard from '../../FocusPet/LevelUpCard';
 import BadgeUnlockCard from '../../FocusPet/BadgeUnlockCard';
 import toast from 'react-hot-toast';
 import { getBlogSeriesById, deleteBlog } from '../../../http';
+import DownloadSeriesPDF from '../DownloadSeriesPDF';
 
 /* Helper: first letter of a name as avatar */
 const Avatar = ({ name, className }) => {
@@ -317,6 +318,11 @@ const BlogItem = () => {
                 </option>
               ))}
             </select>
+          </div>
+          <div style={{ marginTop: '0.8rem' }}>
+            {(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && (
+              <DownloadSeriesPDF seriesId={seriesData.series._id} seriesTitle={seriesData.series.title} />
+            )}
           </div>
         </div>
 
