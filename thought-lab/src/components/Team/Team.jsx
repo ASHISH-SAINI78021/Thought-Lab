@@ -20,7 +20,7 @@ const teamMembers = [
         image: profNimitImg,
     },
     {
-        name: "Dr. Lata Gidwani",
+        name: "Prof. Lata Gidwani",
         role: "Chief Coordinator",
         org: "Thought & Innovation Centre, RTU Kota",
         initials: "LG",
